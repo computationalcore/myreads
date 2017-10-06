@@ -50,11 +50,11 @@ class Bookshelf extends Component {
 		books: PropTypes.array.isRequired,
 		// Category ID of the shelf
 		category: PropTypes.oneOf(BOOKSHELF_CATEGORY_IDS),
-		//onUpdateBook: PropTypes.func.isRequired
+		onUpdateBook: PropTypes.func.isRequired
 	};
 
 	render() {
-		const {books, onBookUpdate, availableShelves} = this.props;
+		const {books, onUpdateBook} = this.props;
 
 		return (
 			<ol className="books-grid">
@@ -70,7 +70,7 @@ class Bookshelf extends Component {
 								</div>
 								<div className="book-shelf-changer">
 									<select
-										onChange={(event) => onBookUpdate(book, event.target.value)}
+										onChange={(event) => onUpdateBook(book, event.target.value)}
 										value={book.shelf}>
 										<option disabled>Move to...</option>
 										{getBookshelfCategories().map((shelf) => (
@@ -81,7 +81,7 @@ class Bookshelf extends Component {
 								</div>
 							</div>
 							<div className="book-title">{book.title}</div>
-							<div className="book-authors">{book.authors.join(', ')}</div>
+							<div className="book-authors">{book.authors}</div>
 						</div>
 					</li>
 				))}
