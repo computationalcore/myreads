@@ -43,7 +43,7 @@ class Search extends Component {
 
 			// If the query state (the search input) changed while the request was in process not show the books
 			// of a previous query state
-			if(query != this.state.query) return;
+			if(query !== this.state.query) return;
 
 			//If the query is empty no need to request to server just clean the books array
 			if ('error' in books) {
