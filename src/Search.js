@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import sortBy from 'sort-by';
 import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 
@@ -43,7 +44,7 @@ class Search extends Component {
 
 			// If the query state (the search input) changed while the request was in process not show the books
 			// of a previous query state
-			if(query != this.state.query) return;
+			if(query !== this.state.query) return;
 
 			//If the query is empty no need to request to server just clean the books array
 			if ('error' in books) {
@@ -56,7 +57,7 @@ class Search extends Component {
 				 */
 				books.map(book => (this.props.shelvesBooks.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)));
 			}
-			this.setState({books: books});
+			this.setState({books: books.sort(sortBy('title'))});
 		});
 	};
 

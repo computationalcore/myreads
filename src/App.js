@@ -3,6 +3,7 @@ import { Link, Route } from 'react-router-dom';
 import Bookshelf, { getBookshelfCategories, getBookshelfCategoryName } from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import Search from './Search';
+import sortBy from 'sort-by';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -49,7 +50,7 @@ class BooksApp extends React.Component {
 									<div key={shelf} className="bookshelf">
 										<h2 className="bookshelf-title">{getBookshelfCategoryName(shelf)}</h2>
 										<Bookshelf
-											books={this.state.books.filter((book) => book.shelf === shelf)}
+											books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 											category={shelf}
 											onUpdateBook={this.updateBook}
 										/>
