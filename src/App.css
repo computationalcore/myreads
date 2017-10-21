@@ -184,6 +184,72 @@ html, body {
   box-sizing: border-box;
 }
 
+/* book corner ribbon */
+.ribbon {
+  width: 130px;
+  height: 130px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.ribbon::before,
+.ribbon::after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  display: block;
+  border: 5px solid #2980b9;
+}
+
+.ribbon span {
+  position: absolute;
+  display: block;
+  width: 225px;
+  padding: 5px 0;
+  box-shadow: 0 3px 3px rgba(0,0,0,.1);
+  color: #fff;
+  font: 700 12px/1 'Lato', sans-serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,.2);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.ribbon-top-right {
+  top: -10px;
+  right: -10px;
+}
+.ribbon-top-right::before,
+.ribbon-top-right::after {
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+.ribbon-top-right::before {
+  top: 0;
+  left: 0;
+}
+.ribbon-top-right::after {
+  bottom: 0;
+  right: 0;
+}
+.ribbon-top-right span {
+  left: -25px;
+  top: 30px;
+  transform: rotate(45deg);
+}
+
+.ribbon-currentlyreading span {
+  background-color: #2980b9;
+}
+
+.ribbon-wanttoread span{
+  background-color: #9932CC;
+}
+
+.ribbon-read span{
+  background-color: #006400;
+}
+
+/* book transition animations */
 
 .move-book-animation-enter {
   opacity: 0.01;

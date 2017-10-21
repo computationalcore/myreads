@@ -55,6 +55,10 @@ class Bookshelf extends Component {
 		onUpdateBook: PropTypes.func.isRequired
 	};
 
+	defaultProps = {
+		withRibbon: false
+	};
+
 	render() {
 		const {books, onUpdateBook} = this.props;
 
@@ -76,6 +80,16 @@ class Bookshelf extends Component {
 											height: 193,
 											backgroundImage: `url(${book.imageLinks.thumbnail})`
 										}}>
+											{!!this.props.withRibbon && book.shelf &&
+											<div className="ribbon">
+												<div className="txt">
+													<div className={`ribbon ribbon-top-right ribbon-${book.shelf.toLowerCase()}`}>
+														<span>
+															{getBookshelfCategoryName(book.shelf).split(" ", 2)[0]}
+														</span>
+													</div>
+												</div>
+											</div>}
 										</div>
 									</Loader>
 									<div className="book-shelf-changer">

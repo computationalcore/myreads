@@ -84,6 +84,7 @@ class Search extends Component {
 					<Bookshelf
 						books={this.state.books}
 						onUpdateBook={onUpdateBook}
+						withRibbon={true}
 					/>
 				</div>
 			</div>
