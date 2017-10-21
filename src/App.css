@@ -172,3 +172,37 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.book-cover-title li {
+  float: left;
+  box-sizing: border-box;
+}
+
+
+.move-book-animation-enter {
+  opacity: 0.01;
+  width: 0px;
+}
+
+.move-book-animation-enter.move-book-animation-enter-active {
+  opacity: 1;
+  width: 170px;
+  transition: 700ms;
+}
+
+.move-book-animation-leave {
+  opacity: 1;
+  width: 170px;
+}
+
+.move-book-animation-leave.move-book-animation-leave-active {
+  opacity: 0.01;
+  width: 0px;
+  transition: 700ms;
+}
