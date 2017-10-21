@@ -1,4 +1,24 @@
 {
+  "name": "MyReads",
+  "version": "1.0.0",
+  "description": "A bookshelf app that allows the user to select and categorize books they have read, are currently reading, or want to read",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/computationalcore/myreads"
+  },
+  "keywords": [
+    "myreads",
+    "bookshelf",
+    "books",
+    "udacity",
+    "google books"
+  ],
+  "author": "Vin Busquet",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/computationalcore/myreads"
+  },
+  "homepage": "https://github.com/computationalcore/myreads#readme",
   "dependencies": {
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
