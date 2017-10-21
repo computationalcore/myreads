@@ -22,11 +22,19 @@ class BooksApp extends React.Component {
 	}
 
 	updateBook = (book, shelf) => {
-		// If books state is not empty
+		// If books state array is not empty
 		if (this.state.books) {
+
+			// Update book state to include loading variable used at updating animation
+			book.updating = true;
+			this.setState(state => ({
+				books: state.books.filter(b => b.id !== book.id).concat([book])
+			}));
+
 			// Update book reference at remote server, if successful update local state reference also
 			BooksAPI.update(book, shelf).then(() => {
 				book.shelf = shelf;
+				book.updating = false;
 				// This will update all Bookshelf components since it will force call render and the book will move
 				// to the correct shelf.
 				this.setState(state => ({

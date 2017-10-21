@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'react-loader-advanced';
 
 /**
  * Array of the available bookshelf categories IDs.
@@ -60,29 +61,36 @@ class Bookshelf extends Component {
 			<ol className="books-grid">
 				{books.map((book) => (
 					<li key={book.id}>
-						<div className="book">
-							<div className="book-top">
-								<div className="book-cover" style={{
-									width: 128,
-									height: 193,
-									backgroundImage: `url(${book.imageLinks.thumbnail})`
-								}}>
+						<Loader show={('updating' in book) ? book.updating : false}
+								message={<span><img src="three-dots.svg" width="50" alt=""/><div>Updating</div></span>}>
+							<div className="book">
+								<div className="book-top">
+									<div className="book-cover" style={{
+										width: 128,
+										height: 193,
+										backgroundImage: `url(${book.imageLinks.thumbnail})`
+									}}>
+									</div>
+									<div className="book-shelf-changer">
+										<select
+											onChange={(event) => {
+												onUpdateBook(book, event.target.value);
+												this.setState({updating: true})
+											}}
+											value={('shelf' in book) ? book.shelf : 'none'}>
+											<option disabled>Move to...</option>
+											{BOOKSHELF_CATEGORY_IDS.map((shelf) => (
+												<option key={shelf}
+														value={shelf}>{getBookshelfCategoryName(shelf)}</option>
+											))}
+											<option value="none">None</option>
+										</select>
+									</div>
 								</div>
-								<div className="book-shelf-changer">
-									<select
-										onChange={(event) => onUpdateBook(book, event.target.value)}
-										value={('shelf' in book) ? book.shelf : 'none'}>
-										<option disabled>Move to...</option>
-										{getBookshelfCategories().map((shelf) => (
-											<option key={shelf} value={shelf}>{getBookshelfCategoryName(shelf)}</option>
-										))}
-										<option value="none">None</option>
-									</select>
-								</div>
+								<div className="book-title">{book.title}</div>
+								<div className="book-authors">{('authors' in book) ? book.authors.join(', ') : ''}</div>
 							</div>
-							<div className="book-title">{book.title}</div>
-							<div className="book-authors">{ ('authors' in book) ? book.authors.join(', ') : '' }</div>
-						</div>
+						</Loader>
 					</li>
 				))}
 			</ol>
