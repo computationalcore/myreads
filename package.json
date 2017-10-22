@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/computationalcore/myreads#readme",
   "dependencies": {
+    "material-ui": "^0.19.4",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
