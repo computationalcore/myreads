@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Bookshelf, { getBookshelfCategories, getBookshelfCategoryName } from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import Search from './Search';
@@ -46,41 +50,49 @@ class BooksApp extends React.Component {
 
 	render() {
 		return (
-			<div className="app">
-				<Route exact path='/' render={() => (
-					<div className="list-books">
-						<div className="list-books-title">
-							<h1>MyReads</h1>
-						</div>
-						<div className="list-books-content">
-							<div>
-								{getBookshelfCategories().map((shelf) => (
-									<div key={shelf} className="bookshelf">
-										<h2 className="bookshelf-title">{getBookshelfCategoryName(shelf)}</h2>
-										<Bookshelf
-											books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
-											category={shelf}
-											onUpdateBook={this.updateBook}
-										/>
-									</div>
-								))}
+			<MuiThemeProvider>
+				<div className="app">
+					<Route exact path='/' render={() => (
+						<div className="list-books">
+							<AppBar
+								title="MyReads"
+								iconClassNameRight="muidocs-icon-navigation-expand-more"
+							/>
+							<div className="list-books-content">
+								<div>
+									{getBookshelfCategories().map((shelf) => (
+										<div key={shelf} className="bookshelf">
+											<h2 className="bookshelf-title">{getBookshelfCategoryName(shelf)}</h2>
+											<Bookshelf
+												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
+												category={shelf}
+												onUpdateBook={this.updateBook}
+											/>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className="open-search">
+								<Link
+									to='/search'
+									className='add-books'
+								>
+									<FloatingActionButton>
+										<ContentAdd />
+									</FloatingActionButton>
+								</Link>
+
 							</div>
 						</div>
-						<div className="open-search">
-							<Link
-								to='/search'
-								className='add-books'
-							>Add a book</Link>
-						</div>
-					</div>
-				)}/>
-				<Route path='/search' render={({history}) => (
-					<Search
-						shelvesBooks={this.state.books}
-						onUpdateBook={this.updateBook}
-					/>
-				)}/>
-			</div>
+					)}/>
+					<Route path='/search' render={({history}) => (
+						<Search
+							shelvesBooks={this.state.books}
+							onUpdateBook={this.updateBook}
+						/>
+					)}/>
+				</div>
+			</MuiThemeProvider>
 		);
 	}
 }
