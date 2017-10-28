@@ -53,8 +53,8 @@ body, .app {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #2e7d32;
-  background-image: url('./icons/add.svg');
+  /*background: #2e7d32;
+  background-image: url('./icons/add.svg');*/
   background-repeat: no-repeat;
   background-position: center;
   background-size: 28px;
@@ -161,6 +161,32 @@ body, .app {
   cursor: pointer;
 }
 
+.book-shelf-changer {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.book-select-box {
+  position: absolute;
+  top: 5px;
+  left: 0;
+}
+
+.book-rating {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* book cover */
 
 .book-cover {
@@ -185,6 +211,7 @@ html, body {
 }
 
 /* book corner ribbon */
+
 .ribbon {
   width: 130px;
   height: 130px;
@@ -271,4 +298,62 @@ html, body {
   opacity: 0.01;
   width: 0px;
   transition: 700ms;
+}
+
+
+/* book select control mode and animations */
+
+.select-mode-controls {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.book-select-mode-enter {
+  opacity: 0.01;
+  height: 0px;
+}
+
+.book-select-mode-enter.book-select-mode-enter-active {
+  opacity: 1;
+  height: 36px;
+  transition: 500ms;
+}
+
+.book-select-mode-leave {
+  opacity: 1;
+  height: 36px;
+}
+
+.book-select-mode-leave.book-select-mode-leave-active {
+  opacity: 0.01;
+  height: 0;
+  transition: 300ms;
+}
+
+
+.book-select-box-move-enter {
+  opacity: 0.01;
+  height: 0;
+}
+
+.book-select-box-move-enter.book-select-box-move-enter-active {
+  opacity: 1;
+  height: 77px;
+  transition: 500ms;
+}
+
+.book-select-box-move-leave {
+  opacity: 1;
+  height: 77px;
+}
+
+.book-select-box-move-leave.book-select-box-move-leave-active {
+  opacity: 0.01;
+  height: 0;
+  transition: 300ms;
 }

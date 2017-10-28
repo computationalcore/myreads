@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Bookshelf, { getBookshelfCategories, getBookshelfCategoryName } from './Bookshelf';
+import Bookshelf, { getBookshelfCategories } from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import Search from './Search';
 import sortBy from 'sort-by';
@@ -62,7 +62,7 @@ class BooksApp extends React.Component {
 								<div>
 									{getBookshelfCategories().map((shelf) => (
 										<div key={shelf} className="bookshelf">
-											<h2 className="bookshelf-title">{getBookshelfCategoryName(shelf)}</h2>
+											<br />
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
