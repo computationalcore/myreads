@@ -114,8 +114,6 @@ class Bookshelf extends Component {
 	enableSelectMode = () => {
 		// If books state array is not empty
 		if (!this.state.selectMode) {
-			console.log('enable select mode');
-
 			// Update book state to include loading variable used at updating animation
 			this.setState({selectMode: true});
 		}
@@ -124,8 +122,6 @@ class Bookshelf extends Component {
 	disableSelectMode = () => {
 		// If books state array is not empty
 		if (this.state.selectMode) {
-			console.log('disable select mode');
-
 			// Update book state to include loading variable used at updating animation
 			this.setState({selectMode: false, selectedBooks: []});
 		}
@@ -162,9 +158,7 @@ class Bookshelf extends Component {
 		let selectedBooks = this.state.selectedBooks;
 		this.setState({selectMode: false, selectedBooks: []});
 		selectedBooks.forEach(function(book) {
-			onUpdateBook(book, value).catch(function() {
-				console.log('ERROR PORRA');
-			});
+			onUpdateBook(book, value);
 		});
 	};
 
@@ -355,8 +349,6 @@ class Bookshelf extends Component {
 														else {
 															this.deselectBook(book);
 														}
-
-														this.setState({updating: true})
 													}}
 												/>}
 											</CSSTransitionGroup>
