@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Loader from 'react-loader-advanced';
 import Checkbox from 'material-ui/Checkbox';
+import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -98,7 +100,8 @@ class Bookshelf extends Component {
 
 	state = {
 		selectMode: false,
-		selectedBooks: []
+		selectedBooks: [],
+		dialogOpen: false,
 	};
 
 	enableSelectMode = () => {
@@ -156,18 +159,60 @@ class Bookshelf extends Component {
 		});
 	};
 
+	/**
+	 * @description Open the clear shelf dialog.
+	 */
+	handleDialogOpen = () => {
+		this.setState({dialogOpen: true});
+	};
+
+	/**
+	 * @description Close the Clear shelf dialog.
+	 */
+	handleDialogClose = () => {
+		this.setState({dialogOpen: false});
+	};
+
+	/**
+	 * @description Remove all books from the shelf.
+	 */
+	clearShelf = () => {
+		let onUpdateBook = this.props.onUpdateBook;
+		this.props.books.forEach(function(book) {
+			onUpdateBook(book, 'none');
+		});
+		// Close the Clear dialog
+		this.handleDialogClose();
+	};
+
 	render() {
 		const {books, onUpdateBook} = this.props;
 
+		// Clear books dialog buttons
+		const dialogActions = [
+			<FlatButton
+				label="Cancel"
+				style={styles.button}
+				onClick={this.handleDialogClose}
+			/>,
+			<FlatButton
+				label="Confirm"
+				backgroundColor="#FF9584"
+				hoverColor="#FF583D"
+				style={styles.button}
+				onClick={this.clearShelf}
+			/>,
+		];
+
 		return (
 			<div>
+				{/* Shelf Toolbar */}
 				<Toolbar>
 					<ToolbarGroup>
 						<ToolbarTitle text={getBookshelfCategoryName(this.props.category)}/>
 					</ToolbarGroup>
 					<ToolbarGroup>
 						<ToolbarSeparator/>
-
 						{!this.state.selectMode &&
 						<IconMenu
 							iconButtonElement={
@@ -176,8 +221,8 @@ class Bookshelf extends Component {
 								</IconButton>
 							}
 						>
-							<MenuItem primaryText="Select Books" onClick={this.enableSelectMode}/>
-							<MenuItem primaryText="Clear"/>
+							<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
+							<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen} />
 						</IconMenu>}
 						{this.state.selectMode &&
 						<IconButton touch={true} onClick={this.disableSelectMode}>
@@ -186,6 +231,17 @@ class Bookshelf extends Component {
 						}
 					</ToolbarGroup>
 				</Toolbar>
+				{/* Clear Books Confirmation Dialog */}
+				<Dialog
+					title={'Clear Shelf'}
+					actions={dialogActions}
+					modal={true}
+					open={this.state.dialogOpen}
+				>
+					Are you sure you want to remove all books from the "{getBookshelfCategoryName(this.props.category)}" shelf?
+				</Dialog>
+
+				{/* Book List */}
 				<ol>
 					<CSSTransitionGroup
 						transitionName="book-select-mode"
@@ -244,7 +300,6 @@ class Bookshelf extends Component {
 
 										<Loader show={('updating' in book) ? book.updating : false}
 												message={<span><img src="three-dots.svg" width="50" alt=""/><div>Updating</div></span>}>
-
 											<div className="book-cover" style={{
 												width: 128,
 												height: 193,
