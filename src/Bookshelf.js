@@ -16,6 +16,7 @@ import SelectField from 'material-ui/SelectField';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import './App.css';
 import ConfirmDialog from './ConfirmDialog';
+import AlertDialog from './AlertDialog';
 import DotLoader from './icons/loaders/dots.svg';
 import LoaderBox from './Loader';
 
@@ -84,7 +85,7 @@ const styles = {
 	}
 };
 
-const loadingOptions = [null, 'loading', 'error'];
+const loadingOptions = [null, 'loading', 'error', 'update_book_error'];
 
 class Bookshelf extends Component {
 
@@ -94,6 +95,7 @@ class Bookshelf extends Component {
 		// Category ID of the shelf
 		category: PropTypes.oneOf(BOOKSHELF_CATEGORY_IDS),
 		onUpdateBook: PropTypes.func.isRequired,
+		onUpdateBookError: PropTypes.func,
 		onConnectionError: PropTypes.func,
 		loading: PropTypes.oneOf(loadingOptions),
 	};
@@ -106,6 +108,7 @@ class Bookshelf extends Component {
 		selectMode: false,
 		selectedBooks: [],
 		dialogOpen: false,
+		alertDialogOpen: false,
 	};
 
 	enableSelectMode = () => {
@@ -159,7 +162,9 @@ class Bookshelf extends Component {
 		let selectedBooks = this.state.selectedBooks;
 		this.setState({selectMode: false, selectedBooks: []});
 		selectedBooks.forEach(function(book) {
-			onUpdateBook(book, value);
+			onUpdateBook(book, value).catch(function() {
+				console.log('ERROR PORRA');
+			});
 		});
 	};
 
@@ -231,6 +236,12 @@ class Bookshelf extends Component {
 					onCancel={this.handleDialogClose}
 					onConfirm={this.clearShelf}
 					open={this.state.dialogOpen}
+				/>
+				{/* Alert Dialog when have problems with book update server response */}
+				<AlertDialog
+					message='Unable to update book data from server (Maybe internet connection or server instability)'
+					onClick={this.props.onUpdateBookError}
+					open={this.props.loading === loadingOptions[3]}
 				/>
 				{/* Shelf Loader */}
 				<div className="shelf-loader-box">

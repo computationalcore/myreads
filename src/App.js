@@ -27,17 +27,20 @@ class BooksApp extends React.Component {
 
 	getAllBooks = ()  => {
 		const app = this;
-		console.log("enter");
 		this.setState({loading: 'loading'});
 		// Update the Shelves
 		BooksAPI.getAll().then((books) => {
-			console.log(books);
 			app.setState({books: books, loading:null});
 		}).catch(function() {
-			app.setState({loading: "error"});
+			app.setState({loading: 'error'});
 		});
 	};
 
+	/**
+	 * @description Change shelf value for a book element from the server data
+	 * @param {object) book
+	 * @param {string} shelf
+	 */
 	updateBook = (book, shelf) => {
 		// If books state array is not empty
 		if (this.state.books) {
@@ -48,6 +51,7 @@ class BooksApp extends React.Component {
 				books: state.books.filter(b => b.id !== book.id).concat([book])
 			}));
 
+			const app = this;
 			// Update book reference at remote server, if successful update local state reference also
 			BooksAPI.update(book, shelf).then(() => {
 				book.shelf = shelf;
@@ -57,8 +61,22 @@ class BooksApp extends React.Component {
 				this.setState(state => ({
 					books: state.books.filter(b => b.id !== book.id).concat([book])
 				}));
+			}).catch(function() {
+				// If will remove load animations in case of failure also
+				book.updating = false;
+				app.setState(state => ({
+					books: state.books.filter(b => b.id !== book.id).concat([book]),
+					loading: 'update_book_error',
+				}));
 			});
 		}
+	};
+
+	/**
+	 * @description Change loading state to null in case of failure
+	 */
+	handleBookUpdateError = () => {
+		this.setState({loading: null});
 	};
 
 	render() {
@@ -81,6 +99,7 @@ class BooksApp extends React.Component {
 												category={shelf}
 												loading={this.state.loading}
 												onUpdateBook={this.updateBook}
+												onUpdateBookError={this.handleBookUpdateError}
 												onConnectionError={this.getAllBooks}
 											/>
 										</div>
