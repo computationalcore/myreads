@@ -31,7 +31,7 @@ function ConfirmDialog(props) {
 	return (
 		<div>
 			<Dialog
-				title={'Clear Shelf'}
+				title={props.title}
 				actions={dialogActions}
 				modal={true}
 				open={props.open}
