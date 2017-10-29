@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import sortBy from 'sort-by';
 import Bookshelf, { getBookshelfCategories } from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import Search from './Search';
-import sortBy from 'sort-by';
 import './App.css';
 
 class BooksApp extends React.Component {

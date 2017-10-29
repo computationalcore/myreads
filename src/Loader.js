@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import './App.css';
 import ClockLoader from './icons/loaders/clock.svg';
 import DotsLoader from './icons/loaders/dots.svg';
 import CircleLoader from './icons/loaders/circle.svg';

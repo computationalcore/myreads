@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Loader from 'react-loader-advanced';
 import Checkbox from 'material-ui/Checkbox';
-import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -16,6 +14,8 @@ import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-mo
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import './App.css';
+import ConfirmDialog from './ConfirmDialog';
 import DotLoader from './icons/loaders/dots.svg';
 import LoaderBox from './Loader';
 
@@ -191,22 +191,6 @@ class Bookshelf extends Component {
 	render() {
 		const {books, onUpdateBook} = this.props;
 
-		// Clear books dialog buttons
-		const dialogActions = [
-			<FlatButton
-				label="Cancel"
-				style={styles.button}
-				onClick={this.handleDialogClose}
-			/>,
-			<FlatButton
-				label="Confirm"
-				backgroundColor="#FF9584"
-				hoverColor="#FF583D"
-				style={styles.button}
-				onClick={this.clearShelf}
-			/>,
-		];
-
 		return (
 			<div>
 				{/* Shelf Toolbar */}
@@ -239,14 +223,16 @@ class Bookshelf extends Component {
 					</ToolbarGroup>
 				</Toolbar>
 				{/* Clear Books Confirmation Dialog */}
-				<Dialog
+				<ConfirmDialog
 					title={'Clear Shelf'}
-					actions={dialogActions}
-					modal={true}
+					message={'Are you sure you want to remove all books from the "' +
+					getBookshelfCategoryName(this.props.category) + '" shelf?'}
+					onCancel={this.handleDialogClose}
+					onConfirm={this.clearShelf}
 					open={this.state.dialogOpen}
 				>
-					Are you sure you want to remove all books from the "{getBookshelfCategoryName(this.props.category)}" shelf?
-				</Dialog>
+
+				</ConfirmDialog>
 
 				{/* Shelf Loader */}
 				<div className="shelf-loader-box">
