@@ -16,6 +16,8 @@ import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-mo
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import DotLoader from './icons/loaders/dots.svg';
+import LoaderBox from './Loader';
 
 /**
  * Array of the available bookshelf categories IDs.
@@ -91,7 +93,8 @@ class Bookshelf extends Component {
 		books: PropTypes.array.isRequired,
 		// Category ID of the shelf
 		category: PropTypes.oneOf(BOOKSHELF_CATEGORY_IDS),
-		onUpdateBook: PropTypes.func.isRequired
+		onUpdateBook: PropTypes.func.isRequired,
+		loading: PropTypes.bool,
 	};
 
 	defaultProps = {
@@ -213,21 +216,25 @@ class Bookshelf extends Component {
 					</ToolbarGroup>
 					<ToolbarGroup>
 						<ToolbarSeparator/>
-						{!this.state.selectMode &&
-						<IconMenu
-							iconButtonElement={
-								<IconButton touch={true}>
-									<MoreVertIcon/>
-								</IconButton>
-							}
-						>
-							<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
-							<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen} />
-						</IconMenu>}
-						{this.state.selectMode &&
-						<IconButton touch={true} onClick={this.disableSelectMode}>
-							<NavigationClose />
-						</IconButton>
+						{/* Shelf Loader */}
+						<LoaderBox loading={this.props.loading} size={50} type="circle" className="loader-shelf-menu" />
+
+						{!this.state.selectMode && !this.props.loading &&
+							<IconMenu
+								iconButtonElement={
+									<IconButton touch={true}>
+										<MoreVertIcon/>
+									</IconButton>
+								}
+							>
+								<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
+								<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen} />
+							</IconMenu>
+						}
+						{this.state.selectMode && !this.props.loading &&
+							<IconButton touch={true} onClick={this.disableSelectMode}>
+								<NavigationClose />
+							</IconButton>
 						}
 					</ToolbarGroup>
 				</Toolbar>
@@ -240,6 +247,11 @@ class Bookshelf extends Component {
 				>
 					Are you sure you want to remove all books from the "{getBookshelfCategoryName(this.props.category)}" shelf?
 				</Dialog>
+
+				{/* Shelf Loader */}
+				<div className="shelf-loader-box">
+					<LoaderBox loading={this.props.loading} size={70} message="Loading Books" />
+				</div>
 
 				{/* Book List */}
 				<ol>
@@ -299,7 +311,7 @@ class Bookshelf extends Component {
 									<div className="book-top">
 
 										<Loader show={('updating' in book) ? book.updating : false}
-												message={<span><img src="three-dots.svg" width="50" alt=""/><div>Updating</div></span>}>
+												message={<span><img src={DotLoader} width="50" alt=""/><div>Updating</div></span>}>
 											<div className="book-cover" style={{
 												width: 128,
 												height: 193,

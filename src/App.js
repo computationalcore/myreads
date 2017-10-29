@@ -12,7 +12,10 @@ import './App.css';
 
 class BooksApp extends React.Component {
 
-	state = {books: []};
+	state = {
+		books: [],
+		loadingInitialData: true
+	};
 
 	/**
 	 * Lifecycle event handler called just after the App loads into the DOM.
@@ -21,7 +24,7 @@ class BooksApp extends React.Component {
 	componentDidMount() {
 		// Update the Shelves
 		BooksAPI.getAll().then((books) => {
-			this.setState({books: books});
+			this.setState({books: books, loadingInitialData:false});
 		});
 	}
 
@@ -66,6 +69,7 @@ class BooksApp extends React.Component {
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
+												loading={this.state.loadingInitialData}
 												onUpdateBook={this.updateBook}
 											/>
 										</div>
