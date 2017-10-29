@@ -14,7 +14,7 @@ class BooksApp extends React.Component {
 
 	state = {
 		books: [],
-		loadingInitialData: true
+		loading: 'loading',
 	};
 
 	/**
@@ -22,11 +22,21 @@ class BooksApp extends React.Component {
 	 * Call the API to get all books and update books state variable when the callback returns.
 	 */
 	componentDidMount() {
+		this.getAllBooks();
+	}
+
+	getAllBooks = ()  => {
+		const app = this;
+		console.log("enter");
+		this.setState({loading: 'loading'});
 		// Update the Shelves
 		BooksAPI.getAll().then((books) => {
-			this.setState({books: books, loadingInitialData:false});
+			console.log(books);
+			app.setState({books: books, loading:null});
+		}).catch(function() {
+			app.setState({loading: "error"});
 		});
-	}
+	};
 
 	updateBook = (book, shelf) => {
 		// If books state array is not empty
@@ -69,8 +79,9 @@ class BooksApp extends React.Component {
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
-												loading={this.state.loadingInitialData}
+												loading={this.state.loading}
 												onUpdateBook={this.updateBook}
+												onConnectionError={this.getAllBooks}
 											/>
 										</div>
 									))}

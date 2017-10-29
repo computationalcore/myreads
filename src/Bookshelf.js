@@ -84,9 +84,9 @@ const styles = {
 	}
 };
 
-class Bookshelf extends Component {
+const loadingOptions = [null, 'loading', 'error'];
 
-	static shelfModes = ['none', ]
+class Bookshelf extends Component {
 
 	static propTypes = {
 		// List of books that belongs to the shelf
@@ -94,7 +94,8 @@ class Bookshelf extends Component {
 		// Category ID of the shelf
 		category: PropTypes.oneOf(BOOKSHELF_CATEGORY_IDS),
 		onUpdateBook: PropTypes.func.isRequired,
-		loading: PropTypes.bool,
+		onConnectionError: PropTypes.func,
+		loading: PropTypes.oneOf(loadingOptions),
 	};
 
 	defaultProps = {
@@ -189,7 +190,7 @@ class Bookshelf extends Component {
 	};
 
 	render() {
-		const {books, onUpdateBook} = this.props;
+		const {books, onUpdateBook, onConnectionError} = this.props;
 
 		return (
 			<div>
@@ -201,9 +202,9 @@ class Bookshelf extends Component {
 					<ToolbarGroup>
 						<ToolbarSeparator/>
 						{/* Shelf Loader */}
-						<LoaderBox loading={this.props.loading} size={50} type="circle" className="loader-shelf-menu" />
+						<LoaderBox loading={this.props.loading === loadingOptions[1]} size={50} type="circle" className="loader-shelf-menu" />
 
-						{!this.state.selectMode && !this.props.loading && (books.length > 0) &&
+						{!this.state.selectMode && !(this.props.loading === loadingOptions[1]) && (books.length > 0) &&
 							<IconMenu
 								iconButtonElement={
 									<IconButton touch={true}>
@@ -215,7 +216,7 @@ class Bookshelf extends Component {
 								<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen} />
 							</IconMenu>
 						}
-						{this.state.selectMode && !this.props.loading &&
+						{this.state.selectMode && !(this.props.loading === loadingOptions[1]) &&
 							<IconButton touch={true} onClick={this.disableSelectMode}>
 								<NavigationClose />
 							</IconButton>
@@ -230,15 +231,11 @@ class Bookshelf extends Component {
 					onCancel={this.handleDialogClose}
 					onConfirm={this.clearShelf}
 					open={this.state.dialogOpen}
-				>
-
-				</ConfirmDialog>
-
+				/>
 				{/* Shelf Loader */}
 				<div className="shelf-loader-box">
-					<LoaderBox loading={this.props.loading} size={70} message="Loading Books" />
+					<LoaderBox loading={this.props.loading === loadingOptions[1]} size={70} message="Loading Books" />
 				</div>
-
 
 				<ol>
 					{/* Select Book Controls */}
@@ -290,6 +287,14 @@ class Bookshelf extends Component {
 					{ (books.length === 0) && !(this.props.loading) &&
 						<div className="shelf-message-text">
 							No Books available
+						</div>
+					}
+					{/* Show when shelf have problems getting data from server */}
+					{ (books.length === 0) && (this.props.loading === loadingOptions[2]) &&
+						<div className="shelf-message-text">
+							<div>Unable to fetch data from server</div>
+							<div>(Maybe internet connection or server instability)</div>
+							<RaisedButton label="Try Again" primary={true} onClick={onConnectionError} />
 						</div>
 					}
 
