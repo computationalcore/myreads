@@ -203,7 +203,7 @@ class Bookshelf extends Component {
 						{/* Shelf Loader */}
 						<LoaderBox loading={this.props.loading} size={50} type="circle" className="loader-shelf-menu" />
 
-						{!this.state.selectMode && !this.props.loading &&
+						{!this.state.selectMode && !this.props.loading && (books.length > 0) &&
 							<IconMenu
 								iconButtonElement={
 									<IconButton touch={true}>
@@ -239,8 +239,9 @@ class Bookshelf extends Component {
 					<LoaderBox loading={this.props.loading} size={70} message="Loading Books" />
 				</div>
 
-				{/* Book List */}
+
 				<ol>
+					{/* Select Book Controls */}
 					<CSSTransitionGroup
 						transitionName="book-select-mode"
 						transitionEnterTimeout={500}
@@ -285,7 +286,14 @@ class Bookshelf extends Component {
 						</div>}
 					</CSSTransitionGroup>
 
+					{/* Show when shelf is empty */}
+					{ (books.length === 0) && !(this.props.loading) &&
+						<div className="shelf-message-text">
+							No Books available
+						</div>
+					}
 
+					{/* Book List */}
 					<CSSTransitionGroup
 						transitionName="move-book-animation"
 						className="books-grid"

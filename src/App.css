@@ -376,3 +376,10 @@ html, body {
   height: 100px;
   display:inline-block;
 }
+
+/* Shelf message (No books, No internet) */
+.shelf-message-text{
+  text-align: center;
+  margin-top: 100px;
+  height: 80px;
+}
