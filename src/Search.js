@@ -102,10 +102,11 @@ class Search extends Component {
 				</div>
 				<div className="search-books-results">
 					<Bookshelf
+						title='Search Results'
 						books={this.state.books}
 						onUpdateBook={onUpdateBook}
 						withRibbon={true}
-						withClearShelf={false}
+						withShelfMenu={false}
 						loading={loading}
 						onUpdateBookError={onUpdateBookError}
 						onConnectionError={this.search}
