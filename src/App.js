@@ -26,6 +26,8 @@ class BooksApp extends React.Component {
 	}
 
 	getAllBooks = ()  => {
+		// Inside catch block the context change so assign like this to reference the app context not the catch
+		// context
 		const app = this;
 		this.setState({loading: 'loading'});
 		// Update the Shelves
@@ -51,6 +53,8 @@ class BooksApp extends React.Component {
 				books: state.books.filter(b => b.id !== book.id).concat([book])
 			}));
 
+			// Inside catch block the context change so assign like this to reference the app context not the catch
+			// context
 			const app = this;
 			// Update book reference at remote server, if successful update local state reference also
 			BooksAPI.update(book, shelf).then(() => {
@@ -75,7 +79,7 @@ class BooksApp extends React.Component {
 	/**
 	 * @description Change loading state to null in case of failure
 	 */
-	handleBookUpdateError = () => {
+	handleUpdateBookError = () => {
 		this.setState({loading: null});
 	};
 
@@ -99,7 +103,7 @@ class BooksApp extends React.Component {
 												category={shelf}
 												loading={this.state.loading}
 												onUpdateBook={this.updateBook}
-												onUpdateBookError={this.handleBookUpdateError}
+												onUpdateBookError={this.handleUpdateBookError}
 												onConnectionError={this.getAllBooks}
 											/>
 										</div>
@@ -123,6 +127,8 @@ class BooksApp extends React.Component {
 						<Search
 							shelvesBooks={this.state.books}
 							onUpdateBook={this.updateBook}
+							loading={this.state.loading}
+							onUpdateBookError={this.handleUpdateBookError}
 						/>
 					)}/>
 				</div>

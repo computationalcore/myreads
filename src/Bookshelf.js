@@ -98,10 +98,10 @@ class Bookshelf extends Component {
 		onUpdateBookError: PropTypes.func,
 		onConnectionError: PropTypes.func,
 		loading: PropTypes.oneOf(loadingOptions),
-	};
-
-	defaultProps = {
-		withRibbon: false
+		/* If the shelf should present shelf attribute ribbon on each book */
+		withRibbon: PropTypes.bool,
+		/* If clear shelf is available as an option in shelf menu */
+		withClearShelf: PropTypes.bool,
 	};
 
 	state = {
@@ -189,7 +189,7 @@ class Bookshelf extends Component {
 	};
 
 	render() {
-		const {books, onUpdateBook, onConnectionError} = this.props;
+		const {books, onUpdateBook, onConnectionError, withRibbon, withClearShelf} = this.props;
 
 		return (
 			<div>
@@ -212,7 +212,9 @@ class Bookshelf extends Component {
 								}
 							>
 								<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
-								<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen} />
+								{withClearShelf &&
+									<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen}/>
+								}
 							</IconMenu>
 						}
 						{this.state.selectMode && !(this.props.loading === loadingOptions[1]) &&
@@ -321,7 +323,7 @@ class Bookshelf extends Component {
 												height: 193,
 												backgroundImage: `url(${book.imageLinks.thumbnail})`
 											}}>
-												{this.props.withRibbon && book.shelf &&
+												{withRibbon && book.shelf &&
 												<div className="ribbon">
 													<div className="txt">
 														<div
@@ -361,7 +363,6 @@ class Bookshelf extends Component {
 												<div className="book-shelf-changer">
 													<IconMenu
 														onItemTouchTap={(event, value) => {
-															console.log(value.key);
 															onUpdateBook(book, value.key);
 														}}
 														iconButtonElement={<FloatingActionButton mini={true}>
@@ -395,5 +396,10 @@ class Bookshelf extends Component {
 		);
 	}
 }
+
+Bookshelf.defaultProps = {
+	withRibbon: false,
+	withClearShelf: true,
+};
 
 export default Bookshelf;
