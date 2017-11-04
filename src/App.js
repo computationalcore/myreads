@@ -11,11 +11,19 @@ import * as BookUtils from './BookUtils';
 import Search from './Search';
 import './App.css';
 
+
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+
+import scrollToComponent from 'react-scroll-to-component';
+
+
 class BooksApp extends React.Component {
 
 	state = {
 		books: [],
 		loading: 'loading',
+		menuOpen: false
 	};
 
 	/**
@@ -84,21 +92,46 @@ class BooksApp extends React.Component {
 		this.setState({loading: null});
 	};
 
+	handleMenuToggle = () => {
+		this.setState(state => ({
+			menuOpen: !state.menuOpen,
+		}));
+	};
+
+	goToShelf = (shelf) => {
+		this.setState({menuOpen: false}, function stateUpdateComplete() {
+			scrollToComponent(this[shelf], { offset: -90, align: 'top', duration: 500, ease:'inCirc'});
+		}.bind(this));
+
+
+	};
+
 	render() {
 		return (
 			<MuiThemeProvider>
 				<div className="app">
 					<Route exact path='/' render={() => (
 						<div className="list-books">
-							<AppBar
-								title="MyReads"
-								iconClassNameRight="muidocs-icon-navigation-expand-more"
-							/>
+							<div className="app-bar">
+								<AppBar
+									title={<div className="app-bar-title">MyReads</div>}
+									iconClassNameRight="muidocs-icon-navigation-expand-more"
+									onLeftIconButtonTouchTap={this.handleMenuToggle}
+								/>
+							</div>
+							<Drawer open={this.state.menuOpen} docked={false}>
+								{BookUtils.getBookshelfCategories().map((shelf) => (
+									<MenuItem key={shelf} onClick={() => this.goToShelf(shelf)}>
+										<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
+									</MenuItem>
+								))}
+							</Drawer>
+
 							<div className="list-books-content">
 								<div>
 									{BookUtils.getBookshelfCategories().map((shelf) => (
-										<div key={shelf} className="bookshelf">
-											<br />
+										<div key={shelf} className="bookshelf"
+											 ref={(section) => { this[shelf] = section; }}>
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
