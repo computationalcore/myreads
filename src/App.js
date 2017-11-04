@@ -2,12 +2,16 @@ import React from 'react';
 import { Link, Route } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import SvgIcon from 'material-ui/SvgIcon';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import IconButton from 'material-ui/IconButton';
 import sortBy from 'sort-by';
 import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import * as BookUtils from './BookUtils';
+import BookInfo from './BookInfo';
 import Search from './Search';
 import './App.css';
 
@@ -23,7 +27,10 @@ class BooksApp extends React.Component {
 	state = {
 		books: [],
 		loading: 'loading',
-		menuOpen: false
+		menuOpen: false,
+		// Search related states
+		searchResults: [],
+		query: '',
 	};
 
 	/**
@@ -106,6 +113,66 @@ class BooksApp extends React.Component {
 
 	};
 
+	updateQuery = (query) => {
+
+		// If query is empty or undefined
+		if (!query) {
+			this.setState({query: '', searchResults: [], loading: null});
+			return;
+		}
+
+		query = query.trim();
+		// Update the search field as soon as the character is typed
+		this.setState({query: query, loading: 'loading', searchResults: []}, function stateUpdateComplete() {
+			this.search();
+		}.bind(this));
+
+	};
+
+	/**
+	 * @description Search books for this query.
+	 * 	NOTES: The search from BooksAPI is limited to a particular set of search terms.
+	 * 	You can find these search terms here:
+	 * 	https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+	 * 	However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if you
+	 * 	don't find a specific author or title. Every search is limited by search terms.
+	 */
+	search = () => {
+		// Inside catch block the context change so assign like this to reference the app context not the catch
+		// context
+		const app = this;
+		const query = this.state.query;
+
+		BooksAPI.search(query).then((books) => {
+
+			// If the query state (the search input) changed while the request was in process not show the books
+			// of a previous query state
+			if(query !== this.state.query) return;
+
+			//If the query is empty no need to request to server just clean the books array
+			if ('error' in books) {
+				books = []
+			}
+			else {
+				/*
+				 * Since the search API didn't return the shelf property for a book this will compare with
+				 * memory mapped books from the shelves to include the correct shelf attribute.
+				 */
+				books.map(book => (this.state.books.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)));
+			}
+			this.setState({
+				searchResults: books.sort(sortBy('title')),
+				loading: null,
+			});
+		}).catch(function() {
+			// If will remove load animations in case of failure also
+			app.setState(state => ({
+				searchResults: [],
+				loading: 'error',
+			}));
+		});
+	};
+
 	render() {
 		return (
 			<MuiThemeProvider>
@@ -161,12 +228,17 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					<Route path='/search' render={({history}) => (
-						<Search
-							shelvesBooks={this.state.books}
-							onUpdateBook={this.updateBook}
-							loading={this.state.loading}
-							onUpdateBookError={this.handleUpdateBookError}
-						/>
+						<div>
+							<Search
+								books={this.state.searchResults}
+								query={this.state.query}
+								onSearch={this.search}
+								onUpdateQuery={this.updateQuery}
+								onUpdateBook={this.updateBook}
+								loading={this.state.loading}
+								onUpdateBookError={this.handleUpdateBookError}
+							/>
+						</div>
 					)}/>
 				</div>
 			</MuiThemeProvider>
