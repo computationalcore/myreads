@@ -164,7 +164,7 @@ class BooksApp extends React.Component {
 						<Search
 							shelvesBooks={this.state.books}
 							onUpdateBook={this.updateBook}
-							loading
+							loading={this.state.loading}
 							onUpdateBookError={this.handleUpdateBookError}
 						/>
 					)}/>
