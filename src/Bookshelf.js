@@ -290,6 +290,8 @@ class Bookshelf extends Component {
 									image={book.imageLinks.thumbnail}
 									shelf={(book.shelf) ? book.shelf: undefined}
 									authors={('authors' in book) ? book.authors : []}
+									averageRating={(book.averageRating) ? book.averageRating : 0}
+									ratingsCount={(book.ratingsCount) ? book.ratingsCount : 0}
 									updating={('updating' in book) ? book.updating : false}
 									selectMode={this.state.selectMode}
 									selected={(this.state.selectedBooks.filter(b => b.id === book.id).length > 0) ? true : false}

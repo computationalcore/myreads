@@ -10,8 +10,8 @@ import MenuItem from 'material-ui/MenuItem';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import './App.css';
 import DotLoader from './icons/loaders/dots.svg';
-
 import * as BookUtils from './BookUtils';
+import BookRating from './BookRating';
 
 const styles = {
 	checkbox: {
@@ -98,6 +98,12 @@ function Book(props) {
 					}
 				</CSSTransitionGroup>
 			</div>
+			<div className="book-rating-container">
+				<BookRating
+					value={props.averageRating}
+					count={props.ratingsCount}
+				/>
+			</div>
 			<div className="book-title">{props.title}</div>
 			<div className="book-authors">
 				{('authors' in props) ? props.authors.join(', ') : ''}
@@ -115,6 +121,10 @@ Book.propTypes = {
 	shelf: PropTypes.string,
 	// Authors of the book (some magazines don' have any value for this field for example)
 	authors: PropTypes.array,
+	// Average value of the ratings of the book
+	averageRating: PropTypes.number,
+	// Total number of the ratings of the book
+	ratingsCount: PropTypes.number,
 	// Indicating if the update layer would be visible or not
 	updating: PropTypes.bool.isRequired,
 	// Indicating if the book is in select mode or note

@@ -177,6 +177,10 @@ body, .app {
   left: 0;
 }
 
+.book-rating-container {
+  margin-top: 20px;
+}
+
 .book-rating {
   list-style-type: none;
   padding: 0;
@@ -185,6 +189,16 @@ body, .app {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+.book-rating-star {
+  margin-right: 5px;
+}
+.book-rating-counter {
+  font-size: 12px;
+  /*display: inline-block;*/
+  line-height: normal;
+  padding-top: 5px;
+  /*color: #D46D00;*/
 }
 
 /* book cover */
