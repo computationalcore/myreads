@@ -5,8 +5,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import sortBy from 'sort-by';
-import Bookshelf, { getBookshelfCategories } from './Bookshelf';
+import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
+import * as BookUtils from './BookUtils';
 import Search from './Search';
 import './App.css';
 
@@ -95,7 +96,7 @@ class BooksApp extends React.Component {
 							/>
 							<div className="list-books-content">
 								<div>
-									{getBookshelfCategories().map((shelf) => (
+									{BookUtils.getBookshelfCategories().map((shelf) => (
 										<div key={shelf} className="bookshelf">
 											<br />
 											<Bookshelf
@@ -127,7 +128,7 @@ class BooksApp extends React.Component {
 						<Search
 							shelvesBooks={this.state.books}
 							onUpdateBook={this.updateBook}
-							loading={this.state.loading}
+							loading
 							onUpdateBookError={this.handleUpdateBookError}
 						/>
 					)}/>

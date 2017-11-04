@@ -1,66 +1,20 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {CSSTransitionGroup} from 'react-transition-group';
-import Loader from 'react-loader-advanced';
-import Checkbox from 'material-ui/Checkbox';
-import Divider from 'material-ui/Divider';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import './App.css';
 import ConfirmDialog from './ConfirmDialog';
 import AlertDialog from './AlertDialog';
-import DotLoader from './icons/loaders/dots.svg';
 import LoaderBox from './Loader';
-
-/**
- * Array of the available bookshelf categories IDs.
- * @type {[string,string,string]}
- */
-const BOOKSHELF_CATEGORY_IDS = [
-	'currentlyReading',
-	'wantToRead',
-	'read',
-];
-
-/**
- *  Array of the available bookshelf categories names.
- *  The index matches the BOOKSHELF_CATEGORY_IDS
- * @type {[string,string,string]}
- */
-const BOOKSHELF_CATEGORY_NAMES = [
-	'Currently Reading',
-	'Want to Read',
-	'Read',
-];
-
-/**
- * Get the array of all available bookshelf categories IDs
- */
-export const getBookshelfCategories = () => BOOKSHELF_CATEGORY_IDS;
-
-/**
- * Return the bookshelf category name of the informed id or '' if the id doesn't belong to any category.
- * @param categoryId
- * @returns string
- */
-export const getBookshelfCategoryName = (categoryId) => {
-	const categoryInternalIndex = BOOKSHELF_CATEGORY_IDS.indexOf(categoryId);
-
-	if (categoryInternalIndex === -1) {
-		// If Category doesn't exists returns ''
-		return '';
-	}
-
-	return BOOKSHELF_CATEGORY_NAMES[categoryInternalIndex];
-};
+import Book from './Book';
+import * as BookUtils from './BookUtils';
 
 const styles = {
 	block: {
@@ -94,7 +48,7 @@ class Bookshelf extends Component {
 		books: PropTypes.array.isRequired,
 		title: PropTypes.string,
 		// Category ID of the shelf
-		category: PropTypes.oneOf(BOOKSHELF_CATEGORY_IDS),
+		category: PropTypes.oneOf(BookUtils.getBookshelfCategories()),
 		onUpdateBook: PropTypes.func.isRequired,
 		onUpdateBookError: PropTypes.func,
 		onConnectionError: PropTypes.func,
@@ -215,7 +169,7 @@ class Bookshelf extends Component {
 				{/* Shelf Toolbar */}
 				<Toolbar>
 					<ToolbarGroup>
-						<ToolbarTitle text={(title === null) ? getBookshelfCategoryName(this.props.category) : title}/>
+						<ToolbarTitle text={(title === null) ? BookUtils.getBookshelfCategoryName(this.props.category) : title}/>
 					</ToolbarGroup>
 					{/* Only show shelf menu if this props is true */}
 					{withShelfMenu && (books.length > 0) &&
@@ -247,7 +201,7 @@ class Bookshelf extends Component {
 				<ConfirmDialog
 					title={'Clear Shelf'}
 					message={'Are you sure you want to remove all books from the "' +
-					getBookshelfCategoryName(this.props.category) + '" shelf?'}
+					BookUtils.getBookshelfCategoryName(this.props.category) + '" shelf?'}
 					onCancel={this.handleDialogClose}
 					onConfirm={this.clearShelf}
 					open={this.state.dialogOpen}
@@ -295,9 +249,9 @@ class Bookshelf extends Component {
 											value={this.state.value}
 											onChange={(event, index, value) => (this.updateBooks(value)) }
 										>
-											{BOOKSHELF_CATEGORY_IDS.filter(shelf => shelf !== this.props.category).map((shelf) => (
+											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== this.props.category).map((shelf) => (
 												<MenuItem key={shelf}
-														  value={shelf} primaryText={getBookshelfCategoryName(shelf)}/>
+														  value={shelf} primaryText={BookUtils.getBookshelfCategoryName(shelf)}/>
 											))}
 											<MenuItem key="none"
 													  value="none" primaryText="None"/>
@@ -331,86 +285,20 @@ class Bookshelf extends Component {
 						transitionLeaveTimeout={300}>
 						{books.map((book) => (
 							<li key={book.id}>
-								<div className="book">
-									<div className="book-top">
+								<Book
+									title={book.title}
+									image={book.imageLinks.thumbnail}
+									shelf={(book.shelf) ? book.shelf: undefined}
+									authors={('authors' in book) ? book.authors : []}
+									updating={('updating' in book) ? book.updating : false}
+									selectMode={this.state.selectMode}
+									selected={(this.state.selectedBooks.filter(b => b.id === book.id).length > 0) ? true : false}
+									withRibbon={withRibbon}
+									onSelectBook={() => this.selectBook(book)}
+									onDeselectBook={() => this.deselectBook(book)}
+									onUpdate={(shelf) => (onUpdateBook(book,shelf))}
+								/>
 
-										<Loader show={('updating' in book) ? book.updating : false}
-												message={<span><img src={DotLoader} width="50" alt=""/><div>Updating</div></span>}>
-											<div className="book-cover" style={{
-												width: 128,
-												height: 193,
-												backgroundImage: `url(${book.imageLinks.thumbnail})`
-											}}>
-												{withRibbon && book.shelf &&
-												<div className="ribbon">
-													<div className="txt">
-														<div
-															className={`ribbon ribbon-top-right ribbon-${book.shelf.toLowerCase()}`}>
-														<span>
-															{getBookshelfCategoryName(book.shelf).split(" ", 2)[0]}
-														</span>
-														</div>
-													</div>
-												</div>}
-											</div>
-										</Loader>
-										<div className="book-select-box">
-											<CSSTransitionGroup
-												transitionName="move-book-animation"
-												transitionEnterTimeout={500}
-												transitionLeaveTimeout={500}>
-												{this.state.selectMode && <Checkbox
-													style={styles.checkbox}
-													checked={(this.state.selectedBooks.filter(b => b.id === book.id).length > 0) ? true : false}
-													onCheck={(event, isInputChecked) => {
-														if (isInputChecked) {
-															this.selectBook(book);
-														}
-														else {
-															this.deselectBook(book);
-														}
-													}}
-												/>}
-											</CSSTransitionGroup>
-										</div>
-										<CSSTransitionGroup
-											transitionName="move-book-animation"
-											transitionEnterTimeout={500}
-											transitionLeaveTimeout={500}>
-											{!this.state.selectMode && !(('updating' in book) ? book.updating : false) &&
-											<div>
-												<div className="book-shelf-changer">
-													<IconMenu
-														onItemTouchTap={(event, value) => {
-															onUpdateBook(book, value.key);
-														}}
-														iconButtonElement={
-															<FloatingActionButton mini={true}>
-																<NavigationExpandMoreIcon/>
-															</FloatingActionButton>
-														}>
-														<MenuItem primaryText="Move to..." disabled={true}/>
-														<Divider/>
-														{BOOKSHELF_CATEGORY_IDS.filter(shelf => shelf !== (('shelf' in book) ? book.shelf : null)).map((shelf) => (
-															<MenuItem key={shelf}
-																	  value={shelf}
-																	  primaryText={getBookshelfCategoryName(shelf)}/>
-														))}
-														{/* Show only if belong to any shelf other than none */}
-														{( ('shelf' in book) && (book.shelf !== 'none')) && <MenuItem key="none"
-																						value="none"
-																						primaryText="None"/>}
-													</IconMenu>
-												</div>
-											</div>
-											}
-										</CSSTransitionGroup>
-									</div>
-									<div className="book-title">{book.title}</div>
-									<div className="book-authors">
-										{('authors' in book) ? book.authors.join(', ') : ''}
-									</div>
-								</div>
 							</li>
 						))}
 					</CSSTransitionGroup>
