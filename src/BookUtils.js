@@ -1,3 +1,6 @@
+import CurrentlyReading from './icons/shelves/currently-reading.svg';
+import WantToRead from './icons/shelves/want-to-read.svg';
+import Read from './icons/shelves/read.svg';
 
 // Category Utils functions
 
@@ -23,6 +26,17 @@ const BOOKSHELF_CATEGORY_NAMES = [
 ];
 
 /**
+ * Array of svg icons for each bookshelf categories.
+ * @type {[object,object,object]}
+ */
+const BOOKSHELF_CATEGORY_ICONS = [
+	CurrentlyReading,
+	WantToRead,
+	Read,
+];
+
+
+/**
  * Get the array of all available bookshelf categories IDs
  */
 export const getBookshelfCategories = () => BOOKSHELF_CATEGORY_IDS;
@@ -41,4 +55,20 @@ export const getBookshelfCategoryName = (categoryId) => {
 	}
 
 	return BOOKSHELF_CATEGORY_NAMES[categoryInternalIndex];
+};
+
+/**
+ * Return the bookshelf category svg icon reference of the informed id or '' if the id doesn't belong to any category.
+ * @param categoryId
+ * @returns object
+ */
+export const getBookshelfCategoryIcon = (categoryId) => {
+	const categoryInternalIndex = BOOKSHELF_CATEGORY_IDS.indexOf(categoryId);
+
+	if (categoryInternalIndex === -1) {
+		// If Category doesn't exists returns ''
+		return '';
+	}
+
+	return BOOKSHELF_CATEGORY_ICONS[categoryInternalIndex];
 };

@@ -122,6 +122,9 @@ class BooksApp extends React.Component {
 							<Drawer open={this.state.menuOpen} docked={false}>
 								{BookUtils.getBookshelfCategories().map((shelf) => (
 									<MenuItem key={shelf} onClick={() => this.goToShelf(shelf)}>
+										<img className="app-menu-shelf-icon"
+											 src={BookUtils.getBookshelfCategoryIcon(shelf)}
+											 alt={this.props.category} />
 										<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 									</MenuItem>
 								))}
