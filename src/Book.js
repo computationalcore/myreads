@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {CSSTransitionGroup} from 'react-transition-group';
 import Loader from 'react-loader-advanced';
 import Checkbox from 'material-ui/Checkbox';
+import RemoveIcon from './icons/shelves/none.svg';
+import Info from 'material-ui/svg-icons/action/info';
 import Divider from 'material-ui/Divider';
 import IconMenu from 'material-ui/IconMenu';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -12,6 +14,8 @@ import './App.css';
 import DotLoader from './icons/loaders/dots.svg';
 import * as BookUtils from './BookUtils';
 import BookRating from './BookRating';
+
+import { Link } from 'react-router-dom';
 
 const styles = {
 	checkbox: {
@@ -72,26 +76,45 @@ function Book(props) {
 					<div>
 						<div className="book-shelf-changer">
 							<IconMenu
-								onItemTouchTap={(event, value) => {
-									// Call informed function with the shelf value to be updated
-									props.onUpdate(value.key);
-								}}
 								iconButtonElement={
 									<FloatingActionButton mini={true}>
 										<NavigationExpandMoreIcon/>
 									</FloatingActionButton>
 								}>
+								{/* Link state is used to control if app menu should show home button or back arrow */}
+								<Link to={ {pathname: `/info/${props.id}`, state:  true} }>
+									<MenuItem>
+										<Info className="app-book-menu-shelf-icon" />
+										<span>Show Book Details</span>
+									</MenuItem>
+								</Link>
+								<Divider/>
 								<MenuItem primaryText="Move to..." disabled={true}/>
 								<Divider/>
 								{BookUtils.getBookshelfCategories().filter(shelf => shelf !== (props.shelf)).map((shelf) => (
 									<MenuItem key={shelf}
-											  value={shelf}
-											  primaryText={BookUtils.getBookshelfCategoryName(shelf)}/>
+											  onClick={() => {
+												  // Call informed function with the shelf value to be updated
+												  props.onUpdate(shelf);
+											  }}
+									>
+										<img className="app-book-menu-shelf-icon"
+											src={BookUtils.getBookshelfCategoryIcon(shelf)}
+											alt={shelf} />
+										<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
+									</MenuItem>
 								))}
 								{/* Show only if belong to any shelf other than none */}
-								{( ('shelf' in props) && (props.shelf !== 'none')) && <MenuItem key="none"
-																								value="none"
-																								primaryText="None"/>}
+								{( ('shelf' in props) && (props.shelf !== 'none')) &&
+									<MenuItem key="none"
+											  onClick={() => {
+												  // Call informed function with the shelf value to be updated
+												  props.onUpdate('none');
+											  }}>
+										<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="None" width={30} />
+										<span>None</span>
+									</MenuItem>
+								}
 							</IconMenu>
 						</div>
 					</div>
@@ -113,6 +136,8 @@ function Book(props) {
 }
 
 Book.propTypes = {
+	// Title of the book
+	id: PropTypes.string.isRequired,
 	// Title of the book
 	title: PropTypes.string.isRequired,
 	// Book Cover Image

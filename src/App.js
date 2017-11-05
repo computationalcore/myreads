@@ -21,6 +21,56 @@ import MenuItem from 'material-ui/MenuItem';
 
 import scrollToComponent from 'react-scroll-to-component';
 
+/**
+ * @description BookInfo page component show the App title bar and BookInfo component into as different page.
+ * The function signature is designed to be used as the 'component' prop for the Router component.
+ * @param bookId	the id of the book which details to be showed at this page
+ * @param state		If true it will show the back button at app bar otherwise home button
+ * @returns {XML}
+ * @constructor
+ */
+const BookInfoPage = ({ history, match: { params: {bookId} }, location: {state} }) => {
+
+	console.log(history);
+	console.log(bookId);
+	console.log((state)? state: false);
+
+	return (
+		<div>
+			<div className="app-bar">
+				<AppBar
+					title={<div className="app-bar-title">Book Details</div>}
+					iconElementLeft={
+						<IconButton>
+							{state &&
+								<ArrowBack />
+							}
+							{!state &&
+								<SvgIcon>
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+								</SvgIcon>
+							}
+						</IconButton>
+					}
+					onLeftIconButtonTouchTap={
+						() => {
+							// Go Back
+							if(state)
+								history.goBack();
+							// Go to Home
+							else{
+								history.push("/");
+							}
+						}
+					}
+				/>
+			</div>
+			<div className="app-content">
+				<BookInfo bookId={bookId} />
+			</div>
+		</div>
+	);
+};
 
 class BooksApp extends React.Component {
 
@@ -28,7 +78,7 @@ class BooksApp extends React.Component {
 		books: [],
 		loading: 'loading',
 		menuOpen: false,
-		// Search related states
+		// Search related state
 		searchResults: [],
 		query: '',
 	};
@@ -173,6 +223,12 @@ class BooksApp extends React.Component {
 		});
 	};
 
+	goToPrevious = (history) => {
+		history.push("/");
+		// Clear previous search if go back to home
+		this.setState({query: '', searchResults: []});
+	};
+
 	render() {
 		return (
 			<MuiThemeProvider>
@@ -229,17 +285,31 @@ class BooksApp extends React.Component {
 					)}/>
 					<Route path='/search' render={({history}) => (
 						<div>
-							<Search
-								books={this.state.searchResults}
-								query={this.state.query}
-								onSearch={this.search}
-								onUpdateQuery={this.updateQuery}
-								onUpdateBook={this.updateBook}
-								loading={this.state.loading}
-								onUpdateBookError={this.handleUpdateBookError}
-							/>
+							<div className="app-bar">
+								<AppBar
+									title={<div className="app-bar-title">Search</div>}
+									iconElementLeft={
+										<IconButton>
+											<ArrowBack />
+										</IconButton>
+									}
+									onLeftIconButtonTouchTap={() => (this.goToPrevious(history))}
+								/>
+							</div>
+							<div>
+								<Search
+									books={this.state.searchResults}
+									query={this.state.query}
+									onSearch={this.search}
+									onUpdateQuery={this.updateQuery}
+									onUpdateBook={this.updateBook}
+									loading={this.state.loading}
+									onUpdateBookError={this.handleUpdateBookError}
+								/>
+							</div>
 						</div>
 					)}/>
+					<Route exact path="/info/:bookId" component={BookInfoPage} />
 				</div>
 			</MuiThemeProvider>
 		);

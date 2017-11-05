@@ -119,20 +119,7 @@ body, .app {
   font-size: 1.25em;
   border: none;
   outline: none;
-}
-
-.close-search {
-  display: block;
-  top: 20px;
-  left: 15px;
-  width: 50px;
-  height: 53px;
-  background: white;
-  background-image: url('./icons/arrow-back.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 28px;
-  font-size: 0;
+  text-align: center;
 }
 
 .search-books-results {
@@ -246,6 +233,21 @@ body, .app {
   padding-top: 5px;
   /*color: #D46D00;*/
 }
+
+.app-book-menu-shelf-icon {
+  width: 18px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.app-book-menu-remove-icon {
+  width: 25px;
+  margin-right: 7px;
+  margin-left: -3px;
+  vertical-align: middle;
+}
+
+
 
 /* book cover */
 
@@ -452,4 +454,54 @@ html, body {
 .fade-enter.fade-enter-active {
   opacity: 1;
   transition: opacity 250ms ease-in;
+}
+
+/* Book Info */
+
+.info-action-button {
+  margin: 10px;
+}
+
+.info-prop-content{
+  color: rgba(0, 0, 0, 0.87);
+  display: block;
+  font-size: 15px;
+}
+
+.info-prop{
+  margin-bottom: 10px;
+}
+
+.info-prop-title{
+  color: rgba(0, 0, 0, 0.54);
+  display: block;
+  font-size: 12px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 10px;
+  justify-content: center;
+  align-content: center;
+}
+
+.grid2 .info-item{
+  max-width: 300px;
+}
+
+@media (max-width: 400px) {
+  /* For mobile phones: */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    grid-gap: 10px;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .grid2 .info-item{
+    max-width: 300px;
+  }
+
 }

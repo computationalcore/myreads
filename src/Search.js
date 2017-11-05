@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
 import Bookshelf from './Bookshelf';
 
 class Search extends Component {
@@ -20,10 +19,6 @@ class Search extends Component {
 		return (
 			<div className="search-books">
 				<div className="search-books-bar">
-					<Link
-						to='/'
-						className="close-search"
-					>Close</Link>
 					<div className="search-books-input-wrapper">
 						<input
 							value={query}

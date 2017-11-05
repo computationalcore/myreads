@@ -218,7 +218,7 @@ class Bookshelf extends Component {
 					<LoaderBox loading={this.props.loading === loadingOptions[1]} size={70} message="Loading Books"/>
 				</div>
 
-				<ol>
+				<ol className="shelf-book-list">
 					{/* Select Book Controls */}
 					<CSSTransitionGroup
 						transitionName="book-select-mode"
@@ -287,6 +287,7 @@ class Bookshelf extends Component {
 						{books.map((book) => (
 							<li key={book.id}>
 								<Book
+									id={book.id}
 									title={book.title}
 									image={book.imageLinks.thumbnail}
 									shelf={(book.shelf) ? book.shelf: undefined}
