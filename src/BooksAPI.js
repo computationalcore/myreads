@@ -13,8 +13,21 @@ const headers = {
 
 export const get = (bookId) =>
 	fetch(`${api}/books/${bookId}`, {headers})
-		.then(res => res.json())
-		.then(data => data.book);
+		.then(res => {
+			if (res.status !== 200){
+				return res;
+			}
+			return res.json();
+		})
+		.then(data => {
+			// Only happen if status is 200
+			if(data.book){
+				return data.book;
+			}
+			// Return the object with with http status (error code)
+			const error = {errorCode: data.status};
+			return error;
+		});
 
 export const getAll = () =>
 	fetch(`${api}/books`, {headers})
