@@ -15,7 +15,7 @@ body, .app {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 10;
   display: flex;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
 }
@@ -29,6 +29,11 @@ body, .app {
   width: 18px;
   margin-right: 5px;
   vertical-align: middle;
+}
+
+.app-content {
+  margin-top: 90px;
+  padding: 0 0 80px;
 }
 
 
@@ -96,9 +101,9 @@ body, .app {
 /* search page */
 
 .search-books-bar {
-  position: fixed;
+  position: sticky;
   width: 100%;
-  top: 0;
+  top: 70px;
   left: 0;
   z-index: 5;
   display: flex;
@@ -135,6 +140,16 @@ body, .app {
 }
 
 /* books grid */
+
+.shelf-book-list{
+  display: block;
+  list-style-type: decimal;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 0;
+}
 
 .books-grid {
   list-style-type: none;
@@ -427,4 +442,14 @@ html, body {
   text-align: center;
   margin-top: 100px;
   height: 80px;
+}
+
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
 }
