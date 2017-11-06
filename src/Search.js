@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
+import * as BookUtils from './BookUtils';
 
 class Search extends Component {
 	static propTypes = {
 		// Books from the Shelves
 		books: PropTypes.array.isRequired,
 		query: PropTypes.string.isRequired,
+		request: PropTypes.oneOf(Object.values(BookUtils.request)),
 		onSearch: PropTypes.func.isRequired,
 		onUpdateQuery: PropTypes.func.isRequired,
 		onUpdateBook: PropTypes.func.isRequired,
@@ -14,7 +16,7 @@ class Search extends Component {
 	};
 
 	render() {
-		const {books,loading, query, onUpdateQuery, onSearch, onUpdateBook, onUpdateBookError} = this.props;
+		const {books, request, query, onUpdateQuery, onSearch, onUpdateBook, onUpdateBookError} = this.props;
 
 		return (
 			<div className="search-books">
@@ -36,7 +38,7 @@ class Search extends Component {
 						onUpdateBook={onUpdateBook}
 						withRibbon={true}
 						withShelfMenu={false}
-						loading={loading}
+						request={request}
 						onUpdateBookError={onUpdateBookError}
 						onConnectionError={onSearch}
 					/>

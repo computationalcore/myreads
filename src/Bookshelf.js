@@ -39,20 +39,18 @@ const styles = {
 	}
 };
 
-const loadingOptions = [null, 'loading', 'error', 'update_book_error'];
-
 class Bookshelf extends Component {
 
 	static propTypes = {
 		// List of books that belongs to the shelf
 		books: PropTypes.array.isRequired,
-		title: PropTypes.string,
 		// Category ID of the shelf
 		category: PropTypes.oneOf(BookUtils.getBookshelfCategories()),
 		onUpdateBook: PropTypes.func.isRequired,
 		onUpdateBookError: PropTypes.func,
 		onConnectionError: PropTypes.func,
-		loading: PropTypes.oneOf(loadingOptions),
+		request: PropTypes.oneOf(Object.values(BookUtils.request)),
+		title: PropTypes.string,
 		/* If the shelf should present shelf attribute ribbon on each book */
 		withRibbon: PropTypes.bool,
 		/* If clear shelf is available as an option in shelf menu */
@@ -67,17 +65,13 @@ class Bookshelf extends Component {
 	};
 
 	enableSelectMode = () => {
-		// If books state array is not empty
 		if (!this.state.selectMode) {
-			// Update book state to include loading variable used at updating animation
 			this.setState({selectMode: true});
 		}
 	};
 
 	disableSelectMode = () => {
-		// If books state array is not empty
 		if (this.state.selectMode) {
-			// Update book state to include loading variable used at updating animation
 			this.setState({selectMode: false, selectedBooks: []});
 		}
 	};
@@ -160,17 +154,27 @@ class Bookshelf extends Component {
 	};
 
 	render() {
-		const {books, title, onUpdateBook, onConnectionError, withRibbon, withShelfMenu} = this.props;
+		const {
+			books,
+			category,
+			onUpdateBook,
+			onConnectionError,
+			onUpdateBookError,
+			request,
+			title,
+			withRibbon,
+			withShelfMenu
+		} = this.props;
 
-		const selectMode = this.state.selectMode && !(this.props.loading);
+		const selectMode = this.state.selectMode && (request === BookUtils.request.OK);
 
 		return (
 			<div>
 				{/* Shelf Toolbar */}
 				<Toolbar>
 					<ToolbarGroup>
-						<img className="shelf-bar-icon" src={BookUtils.getBookshelfCategoryIcon(this.props.category)} alt={this.props.category} />
-						<ToolbarTitle text={(title === null) ? BookUtils.getBookshelfCategoryName(this.props.category) : title}/>
+						<img className="shelf-bar-icon" src={BookUtils.getBookshelfCategoryIcon(category)} alt="" />
+						<ToolbarTitle text={(title === null) ? BookUtils.getBookshelfCategoryName(category) : title}/>
 					</ToolbarGroup>
 					{/* Only show shelf menu if this props is true */}
 					{withShelfMenu && (books.length > 0) &&
@@ -202,7 +206,7 @@ class Bookshelf extends Component {
 				<ConfirmDialog
 					title={'Clear Shelf'}
 					message={'Are you sure you want to remove all books from the "' +
-					BookUtils.getBookshelfCategoryName(this.props.category) + '" shelf?'}
+					BookUtils.getBookshelfCategoryName(category) + '" shelf?'}
 					onCancel={this.handleDialogClose}
 					onConfirm={this.clearShelf}
 					open={this.state.dialogOpen}
@@ -210,12 +214,12 @@ class Bookshelf extends Component {
 				{/* Alert Dialog when have problems with book update server response */}
 				<AlertDialog
 					message='Unable to update book data from server (Maybe internet connection or server instability)'
-					onClick={this.props.onUpdateBookError}
-					open={this.props.loading === loadingOptions[3]}
+					onClick={onUpdateBookError}
+					open={request === BookUtils.request.BOOK_ERROR}
 				/>
 				{/* Shelf Loader */}
 				<div className="shelf-loader-box">
-					<LoaderBox loading={this.props.loading === loadingOptions[1]} size={70} message="Loading Books"/>
+					<LoaderBox loading={request === BookUtils.request.LOADING} size={70} message="Loading Books"/>
 				</div>
 
 				<ol className="shelf-book-list">
@@ -229,7 +233,7 @@ class Bookshelf extends Component {
 							<div className="select-mode-controls">
 								<RaisedButton label="Select All" primary={true} style={styles.button}
 											  disabled={
-												  (this.state.selectedBooks.length === this.props.books.length) ? true : false
+												  (this.state.selectedBooks.length === books.length) ? true : false
 											  }
 											  onClick={this.selectAllBooks}/>
 								<RaisedButton label="Clear All" secondary={true} style={styles.button}
@@ -250,7 +254,7 @@ class Bookshelf extends Component {
 											value={this.state.value}
 											onChange={(event, index, value) => (this.updateBooks(value)) }
 										>
-											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== this.props.category).map((shelf) => (
+											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== category).map((shelf) => (
 												<MenuItem key={shelf}
 														  value={shelf} primaryText={BookUtils.getBookshelfCategoryName(shelf)}/>
 											))}
@@ -264,13 +268,13 @@ class Bookshelf extends Component {
 					</CSSTransitionGroup>
 
 					{/* Show when shelf is empty */}
-					{(books.length === 0) && !(this.props.loading) &&
+					{(books.length === 0) && (request === BookUtils.request.OK) &&
 					<div className="shelf-message-text">
 						No Books available
 					</div>
 					}
 					{/* Show when shelf have problems getting data from server */}
-					{(books.length === 0) && (this.props.loading === loadingOptions[2]) &&
+					{(books.length === 0) && (request === BookUtils.request.ERROR) &&
 					<div className="shelf-message-text">
 						<div>Unable to fetch data from server</div>
 						<div>(Maybe internet connection or server instability)</div>

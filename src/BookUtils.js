@@ -2,6 +2,17 @@ import CurrentlyReading from './icons/shelves/currently-reading.svg';
 import WantToRead from './icons/shelves/want-to-read.svg';
 import Read from './icons/shelves/read.svg';
 
+/**
+ *
+ * @type {{OK: number, LOADING: number, ERROR: number, BOOK_ERROR: number}}
+ */
+export const request = {
+	'OK': 1,
+	'LOADING': 2,
+	'ERROR': 3,
+	'BOOK_ERROR': 4,
+};
+
 // Category Utils functions
 
 /**

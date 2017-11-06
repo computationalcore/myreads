@@ -96,11 +96,11 @@ function Book(props) {
 											  onClick={() => {
 												  // Call informed function with the shelf value to be updated
 												  props.onUpdate(shelf);
-											  }}
-									>
+											  }}>
 										<img className="app-book-menu-shelf-icon"
 											src={BookUtils.getBookshelfCategoryIcon(shelf)}
-											alt={shelf} />
+											alt=""
+										/>
 										<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 									</MenuItem>
 								))}

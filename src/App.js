@@ -31,10 +31,6 @@ import scrollToComponent from 'react-scroll-to-component';
  */
 const BookInfoPage = ({ history, match: { params: {bookId} }, location: {state} }) => {
 
-	console.log(history);
-	console.log(bookId);
-	console.log((state)? state: false);
-
 	return (
 		<div>
 			<div className="app-bar">
@@ -76,7 +72,7 @@ class BooksApp extends React.Component {
 
 	state = {
 		books: [],
-		loading: 'loading',
+		request: BookUtils.request.OK, /* Represents the app request state used for API requests */
 		menuOpen: false,
 		// Search related state
 		searchResults: [],
@@ -92,15 +88,14 @@ class BooksApp extends React.Component {
 	}
 
 	getAllBooks = ()  => {
-		// Inside catch block the context change so assign like this to reference the app context not the catch
-		// context
+		// Inside catch block the context change so assign like this to reference the app context not the catch context
 		const app = this;
-		this.setState({loading: 'loading'});
+		this.setState({request: BookUtils.request.LOADING});
 		// Update the Shelves
 		BooksAPI.getAll().then((books) => {
-			app.setState({books: books, loading:null});
+			app.setState({books: books, request: BookUtils.request.OK});
 		}).catch(function() {
-			app.setState({loading: 'error'});
+			app.setState({request: BookUtils.request.ERROR});
 		});
 	};
 
@@ -113,7 +108,7 @@ class BooksApp extends React.Component {
 		// If books state array is not empty
 		if (this.state.books) {
 
-			// Update book state to include loading variable used at updating animation
+			// Update book state to include updating variable used at book updating animation
 			book.updating = true;
 			this.setState(state => ({
 				books: state.books.filter(b => b.id !== book.id).concat([book])
@@ -136,17 +131,17 @@ class BooksApp extends React.Component {
 				book.updating = false;
 				app.setState(state => ({
 					books: state.books.filter(b => b.id !== book.id).concat([book]),
-					loading: 'update_book_error',
+					request: BookUtils.request.BOOK_ERROR,
 				}));
 			});
 		}
 	};
 
 	/**
-	 * @description Change loading state to null in case of failure
+	 * @description Change request state to null in case of failure
 	 */
 	handleUpdateBookError = () => {
-		this.setState({loading: null});
+		this.setState({request: BookUtils.request.ERROR});
 	};
 
 	handleMenuToggle = () => {
@@ -167,13 +162,13 @@ class BooksApp extends React.Component {
 
 		// If query is empty or undefined
 		if (!query) {
-			this.setState({query: '', searchResults: [], loading: null});
+			this.setState({query: '', searchResults: [], request: BookUtils.request.OK});
 			return;
 		}
 
 		query = query.trim();
 		// Update the search field as soon as the character is typed
-		this.setState({query: query, loading: 'loading', searchResults: []}, function stateUpdateComplete() {
+		this.setState({query: query, request: BookUtils.request.LOADING, searchResults: []}, function stateUpdateComplete() {
 			this.search();
 		}.bind(this));
 
@@ -212,13 +207,13 @@ class BooksApp extends React.Component {
 			}
 			this.setState({
 				searchResults: books.sort(sortBy('title')),
-				loading: null,
+				request: BookUtils.request.OK,
 			});
 		}).catch(function() {
 			// If will remove load animations in case of failure also
 			app.setState(state => ({
 				searchResults: [],
-				loading: 'error',
+				request: BookUtils.request.ERROR,
 			}));
 		});
 	};
@@ -261,7 +256,7 @@ class BooksApp extends React.Component {
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
-												loading={this.state.loading}
+												request={this.state.request}
 												onUpdateBook={this.updateBook}
 												onUpdateBookError={this.handleUpdateBookError}
 												onConnectionError={this.getAllBooks}
@@ -303,7 +298,7 @@ class BooksApp extends React.Component {
 									onSearch={this.search}
 									onUpdateQuery={this.updateQuery}
 									onUpdateBook={this.updateBook}
-									loading={this.state.loading}
+									request={this.state.request}
 									onUpdateBookError={this.handleUpdateBookError}
 								/>
 							</div>
