@@ -138,10 +138,10 @@ class BooksApp extends React.Component {
 	};
 
 	/**
-	 * @description Change request state to null in case of failure
+	 * @description Change request state to OK in case of pressing OK at dialog after an individual book update failure
 	 */
 	handleUpdateBookError = () => {
-		this.setState({request: BookUtils.request.ERROR});
+		this.setState({request: BookUtils.request.OK});
 	};
 
 	handleMenuToggle = () => {
