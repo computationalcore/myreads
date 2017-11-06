@@ -105,13 +105,13 @@ function Book(props) {
 									</MenuItem>
 								))}
 								{/* Show only if belong to any shelf other than none */}
-								{( ('shelf' in props) && (props.shelf !== 'none')) &&
+								{( !('shelf' in props) || (props.shelf !== 'none')) &&
 									<MenuItem key="none"
 											  onClick={() => {
 												  // Call informed function with the shelf value to be updated
 												  props.onUpdate('none');
 											  }}>
-										<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="None" width={30} />
+										<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="" width={30} />
 										<span>None</span>
 									</MenuItem>
 								}

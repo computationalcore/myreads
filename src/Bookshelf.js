@@ -294,7 +294,7 @@ class Bookshelf extends Component {
 									id={book.id}
 									title={book.title}
 									image={book.imageLinks.thumbnail}
-									shelf={(book.shelf) ? book.shelf: undefined}
+									shelf={(book.shelf) ? book.shelf: 'none'}
 									authors={('authors' in book) ? book.authors : []}
 									averageRating={(book.averageRating) ? book.averageRating : 0}
 									ratingsCount={(book.ratingsCount) ? book.ratingsCount : 0}
