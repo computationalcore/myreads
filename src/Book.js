@@ -37,7 +37,7 @@ function Book(props) {
 						height: 193,
 						backgroundImage: `url(${props.image})`
 					}}>
-						{props.withRibbon && props.shelf &&
+						{props.withRibbon && (props.shelf !== 'none') &&
 						<div className="ribbon">
 							<div className="txt">
 								<div className={`ribbon ribbon-top-right ribbon-${props.shelf.toLowerCase()}`}>
@@ -165,5 +165,6 @@ Book.propTypes = {
 	// Call when book should be updated
 	onUpdate: PropTypes.func.isRequired,
 };
+
 
 export default Book;
