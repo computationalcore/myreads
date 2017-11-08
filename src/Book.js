@@ -10,12 +10,12 @@ import IconMenu from 'material-ui/IconMenu';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MenuItem from 'material-ui/MenuItem';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import './App.css';
+import Subheader from 'material-ui/Subheader';
 import DotLoader from './icons/loaders/dots.svg';
 import * as BookUtils from './BookUtils';
 import BookRating from './BookRating';
-
 import { Link } from 'react-router-dom';
+import './App.css';
 
 const styles = {
 	checkbox: {
@@ -88,9 +88,8 @@ function Book(props) {
 										<span>Show Book Details</span>
 									</MenuItem>
 								</Link>
-								<Divider/>
-								<MenuItem primaryText="Move to..." disabled={true}/>
-								<Divider/>
+								<Divider />
+								<Subheader>Move Book to...</Subheader>
 								{BookUtils.getBookshelfCategories().filter(shelf => shelf !== (props.shelf)).map((shelf) => (
 									<MenuItem key={shelf}
 											  onClick={() => {
