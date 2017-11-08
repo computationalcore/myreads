@@ -18,6 +18,10 @@ import './App.css';
 
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import Menu from 'material-ui/Menu';
+
+
+import Subheader from 'material-ui/Subheader';
 
 import scrollToComponent from 'react-scroll-to-component';
 
@@ -237,17 +241,19 @@ class BooksApp extends React.Component {
 									onLeftIconButtonTouchTap={this.handleMenuToggle}
 								/>
 							</div>
-							<Drawer open={this.state.menuOpen} docked={false}>
-								{BookUtils.getBookshelfCategories().map((shelf) => (
-									<MenuItem key={shelf} onClick={() => this.goToShelf(shelf)}>
-										<img className="app-menu-shelf-icon"
-											 src={BookUtils.getBookshelfCategoryIcon(shelf)}
-											 alt={this.props.category} />
-										<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
-									</MenuItem>
-								))}
+							<Drawer docked={false} open={this.state.menuOpen} onRequestChange={(open) => this.setState({'menuOpen': open})}>
+								<Menu>
+									<Subheader>Go to Shelf</Subheader>
+									{BookUtils.getBookshelfCategories().map((shelf) => (
+										<MenuItem key={shelf} onClick={() => this.goToShelf(shelf)}>
+											<img className="app-menu-shelf-icon"
+												 src={BookUtils.getBookshelfCategoryIcon(shelf)}
+												 alt={this.props.category} />
+											<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
+										</MenuItem>
+									))}
+								</Menu>
 							</Drawer>
-
 							<div className="list-books-content">
 								<div>
 									{BookUtils.getBookshelfCategories().map((shelf) => (
