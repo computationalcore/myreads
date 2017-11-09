@@ -15,6 +15,10 @@ class Search extends Component {
 		onUpdateBookError: PropTypes.func,
 	};
 
+	componentDidMount(){
+		this.searchInput.focus();
+	}
+
 	render() {
 		const {books, request, query, onUpdateQuery, onSearch, onUpdateBook, onUpdateBookError} = this.props;
 
@@ -23,6 +27,7 @@ class Search extends Component {
 				<div className="search-books-bar">
 					<div className="search-books-input-wrapper">
 						<input
+							ref={(input) => { this.searchInput = input; }}
 							value={query}
 							className='search-books'
 							type='text'
