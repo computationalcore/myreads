@@ -23,6 +23,7 @@
     "material-ui": "^0.19.4",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
+    "react-cursor-position": "^2.2.2",
     "react-dom": "^15.5.4",
     "react-loader-advanced": "^1.7.1",
     "react-router-dom": "^4.2.2",
