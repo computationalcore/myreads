@@ -23,11 +23,12 @@ body, .app {
 .app-bar-title {
   text-align: center;
   font-size: 28px;
+  padding-right: 54px;
 }
 
 .app-menu-shelf-icon {
   width: 18px;
-  margin-right: 5px;
+  margin-right: 10px;
   vertical-align: middle;
 }
 
@@ -93,7 +94,7 @@ body, .app {
 
 .shelf-bar-icon {
   width: 25px;
-  margin-right: 5px;
+  margin-right: 10px;
   padding-top: 5px;
 }
 
@@ -102,7 +103,6 @@ body, .app {
 .search-books-bar {
   position: sticky;
   width: 100%;
-  top: 70px;
   left: 0;
   z-index: 5;
   display: flex;
@@ -122,7 +122,7 @@ body, .app {
 }
 
 .search-books-results {
-  padding: 80px 10px 20px;
+  padding: 20px 10px 20px;
 }
 
 /* books grid */

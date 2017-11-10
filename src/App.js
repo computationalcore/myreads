@@ -297,7 +297,7 @@ class BooksApp extends React.Component {
 									onLeftIconButtonTouchTap={() => (this.goToPrevious(history))}
 								/>
 							</div>
-							<div>
+							<div className="app-content">
 								<Search
 									books={this.state.searchResults}
 									query={this.state.query}

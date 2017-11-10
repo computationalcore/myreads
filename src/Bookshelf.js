@@ -8,6 +8,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
+import Subheader from 'material-ui/Subheader';
+import RemoveIcon from './icons/shelves/none.svg';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import './App.css';
 import ConfirmDialog from './ConfirmDialog';
@@ -254,12 +256,20 @@ class Bookshelf extends Component {
 											value={this.state.value}
 											onChange={(event, index, value) => (this.updateBooks(value)) }
 										>
+											<Subheader>Move Book to...</Subheader>
 											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== category).map((shelf) => (
-												<MenuItem key={shelf}
-														  value={shelf} primaryText={BookUtils.getBookshelfCategoryName(shelf)}/>
+												<MenuItem key={shelf}>
+													<img className="app-book-menu-shelf-icon"
+													src={BookUtils.getBookshelfCategoryIcon(shelf)}
+													alt=""
+													/>
+													<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
+												</MenuItem>
 											))}
-											<MenuItem key="none"
-													  value="none" primaryText="None"/>
+											<MenuItem key="none">
+												<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="" width={30} />
+												<span>None</span>
+											</MenuItem>
 										</SelectField>
 									</div>}
 								</CSSTransitionGroup>

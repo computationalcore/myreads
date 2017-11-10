@@ -73,7 +73,9 @@ class BookInfo extends Component {
 		this.getBookInfo();
 	}
 
-
+	/**
+	 * Call the API to get book data and update book state variable when the callback returns.
+	 */
 	getBookInfo = ()  => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch
 		// context
