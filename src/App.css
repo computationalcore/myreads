@@ -65,6 +65,26 @@ body, .app {
   position: absolute;
 }
 
+/* Register */
+
+.account-backup {
+  border-radius: 25px;
+  border: 1px solid;
+  padding: 10px;
+  width: fit-content;
+  font-size: 100%;
+  margin: 0 auto;
+}
+
+.account-address {
+  color: #323266;
+}
+
+.account-note {
+  font-weight: 600;
+  color: red;
+}
+
 /* main page */
 
 .list-books-title {

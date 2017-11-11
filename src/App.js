@@ -14,6 +14,8 @@ import * as BookUtils from './BookUtils';
 import BookInfo from './BookInfo';
 import Search from './Search';
 import './App.css';
+import Register from './Register';
+
 
 
 import Drawer from 'material-ui/Drawer';
@@ -311,6 +313,19 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					<Route exact path="/info/:bookId" component={BookInfoPage} />
+					<Route path='/register' render={({history}) => (
+						<div>
+						<div className="app-bar">
+							<AppBar
+								title={<div className="app-bar-title">MyReads</div>}
+							/>
+						</div>
+							<div className="app-content">
+						<Register history={history} />
+							</div>
+						</div>
+					)}/>
+
 				</div>
 			</MuiThemeProvider>
 		);
