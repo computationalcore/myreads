@@ -2,6 +2,37 @@ import CurrentlyReading from './icons/shelves/currently-reading.svg';
 import WantToRead from './icons/shelves/want-to-read.svg';
 import Read from './icons/shelves/read.svg';
 
+// Generate a unique token for storing your bookshelf data on the backend server.
+
+/**
+ * Return true if user is logged
+ * @returns {boolean}
+ */
+export const isLogged = () => {
+	const address = localStorage.account_address;
+	return !!(address);
+};
+
+/**
+ * Save the address to local storage. This account address is used as a unique token for storing the user bookshelf
+ * data on the backend server.
+ * @param accountAddress
+ */
+export const saveAccountAddress = (accountAddress) => {
+	localStorage.account_address = accountAddress;
+};
+
+/**
+ * Get the request headers with the account address inside
+ */
+export const getAccountHeaders = () => (
+	{
+		'Accept': 'application/json',
+		'Authorization': localStorage.account_address
+	}
+);
+
+
 /**
  *
  * @type {{OK: number, LOADING: number, ERROR: number, BOOK_ERROR: number}}
