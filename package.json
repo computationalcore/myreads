@@ -24,6 +24,7 @@
     "bitcoinjs-lib": "^3.3.0",
     "material-ui": "^0.19.4",
     "prop-types": "^15.5.8",
+    "qrcode-react": "^0.1.15",
     "react": "^15.5.4",
     "react-cursor-position": "^2.2.2",
     "react-dom": "^15.5.4",
