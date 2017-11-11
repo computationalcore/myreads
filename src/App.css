@@ -36,6 +36,34 @@ body, .app {
   padding-top: 90px;
 }
 
+/* Entropy Component */
+.entropy-text {
+  font-family: 'Dancing Script', Georgia, Times, serif;
+  font-size: 59px;
+  line-height: 60px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.entropy-paper {
+  max-height: 400px;
+  height: 90%;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.entropy-swipe {
+  height: 400px;
+  width: 100%;
+}
+
+.entropy-progress-bar {
+  background-color: #4CAF50!important;
+  height: 400px;
+  position: absolute;
+}
 
 /* main page */
 
