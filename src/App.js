@@ -15,6 +15,7 @@ import BookInfo from './BookInfo';
 import Search from './Search';
 import './App.css';
 import Register from './Register';
+import Login from './Login';
 
 
 
@@ -41,7 +42,7 @@ const BookInfoPage = ({ history, match: { params: {bookId} }, location: {state} 
 		<div>
 			<div className="app-bar">
 				<AppBar
-					title={<div className="app-bar-title">Book Details</div>}
+					title={<div className="app-bar-title app-bar-icon">Book Details</div>}
 					iconElementLeft={
 						<IconButton>
 							{state &&
@@ -238,7 +239,7 @@ class BooksApp extends React.Component {
 						<div className="list-books">
 							<div className="app-bar">
 								<AppBar
-									title={<div className="app-bar-title">MyReads</div>}
+									title={<div className="app-bar-title app-bar-icon">MyReads</div>}
 									iconClassNameRight="muidocs-icon-navigation-expand-more"
 									onLeftIconButtonTouchTap={this.handleMenuToggle}
 								/>
@@ -282,7 +283,6 @@ class BooksApp extends React.Component {
 										<ContentAdd />
 									</FloatingActionButton>
 								</Link>
-
 							</div>
 						</div>
 					)}/>
@@ -290,7 +290,7 @@ class BooksApp extends React.Component {
 						<div>
 							<div className="app-bar">
 								<AppBar
-									title={<div className="app-bar-title">Search</div>}
+									title={<div className="app-bar-title app-bar-icon">Search</div>}
 									iconElementLeft={
 										<IconButton>
 											<ArrowBack />
@@ -313,15 +313,29 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					<Route exact path="/info/:bookId" component={BookInfoPage} />
+					<Route path='/login' render={({history}) => (
+						<div>
+							<div className="app-bar">
+								<AppBar
+									title={<div className="app-bar-title">Login</div>}
+									showMenuIconButton={false}
+								/>
+							</div>
+							<div className="app-content">
+								<Login history={history} />
+							</div>
+						</div>
+					)}/>
 					<Route path='/register' render={({history}) => (
 						<div>
 						<div className="app-bar">
 							<AppBar
-								title={<div className="app-bar-title">MyReads</div>}
+								title={<div className="app-bar-title">Register</div>}
+								showMenuIconButton={false}
 							/>
 						</div>
 							<div className="app-content">
-						<Register history={history} />
+								<Register history={history} />
 							</div>
 						</div>
 					)}/>

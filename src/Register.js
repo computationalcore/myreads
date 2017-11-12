@@ -60,6 +60,11 @@ class Register extends React.Component {
 		}
 	};
 
+	/**
+	 * Execute when the Entropy input is complete. The parameter is an object with the account address and
+	 * the WIF key ( https://en.bitcoin.it/wiki/Wallet_import_format )
+	 * @param accountData
+	 */
 	handleEntropyComplete = (accountData) => {
 		this.setState({accountKey: accountData.wif, accountAddress: accountData.address},function stateUpdateComplete() {
 			this.handleNext();
@@ -70,7 +75,7 @@ class Register extends React.Component {
 	 * Save Address in local storage and proceed to
 	 */
 	handleComplete = () => {
-		BookUtils.saveAccountAddress(this.state.address);
+		BookUtils.saveAccountAddress(this.state.accountAddress);
 		this.props.history.push('/');
 	};
 
@@ -96,7 +101,7 @@ class Register extends React.Component {
 							<AccountQRCode value={this.state.accountKey} />
 						</div>
 						<p>You can also Copy/Paste the key somewhere or send it to your email</p>
-						<div className="account-backup">
+							<div className="account-backup">
 							<div className="account-address">{this.state.accountKey}</div>
 							<CopyToClipboard text={this.state.accountKey}>
 							<RaisedButton style={style} label="Copy to clipboard" />
