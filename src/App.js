@@ -8,14 +8,15 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconButton from 'material-ui/IconButton';
 import sortBy from 'sort-by';
-import Bookshelf from './Bookshelf';
 import * as BooksAPI from './BooksAPI';
 import * as BookUtils from './BookUtils';
 import BookInfo from './BookInfo';
+import Bookshelf from './Bookshelf';
+import Authentication from './Authentication';
+import Login from './Login';
+import Register from './Register';
 import Search from './Search';
 import './App.css';
-import Register from './Register';
-import Login from './Login';
 
 
 
@@ -313,6 +314,19 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					<Route exact path="/info/:bookId" component={BookInfoPage} />
+					<Route path='/authentication' render={({history}) => (
+						<div>
+							<div className="app-bar">
+								<AppBar
+									title={<div className="app-bar-title">Authentication</div>}
+									showMenuIconButton={false}
+								/>
+							</div>
+							<div className="app-content">
+								<Authentication history={history} />
+							</div>
+						</div>
+					)}/>
 					<Route path='/login' render={({history}) => (
 						<div>
 							<div className="app-bar">
