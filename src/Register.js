@@ -12,8 +12,6 @@ import AccountQRCode from './AccountQRCode';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as BookUtils from './BookUtils';
 
-
-
 const style = {
 	margin: 12,
 };
@@ -26,7 +24,8 @@ class Register extends React.Component {
 	state = {
 		loading: false,
 		stepIndex: 0,
-		account: '',
+		accountKey: '',
+		accountAddress: '',
 	};
 
 	dummyAsync = (cb) => {
@@ -61,14 +60,17 @@ class Register extends React.Component {
 		}
 	};
 
-	handleEntropyComplete = (accountAddress) => {
-		this.setState({accountAddress: accountAddress},function stateUpdateComplete() {
+	handleEntropyComplete = (accountData) => {
+		this.setState({accountKey: accountData.wif, accountAddress: accountData.address},function stateUpdateComplete() {
 			this.handleNext();
 		}.bind(this));
 	};
 
+	/**
+	 * Save Address in local storage and proceed to
+	 */
 	handleComplete = () => {
-		BookUtils.saveAccountAddress(this.state.accountAddress);
+		BookUtils.saveAccountAddress(this.state.address);
 		this.props.history.push('/');
 	};
 
@@ -79,31 +81,32 @@ class Register extends React.Component {
 					<div>
 						<p>To create your account move the cursor randomly inside box bellow for a while, until
 							it is completely green</p>
-						<div style={{marginTop:-50}} >
-						<EntropyInput onComplete={this.handleEntropyComplete} />
+						<div style={{marginTop:-50}}>
+							<EntropyInput onComplete={this.handleEntropyComplete} />
 						</div>
 					</div>
 				);
 			case 1:
 				return (
 					<div style={{textAlign: 'center'}}>
-						<p>Please SAVE this QR code or/and account address before procced.</p>
-						<p>The address is your login credential.</p>
+						<p>Please Download and Save this QR code that contains the access key or copy the key from the box
+							it before proceed.</p>
+						<p>This Access Key is the only login credential you need.</p>
 						<div>
-							<AccountQRCode value={this.state.account} />
+							<AccountQRCode value={this.state.accountKey} />
 						</div>
-						<p>You can also Copy/Paste the account address somewhere or send it to your email</p>
+						<p>You can also Copy/Paste the key somewhere or send it to your email</p>
 						<div className="account-backup">
-							<div className="account-address">{this.state.accountAddress}</div>
-							<CopyToClipboard text={this.state.accountAddress}>
+							<div className="account-address">{this.state.accountKey}</div>
+							<CopyToClipboard text={this.state.accountKey}>
 							<RaisedButton style={style} label="Copy to clipboard" />
 							</CopyToClipboard>
 							<RaisedButton
 								style={style}
-								href={"mailto:?subject=MyReads%20Account%20Credentials&body=This is your account address for MyReads: " + this.state.accountAddress}
-								label="Send to your email E-mail" />
+								href={"mailto:?subject=MyReads%20Account%20Credentials&body=This is your access key for MyReads: " + this.state.accountKey}
+								label="Send to your email" />
 						</div>
-						<p className="account-note">Note: If you lost this address will not be able to recover your account.</p>
+						<p className="account-note">Note: If you lost this key will not be able to recover your account.</p>
 					</div>
 				);
 			case 2:
@@ -111,7 +114,7 @@ class Register extends React.Component {
 					<div style={{textAlign: 'center'}}>
 						<p className="account-congratulations">Congratulations!</p>
 						<p>
-							If you already saved your account credentials feel free to continue.</p>
+							If you already saved your access key feel free to continue.</p>
 						<p>I hope you enjoy the app!</p>
 					</div>
 				);
@@ -159,7 +162,7 @@ class Register extends React.Component {
 						<StepLabel>Swipe to create account</StepLabel>
 					</Step>
 					<Step>
-						<StepLabel>Save Account Address</StepLabel>
+						<StepLabel>Save the Access Key</StepLabel>
 					</Step>
 					<Step>
 						<StepLabel>Congratulations</StepLabel>

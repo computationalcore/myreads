@@ -34,10 +34,9 @@ class EntropyInput extends Component {
 			}
 		},function stateUpdateComplete() {
 			if(this.state.progress >= 100) {
-				console.log(this.props.value);
 				const hash = Bitcoin.crypto.sha256(this.props.value+this.state.entropy);
 				const keyPair = new Bitcoin.ECPair(Bigi.fromBuffer(hash));
-				this.props.onComplete(keyPair.getAddress());
+				this.props.onComplete({wif: keyPair.toWIF(),address: keyPair.getAddress()});
 			}
 		}.bind(this));
 	};
