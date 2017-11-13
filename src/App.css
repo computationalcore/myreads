@@ -68,6 +68,18 @@ body, .app {
   position: absolute;
 }
 
+/* authentication */
+.app-authentication {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.important-note {
+  font-size: small;
+  font-weight: 600;
+  color: red;
+}
+
 /* register */
 
 .account-backup {
