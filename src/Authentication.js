@@ -12,9 +12,10 @@ function Authentication(props) {
 	return (
 		<div className="app-authentication">
 			<p>Welcome to MyReads!</p>
-			<p>This is a bookshelf app that allow users to select and categorize books they have read, are currently reading, or
+			<p>This is a bookshelf app that allow users to select and categorize books they had read, are currently reading, or
 				want to read.</p>
-			<p>This is the final assessment project for the Udacity's React Fundamentals course</p>
+			<p>This is the final assessment project for the Udacity's React Fundamentals course, part of the <a href="https://udacity.com/course/react-nanodegree--nd019/" target="_blank">
+					React Nanodegree Program</a></p>
 			<div className="auth-button-ext">
 				<Link className="auth-button" to="/login">
 					<RaisedButton
