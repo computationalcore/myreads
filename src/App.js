@@ -203,7 +203,7 @@ class BooksApp extends React.Component {
 			<MuiThemeProvider>
 				<div className="app">
 					{/* Main app screen - Logged Route */}
-					<PrivateRoute exact path='/' component={({history}) => (
+					<PrivateRoute exact path='/' render={({history}) => (
 						<div className="list-books">
 							<div className="app-bar">
 								<AppBar
@@ -263,7 +263,7 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					{/* Search - Logged Route */}
-					<PrivateRoute path='/search' component={({history}) => (
+					<PrivateRoute path='/search' render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -327,7 +327,7 @@ class BooksApp extends React.Component {
 							   </div>
 						   )}/>
 					{/* Authentication Page */}
-					<UnauthenticatedRoute path='/authentication' component={({history}) => (
+					<UnauthenticatedRoute path='/authentication' render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -341,7 +341,7 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					{/* Login page */}
-					<UnauthenticatedRoute path='/login' component={({history}) => (
+					<UnauthenticatedRoute path='/login' render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -355,7 +355,7 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					{/* Register Page */}
-					<UnauthenticatedRoute path='/register' component={({history}) => (
+					<UnauthenticatedRoute path='/register' render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar

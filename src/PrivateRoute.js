@@ -4,21 +4,29 @@ import { Route, Redirect } from 'react-router-dom';
 
 /**
  * Private routes let the component available only if the user is logged. If not redirect to the authentication page.
- * @param Component
+ * @param render
  * @param rest
  * @constructor
  */
-const PrivateRoute = ({ component: Component, ...rest }) => (
-	<Route {...rest} render={props => (
-		BookUtils.isLogged() ? (
-			<Component {...props}/>
-		) : (
+const PrivateRoute = ({ render, ...rest }) => {
+
+	let privateRender;
+
+	if (BookUtils.isLogged()) {
+		privateRender = render;
+	}
+	else {
+		privateRender = (props) => (
 			<Redirect to={{
-				pathname: '/authentication',
-				state: { from: props.location }
-			}}/>
-		)
-	)}/>
-);
+					pathname: '/authentication',
+					state: { from: props.location }
+				}}/>
+			)
+	}
+
+	return(
+		<Route {...rest} render={privateRender} />
+	);
+};
 
 export default PrivateRoute;
