@@ -51,8 +51,27 @@ class BooksApp extends React.Component {
 	 * Call the API to get all books and update books state variable when the callback returns.
 	 */
 	componentDidMount() {
-		this.getAllBooks();
+		// Execute get books only if user is logged
+		if(BookUtils.isLogged()) {
+			this.getAllBooks();
+		}
 	}
+
+	/**
+	 * Save account address into local storage and proceed to main app page.
+	 */
+	handleLogin = (address,  history) => {
+		// Reset any previous stored state data in memory
+		this.setState({
+			books: [],
+			menuOpen: false,
+			searchResults: [],
+			query: '',
+		});
+		BookUtils.saveAccountAddress(address);
+		history.push('/');
+		this.getAllBooks();
+	};
 
 	getAllBooks = () => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch context
@@ -350,7 +369,7 @@ class BooksApp extends React.Component {
 								/>
 							</div>
 							<div className="app-content">
-								<Login history={history}/>
+								<Login history={history} onComplete={this.handleLogin} />
 							</div>
 						</div>
 					)}/>
@@ -364,7 +383,7 @@ class BooksApp extends React.Component {
 								/>
 							</div>
 							<div className="app-content">
-								<Register history={history}/>
+								<Register history={history} onComplete={this.handleLogin} />
 							</div>
 						</div>
 					)}/>

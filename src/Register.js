@@ -39,7 +39,7 @@ class Register extends React.Component {
 
 		// Account Creation Finished
 		if (stepIndex >= 2){
-			this.handleComplete();
+			this.props.onComplete(this.state.accountAddress, this.props.history);
 		}
 
 		if (!this.state.loading) {
@@ -69,14 +69,6 @@ class Register extends React.Component {
 		this.setState({accountKey: accountData.wif, accountAddress: accountData.address},function stateUpdateComplete() {
 			this.handleNext();
 		}.bind(this));
-	};
-
-	/**
-	 * Save Address in local storage and proceed to
-	 */
-	handleComplete = () => {
-		BookUtils.saveAccountAddress(this.state.accountAddress);
-		this.props.history.push('/');
 	};
 
 	getStepContent(stepIndex) {

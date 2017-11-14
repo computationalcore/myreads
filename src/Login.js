@@ -107,8 +107,7 @@ class Login extends Component {
 			// It will work if the WIF is correct
 			const keyPair = Bitcoin.ECPair.fromWIF(wif);
 			const address =  keyPair.getAddress();
-			BookUtils.saveAccountAddress(address);
-			this.props.history.push('/');
+			this.props.onComplete(address, this.props.history);
 		}
 		catch (e) {
 			// If WIF is invalid format
