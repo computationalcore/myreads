@@ -12,17 +12,22 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
-import BookInfoPage from './BookInfoPage';
+import SvgIcon from 'material-ui/SvgIcon';
 import * as BooksAPI from './BooksAPI';
 import * as BookUtils from './BookUtils';
 import Bookshelf from './Bookshelf';
 import Authentication from './Authentication';
+import BookInfo from './BookInfo';
 import Login from './Login';
 import Register from './Register';
 import Search from './Search';
 import './App.css';
+import PrivateRoute from './PrivateRoute';
+import UnauthenticatedRoute from './UnauthenticatedRoute';
 
-
+/**
+ * Main App component.
+ */
 class BooksApp extends React.Component {
 
 	state = {
@@ -42,14 +47,14 @@ class BooksApp extends React.Component {
 		this.getAllBooks();
 	}
 
-	getAllBooks = ()  => {
+	getAllBooks = () => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch context
 		const app = this;
 		this.setState({request: BookUtils.request.LOADING});
 		// Update the Shelves
 		BooksAPI.getAll().then((books) => {
 			app.setState({books: books, request: BookUtils.request.OK});
-		}).catch(function() {
+		}).catch(function () {
 			app.setState({request: BookUtils.request.ERROR});
 		});
 	};
@@ -81,7 +86,7 @@ class BooksApp extends React.Component {
 				this.setState(state => ({
 					books: state.books.filter(b => b.id !== book.id).concat([book])
 				}));
-			}).catch(function() {
+			}).catch(function () {
 				// If will remove load animations in case of failure also
 				book.updating = false;
 				app.setState(state => ({
@@ -107,7 +112,7 @@ class BooksApp extends React.Component {
 
 	goToShelf = (shelf) => {
 		this.setState({menuOpen: false}, function stateUpdateComplete() {
-			scrollToComponent(this[shelf], { offset: -90, align: 'top', duration: 500, ease:'inCirc'});
+			scrollToComponent(this[shelf], {offset: -90, align: 'top', duration: 500, ease: 'inCirc'});
 		}.bind(this));
 
 
@@ -123,7 +128,11 @@ class BooksApp extends React.Component {
 
 		query = query.trim();
 		// Update the search field as soon as the character is typed
-		this.setState({query: query, request: BookUtils.request.LOADING, searchResults: []}, function stateUpdateComplete() {
+		this.setState({
+			query: query,
+			request: BookUtils.request.LOADING,
+			searchResults: []
+		}, function stateUpdateComplete() {
 			this.search();
 		}.bind(this));
 
@@ -131,11 +140,11 @@ class BooksApp extends React.Component {
 
 	/**
 	 * @description Search books for this query.
-	 * 	NOTES: The search from BooksAPI is limited to a particular set of search terms.
-	 * 	You can find these search terms here:
-	 * 	https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-	 * 	However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if you
-	 * 	don't find a specific author or title. Every search is limited by search terms.
+	 *    NOTES: The search from BooksAPI is limited to a particular set of search terms.
+	 *    You can find these search terms here:
+	 *    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+	 *    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if you
+	 *    don't find a specific author or title. Every search is limited by search terms.
 	 */
 	search = () => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch
@@ -147,7 +156,7 @@ class BooksApp extends React.Component {
 
 			// If the query state (the search input) changed while the request was in process not show the books
 			// of a previous query state
-			if(query !== this.state.query) return;
+			if (query !== this.state.query) return;
 
 			//If the query is empty no need to request to server just clean the books array
 			if ('error' in books) {
@@ -164,7 +173,7 @@ class BooksApp extends React.Component {
 				searchResults: books.sort(sortBy('title')),
 				request: BookUtils.request.OK,
 			});
-		}).catch(function() {
+		}).catch(function () {
 			// If will remove load animations in case of failure also
 			app.setState(state => ({
 				searchResults: [],
@@ -173,6 +182,9 @@ class BooksApp extends React.Component {
 		});
 	};
 
+	/**
+	 *
+	 */
 	goToPrevious = (history) => {
 		history.push("/");
 		// Clear previous search if go back to home
@@ -183,7 +195,8 @@ class BooksApp extends React.Component {
 		return (
 			<MuiThemeProvider>
 				<div className="app">
-					<Route exact path='/' render={() => (
+					{/* Main app screen - Logged Route */}
+					<PrivateRoute exact path='/' component={() => (
 						<div className="list-books">
 							<div className="app-bar">
 								<AppBar
@@ -192,14 +205,15 @@ class BooksApp extends React.Component {
 									onLeftIconButtonTouchTap={this.handleMenuToggle}
 								/>
 							</div>
-							<Drawer docked={false} open={this.state.menuOpen} onRequestChange={(open) => this.setState({'menuOpen': open})}>
+							<Drawer docked={false} open={this.state.menuOpen}
+									onRequestChange={(open) => this.setState({'menuOpen': open})}>
 								<Menu>
 									<Subheader>Go to Shelf</Subheader>
 									{BookUtils.getBookshelfCategories().map((shelf) => (
 										<MenuItem key={shelf} onClick={() => this.goToShelf(shelf)}>
 											<img className="app-menu-shelf-icon"
 												 src={BookUtils.getBookshelfCategoryIcon(shelf)}
-												 alt={this.props.category} />
+												 alt={this.props.category}/>
 											<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 										</MenuItem>
 									))}
@@ -209,7 +223,9 @@ class BooksApp extends React.Component {
 								<div>
 									{BookUtils.getBookshelfCategories().map((shelf) => (
 										<div key={shelf} className="bookshelf"
-											 ref={(section) => { this[shelf] = section; }}>
+											 ref={(section) => {
+												 this[shelf] = section;
+											 }}>
 											<Bookshelf
 												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
 												category={shelf}
@@ -228,20 +244,21 @@ class BooksApp extends React.Component {
 									className='add-books'
 								>
 									<FloatingActionButton>
-										<ContentAdd />
+										<ContentAdd/>
 									</FloatingActionButton>
 								</Link>
 							</div>
 						</div>
 					)}/>
-					<Route path='/search' render={({history}) => (
+					{/* Search - Logged Route */}
+					<PrivateRoute path='/search' component={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
 									title={<div className="app-bar-title app-bar-icon">Search</div>}
 									iconElementLeft={
 										<IconButton>
-											<ArrowBack />
+											<ArrowBack/>
 										</IconButton>
 									}
 									onLeftIconButtonTouchTap={() => (this.goToPrevious(history))}
@@ -260,8 +277,45 @@ class BooksApp extends React.Component {
 							</div>
 						</div>
 					)}/>
-					<Route exact path="/info/:bookId" component={BookInfoPage} />
-					<Route path='/authentication' render={({history}) => (
+					{/* BookInfo page */}
+					<Route exact path="/info/:bookId"
+						   component={({history, match: {params: {bookId}}, location: {state}}) => (
+							   <div>
+								   <div className="app-bar">
+									   <AppBar
+										   title={<div className="app-bar-title app-bar-icon">Book Details</div>}
+										   iconElementLeft={
+											   <IconButton>
+												   {state &&
+												   <ArrowBack/>
+												   }
+												   {!state &&
+												   <SvgIcon>
+													   <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+												   </SvgIcon>
+												   }
+											   </IconButton>
+										   }
+										   onLeftIconButtonTouchTap={
+											   () => {
+												   // Go Back
+												   if (state)
+													   history.goBack();
+												   // Go to Home
+												   else {
+													   history.push("/");
+												   }
+											   }
+										   }
+									   />
+								   </div>
+								   <div className="app-content">
+									   <BookInfo bookId={bookId}/>
+								   </div>
+							   </div>
+						   )}/>
+					{/* Authentication Page */}
+					<UnauthenticatedRoute path='/authentication' component={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -270,11 +324,12 @@ class BooksApp extends React.Component {
 								/>
 							</div>
 							<div className="app-content">
-								<Authentication history={history} />
+								<Authentication history={history}/>
 							</div>
 						</div>
 					)}/>
-					<Route path='/login' render={({history}) => (
+					{/* Login page */}
+					<UnauthenticatedRoute path='/login' component={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -283,20 +338,21 @@ class BooksApp extends React.Component {
 								/>
 							</div>
 							<div className="app-content">
-								<Login history={history} />
+								<Login history={history}/>
 							</div>
 						</div>
 					)}/>
-					<Route path='/register' render={({history}) => (
+					{/* Register Page */}
+					<UnauthenticatedRoute path='/register' component={({history}) => (
 						<div>
-						<div className="app-bar">
-							<AppBar
-								title={<div className="app-bar-title">Register</div>}
-								showMenuIconButton={false}
-							/>
-						</div>
+							<div className="app-bar">
+								<AppBar
+									title={<div className="app-bar-title">Register</div>}
+									showMenuIconButton={false}
+								/>
+							</div>
 							<div className="app-content">
-								<Register history={history} />
+								<Register history={history}/>
 							</div>
 						</div>
 					)}/>
