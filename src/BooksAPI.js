@@ -10,10 +10,8 @@ if (!token)
 
 const headers = {
 	'Accept': 'application/json',
-	'Authorization': token
+	'Authorization': token,
 };
-
-console.log(BookUtils.getAccountHeaders());
 
 export const get = (bookId) =>
 	fetch(`${api}/books/${bookId}`, {headers})

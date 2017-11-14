@@ -12,7 +12,6 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import SwipeableViews from 'react-swipeable-views';
 import AlertDialog from './AlertDialog';
-import * as BookUtils from './BookUtils';
 
 class Login extends Component {
 

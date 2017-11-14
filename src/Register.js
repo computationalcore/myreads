@@ -10,7 +10,6 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import EntropyInput from './EntropyInput';
 import AccountQRCode from './AccountQRCode';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-import * as BookUtils from './BookUtils';
 
 const style = {
 	margin: 12,
