@@ -5,9 +5,11 @@ import scrollToComponent from 'react-scroll-to-component';
 import AppBar from 'material-ui/AppBar';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import IconButton from 'material-ui/IconButton';
+import Logout from 'material-ui/svg-icons/action/exit-to-app';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -21,9 +23,9 @@ import BookInfo from './BookInfo';
 import Login from './Login';
 import Register from './Register';
 import Search from './Search';
-import './App.css';
 import PrivateRoute from './PrivateRoute';
 import UnauthenticatedRoute from './UnauthenticatedRoute';
+import './App.css';
 
 /**
  * Main App component.
@@ -37,6 +39,11 @@ class BooksApp extends React.Component {
 		// Search related state
 		searchResults: [],
 		query: '',
+	};
+
+	logout = (history) => {
+		BookUtils.cleanAccountAddress();
+		history.push('/authentication');
 	};
 
 	/**
@@ -196,7 +203,7 @@ class BooksApp extends React.Component {
 			<MuiThemeProvider>
 				<div className="app">
 					{/* Main app screen - Logged Route */}
-					<PrivateRoute exact path='/' component={() => (
+					<PrivateRoute exact path='/' component={({history}) => (
 						<div className="list-books">
 							<div className="app-bar">
 								<AppBar
@@ -217,6 +224,11 @@ class BooksApp extends React.Component {
 											<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 										</MenuItem>
 									))}
+									<Divider />
+									<MenuItem onClick={() => (this.logout(history))}>
+										<Logout className="app-menu-shelf-icon" />
+										<span>Logout</span>
+									</MenuItem>
 								</Menu>
 							</Drawer>
 							<div className="list-books-content">

@@ -23,6 +23,13 @@ export const saveAccountAddress = (accountAddress) => {
 };
 
 /**
+ * Remove account address from the local storage.
+ */
+export const cleanAccountAddress = () => {
+	localStorage.removeItem('account_address');
+};
+
+/**
  * Get the request headers with the account address inside
  */
 export const getAccountHeaders = () => (
