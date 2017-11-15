@@ -27,20 +27,22 @@ class EntropyInput extends Component {
 	 */
 	handlePositionChange = ({position}) => {
 		this.setState(state => {
-			if(this.state.entropy.length < 500) {
+			if( (this.state.entropy.length < 500) ) {
 				const entropy = state.entropy;
 				entropy.push(position.y.toString() + position.x.toString());
 				return {entropy: entropy, progress: Math.round(entropy.length/2)}
 			}
 		},function stateUpdateComplete() {
-			if(this.state.progress >= 100) {
+			if(this.state.progress === 100) {
 				const hash = Bitcoin.crypto.sha256(this.props.value+this.state.entropy);
 				const keyPair = new Bitcoin.ECPair(Bigi.fromBuffer(hash));
 				this.props.onComplete({wif: keyPair.toWIF(),address: keyPair.getAddress()});
 			}
 		}.bind(this));
 	};
+
 	render() {
+		const progress = (this.state.progress < 100) ? this.state.progress: 100;
 		return (
 			<div>
 				<Paper className="entropy-paper" zDepth={3}>
@@ -51,10 +53,11 @@ class EntropyInput extends Component {
 						hoverDelayInMs={500}
 						onPositionChanged={this.handlePositionChange}
 					>
-						<div className="entropy-progress-bar" style={{width: `${this.state.progress*86/100}%`}}></div>
+						<div className="entropy-progress-bar"
+							 style={{width: `${progress}%`}}></div>
 						<div className="entropy-text">
 							<p>Swipe Here</p>
-							<p>{this.state.progress}%</p>
+							<p>{progress}%</p>
 						</div>
 					</ReactCursorPosition>
 				</Paper>

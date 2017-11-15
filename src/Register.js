@@ -3,13 +3,15 @@ import {
 	Step,
 	Stepper,
 	StepLabel,
+	StepContent,
 } from 'material-ui/Stepper';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import EntropyInput from './EntropyInput';
 import AccountQRCode from './AccountQRCode';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import ReactWindowResizeListener from 'window-resize-listener-react';
 
 const style = {
 	margin: 12,
@@ -20,12 +22,29 @@ const style = {
  */
 class Register extends React.Component {
 
-	state = {
-		loading: false,
-		stepIndex: 0,
-		accountKey: '',
-		accountAddress: '',
+	constructor() {
+		super();
+		this.state = {
+			loading: false,
+			stepIndex: 0,
+			accountKey: '',
+			accountAddress: '',
+			stepperOrientation: 'vertical',
+		};
+	}
+
+	checkStepper = () => {
+		this.setState({stepperOrientation: ((innerWidth < 570) ? 'vertical':'horizontal') });
 	};
+
+	componentWillMount(){
+		this.setState({stepperOrientation: ((innerWidth < 570) ? 'vertical':'horizontal') });
+	}
+
+	resizeHandler = () => {
+		this.checkStepper();
+	};
+
 
 	dummyAsync = (cb) => {
 		this.setState({loading: true}, () => {
@@ -77,7 +96,7 @@ class Register extends React.Component {
 					<div>
 						<p>To create your account move the cursor randomly inside box bellow for a while, until
 							it is completely green</p>
-						<div style={{marginTop:-50}}>
+						<div>
 							<EntropyInput onComplete={this.handleEntropyComplete} />
 						</div>
 					</div>
@@ -119,6 +138,29 @@ class Register extends React.Component {
 		}
 	}
 
+	renderStepActions(stepIndex) {
+		return (
+			<div style={{marginTop: 24, marginBottom: 12}}>
+				{/* Show stepper control only after the first step */}
+				{(stepIndex >= 1) &&
+				<div style={{textAlign: 'center'}}>
+					<FlatButton
+						label="Back"
+						disabled={stepIndex === 0}
+						onClick={this.handlePrev}
+						style={{marginRight: 12}}
+					/>
+					<RaisedButton
+						label={stepIndex === 2 ? 'Finish' : 'Next'}
+						primary={true}
+						onClick={this.handleNext}
+					/>
+				</div>
+				}
+			</div>
+		);
+	}
+
 	renderContent() {
 		const {stepIndex} = this.state;
 		const contentStyle = {margin: '0 16px', overflow: 'hidden'};
@@ -126,24 +168,7 @@ class Register extends React.Component {
 		return (
 			<div style={contentStyle}>
 				<div>{this.getStepContent(stepIndex)}</div>
-				<div style={{marginTop: 24, marginBottom: 12}}>
-					{/* Show stepper control only after the first step */}
-					{(stepIndex >= 1) &&
-						<div style={{textAlign: 'center'}}>
-							<FlatButton
-								label="Back"
-								disabled={stepIndex === 0}
-								onClick={this.handlePrev}
-								style={{marginRight: 12}}
-							/>
-							<RaisedButton
-								label={stepIndex === 2 ? 'Finish' : 'Next'}
-								primary={true}
-								onClick={this.handleNext}
-							/>
-						</div>
-					}
-				</div>
+				{this.renderStepActions(stepIndex)}
 			</div>
 		);
 	}
@@ -152,21 +177,57 @@ class Register extends React.Component {
 		const {loading, stepIndex} = this.state;
 
 		return (
-			<div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
-				<Stepper activeStep={stepIndex}>
-					<Step>
-						<StepLabel>Swipe to create account</StepLabel>
-					</Step>
-					<Step>
-						<StepLabel>Save the Access Key</StepLabel>
-					</Step>
-					<Step>
-						<StepLabel>Congratulations</StepLabel>
-					</Step>
-				</Stepper>
-				<ExpandTransition loading={loading} open={true}>
-					{this.renderContent()}
-				</ExpandTransition>
+			<div>
+				<ReactWindowResizeListener onResize={this.resizeHandler} />
+
+				<div style={{width: '100%', maxWidth: 1200, margin: 'auto'}}>
+
+					{(this.state.stepperOrientation === 'horizontal') &&
+						<div>
+						<Stepper activeStep={stepIndex}>
+							<Step>
+								<StepLabel>Swipe to create account</StepLabel>
+							</Step>
+							<Step>
+								<StepLabel>Save the Access Key</StepLabel>
+							</Step>
+							<Step>
+								<StepLabel>Congratulations</StepLabel>
+							</Step>
+						</Stepper>
+						<ExpandTransition loading={loading} open={true}>
+							{this.renderContent()}
+						</ExpandTransition>
+						</div>
+					}
+					{(this.state.stepperOrientation === 'vertical') &&
+					<div>
+						<Stepper activeStep={stepIndex} orientation="vertical">
+							<Step>
+								<StepLabel>Swipe to create account</StepLabel>
+								<StepContent>
+									{this.getStepContent(0)}
+									{this.renderStepActions(0)}
+								</StepContent>
+							</Step>
+							<Step>
+								<StepLabel>Save the Access Key</StepLabel>
+								<StepContent>
+									{this.getStepContent(1)}
+									{this.renderStepActions(1)}
+								</StepContent>
+							</Step>
+							<Step>
+								<StepLabel>Congratulations</StepLabel>
+								<StepContent>
+									{this.getStepContent(2)}
+									{this.renderStepActions(2)}
+								</StepContent>
+							</Step>
+						</Stepper>
+					</div>
+					}
+				</div>
 			</div>
 		);
 	}

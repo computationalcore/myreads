@@ -42,10 +42,13 @@ body, .app {
 /* Entropy Component */
 .entropy-text {
   font-family: 'Dancing Script', Georgia, Times, serif;
-  font-size: 59px;
+  font-size: 50px;
   line-height: 60px;
-  position: relative;
+  position: absolute;
+  margin-left:-100px;
+  margin-top:60px;
   top: 50%;
+  left: 50%;
   transform: translateY(-50%);
 }
 
@@ -65,7 +68,6 @@ body, .app {
 .entropy-progress-bar {
   background-color: #4CAF50!important;
   height: 400px;
-  position: absolute;
 }
 
 /* authentication */
@@ -87,12 +89,13 @@ body, .app {
   border: 1px solid;
   padding: 10px;
   width: fit-content;
-  font-size: 100%;
   margin: 0 auto;
 }
 
 .account-address {
   color: #323266;
+  margin: 0;
+  font-size: calc(0.8vmax + 1vmin);
 }
 
 .account-note {

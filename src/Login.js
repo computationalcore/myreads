@@ -141,7 +141,6 @@ class Login extends Component {
 	 * @param value
 	 */
 	handleTextFieldChange = (event, value) => {
-		console.log(value);
 		if((value.length > 0) && this.state.submitDisabled){
 			this.setState({submitDisabled: false});
 		}
