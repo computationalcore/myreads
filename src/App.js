@@ -245,7 +245,7 @@ class BooksApp extends React.Component {
 									))}
 									<Divider />
 									<MenuItem onClick={() => (this.logout(history))}>
-										<Logout className="app-menu-shelf-icon" />
+										<Logout className="app-menu-shelf-icon" style={{color: 'grey'}} />
 										<span>Logout</span>
 									</MenuItem>
 								</Menu>

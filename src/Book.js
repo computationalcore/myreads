@@ -84,7 +84,7 @@ function Book(props) {
 								{/* Link state is used to control if app menu should show home button or back arrow */}
 								<Link to={ {pathname: `/info/${props.id}`, state:  true} }>
 									<MenuItem>
-										<Info className="app-book-menu-shelf-icon" />
+										<Info className="app-book-menu-shelf-icon" style={{color: 'grey'}} />
 										<span>Show Book Details</span>
 									</MenuItem>
 								</Link>
