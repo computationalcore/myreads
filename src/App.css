@@ -502,6 +502,37 @@ html, body {
   transition: 300ms;
 }
 
+
+.search-shelf {
+  text-align: center;
+}
+
+.search-shelf-input {
+  height: 72px;
+}
+
+.search-shelf-mode-enter {
+  opacity: 0.01;
+  height: 0;
+}
+
+.search-shelf-mode-enter.search-shelf-mode-enter-active {
+  opacity: 1;
+  height: 72px;
+  transition: 300ms;
+}
+
+.search-shelf-mode-leave {
+  opacity: 1;
+  height: 72px;
+}
+
+.search-shelf-mode-leave.search-shelf-mode-leave-active {
+  opacity: 0.01;
+  height: 0;
+  transition: 300ms;
+}
+
 /* Loader */
 
 .shelf-loader-box{

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {CSSTransitionGroup} from 'react-transition-group';
+import Checkbox from 'material-ui/Checkbox';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
@@ -9,7 +10,9 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import Subheader from 'material-ui/Subheader';
+import TextField from 'material-ui/TextField';
 import RemoveIcon from './icons/shelves/none.svg';
+import SearchIcon from 'material-ui/svg-icons/action/search';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import './App.css';
 import ConfirmDialog from './ConfirmDialog';
@@ -17,6 +20,10 @@ import AlertDialog from './AlertDialog';
 import LoaderBox from './Loader';
 import Book from './Book';
 import * as BookUtils from './BookUtils';
+
+
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by';
 
 const styles = {
 	block: {
@@ -64,11 +71,13 @@ class Bookshelf extends Component {
 		selectedBooks: [],
 		dialogOpen: false,
 		alertDialogOpen: false,
+		query: '',
+		queryMode: false,
 	};
 
 	enableSelectMode = () => {
 		if (!this.state.selectMode) {
-			this.setState({selectMode: true});
+			this.setState({selectMode: true, query: '', queryMode: false});
 		}
 	};
 
@@ -121,7 +130,6 @@ class Bookshelf extends Component {
 	 * @param {string} shelf
 	 */
 	updateBooks = (shelf) => {
-		console.log(shelf);
 		const onUpdateBook = this.props.onUpdateBook;
 		const selectedBooks = this.state.selectedBooks;
 		this.setState({selectMode: false, selectedBooks: []});
@@ -154,6 +162,29 @@ class Bookshelf extends Component {
 		});
 		// Close the Clear dialog
 		this.handleDialogClose();
+		this.setState({selectMode: false, query: '', queryMode: false});
+	};
+
+	// Search
+
+	updateSearchQuery = (query) => {
+		this.setState({ query: query.trim() })
+	};
+
+	clearSearchQuery = () => {
+		this.setState({ query: '' })
+	};
+
+
+	handleSearchCheck = () => {
+		this.setState((state) => {
+			return {
+				queryMode: !state.queryMode,
+				query: '',
+			};
+		}, function stateUpdateComplete() {
+			this.searchInput.focus();
+		}.bind(this));
 	};
 
 	render() {
@@ -170,6 +201,18 @@ class Bookshelf extends Component {
 		} = this.props;
 
 		const selectMode = this.state.selectMode && (request === BookUtils.request.OK);
+		const { query } = this.state;
+		let showingBooks;
+		if (query) {
+			// Escape regex elements converting to literal strings, and 'í' to ignore case
+			const match = new RegExp(escapeRegExp(query), 'i');
+			showingBooks = books.filter((book) => match.test(book.title));
+			showingBooks.sort(sortBy('name'));
+		} else {
+			showingBooks = books;
+		}
+
+
 
 		return (
 			<div>
@@ -182,6 +225,16 @@ class Bookshelf extends Component {
 					{/* Only show shelf menu if this props is true */}
 					{withShelfMenu && (books.length > 0) &&
 						<ToolbarGroup>
+							{!selectMode &&
+							<div style={{width: 20}}>
+								<Checkbox
+									checkedIcon={<SearchIcon style={{color: 'blue'}}/>}
+									uncheckedIcon={<SearchIcon/>}
+									checked={this.state.queryMode}
+									onCheck={this.handleSearchCheck}
+								/>
+							</div>
+							}
 							<ToolbarSeparator/>
 							{/* Shelf Menu Options */}
 							{!selectMode &&
@@ -292,14 +345,36 @@ class Bookshelf extends Component {
 						<RaisedButton label="Try Again" primary={true} onClick={onConnectionError}/>
 					</div>
 					}
-
+					{/* Search Books Input */}
+					<CSSTransitionGroup
+						transitionName="search-shelf-mode"
+						transitionEnterTimeout={500}
+						transitionLeaveTimeout={300}>
+						{(this.state.queryMode) &&
+						<div className="search-shelf">
+							<TextField
+								ref={(input) => { this.searchInput = input; }}
+								className="search-shelf-input"
+								hintText="Enter the search term"
+								floatingLabelText="Search"
+								onChange={(event) => this.updateSearchQuery(event.target.value)}
+							/>
+						</div>
+						}
+					</CSSTransitionGroup>
+					{/* Show when search results are empty */}
+					{(books.length > 0) && (showingBooks.length === 0) &&
+					<div className="shelf-message-text">
+						No Results
+					</div>
+					}
 					{/* Book List */}
 					<CSSTransitionGroup
 						transitionName="move-book-animation"
 						className="books-grid"
 						transitionEnterTimeout={500}
 						transitionLeaveTimeout={300}>
-						{books.map((book) => (
+						{showingBooks.map((book) => (
 							<li key={book.id}>
 								<Book
 									id={book.id}
