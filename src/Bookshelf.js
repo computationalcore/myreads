@@ -23,39 +23,108 @@ import Book from './Book';
 import * as BookUtils from './BookUtils';
 import './App.css';
 
+/**
+ * This object is used for type checking the props of the component.
+ */
+const propTypes = {
+	books: PropTypes.array.isRequired,
+	category: PropTypes.oneOf(BookUtils.getBookshelfCategories()),
+	request: PropTypes.oneOf(Object.values(BookUtils.request)),
+	title: PropTypes.string,
+	withRibbon: PropTypes.bool,
+	withShelfMenu: PropTypes.bool,
+	onUpdateBook: PropTypes.func.isRequired,
+	onUpdateBookError: PropTypes.func,
+	onConnectionError: PropTypes.func,
+};
+
+/**
+ * This object sets default values to the optional props.
+ */
+const defaultProps = {
+	category: null,
+	request: BookUtils.request.OK,
+	title: null,
+	withRibbon: false,
+	withShelfMenu: true,
+	onUpdateBookError: () => {},
+	onConnectionError: () => {},
+};
+
+/**
+ * This callback type is called `updateBook` and is displayed as a global symbol.
+ *
+ * @callback updateBook
+ * @param {Object} book - The book object.
+ * @param {string} shelf - The id of the shelf.
+ */
+
+/**
+ * This callback type is called `updateBookError` and is displayed as a global symbol.
+ *
+ * @callback updateBookError
+ */
+
+/**
+ * This callback type is called `connectionError` and is displayed as a global symbol.
+ *
+ * @callback connectionError
+ * @param {string} shelf - The id of the shelf.
+ */
+
+/**
+ * @description Represents the Bookshelf element, with the books from the shelf category
+ * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
+ * @param {Object[]} props.books - List of books that belongs to the shelf.
+ * @param {number} [props.category=null] - The id of the category of the shelf.
+ * @param {number} [props.request=OK] - The API request state.
+ * @param {string} [props.title=null] - The title of the shelf.
+ * @param {boolean} [props.withRibbon=false] - Indicates whether the ribbon is present on top of each book.
+ * @param {boolean} [props.withShelfMenu=true] - Indicates whether the shelf menu is present.
+ * @param {updateBook} props.onUpdateBook - The callback executed when the update book is triggered.
+ * @param {updateBookError} [props.onUpdateBookError] - The callback executed if the update fails.
+ * @param {connectionError} [props.onConnectionError] - The callback executed if the a connection error happens.
+ */
 class Bookshelf extends Component {
 
-	static propTypes = {
-		// List of books that belongs to the shelf
-		books: PropTypes.array.isRequired,
-		// Category ID of the shelf
-		category: PropTypes.oneOf(BookUtils.getBookshelfCategories()),
-		onUpdateBook: PropTypes.func.isRequired,
-		onUpdateBookError: PropTypes.func,
-		onConnectionError: PropTypes.func,
-		request: PropTypes.oneOf(Object.values(BookUtils.request)),
-		title: PropTypes.string,
-		/* If the shelf should present shelf attribute ribbon on each book */
-		withRibbon: PropTypes.bool,
-		/* If clear shelf is available as an option in shelf menu */
-		withShelfMenu: PropTypes.bool,
-	};
+	constructor(props){
+		super(props);
 
-	state = {
-		selectMode: false,
-		selectedBooks: [],
-		dialogOpen: false,
-		alertDialogOpen: false,
-		query: '',
-		queryMode: false,
-	};
+		/**
+		 * @typedef {Object} ComponentState
+		 * @property {boolean} selectMode - Indicates if the select mode is active.
+		 * @property {Object[]} selectedBooks - Array of selected books.
+		 * @property {boolean} dialogOpen - Visibility of the clear shelf dialog.
+		 * @property {boolean} alertDialogOpen - Visibility of the error alert dialog.
+		 * @property {string} query - Search query input of the shelf internal search.
+		 * @property {boolean} queryMode -  Indicates if the shelf's books search is active.
+		 */
 
+		/** @type {ComponentState} */
+
+		this.state = {
+			selectMode: false,
+			selectedBooks: [],
+			dialogOpen: false,
+			alertDialogOpen: false,
+			query: '',
+			queryMode: false,
+		};
+	}
+
+	/**
+	 * @description Enable the select books mode.
+	 */
 	enableSelectMode = () => {
 		if (!this.state.selectMode) {
 			this.setState({selectMode: true, query: '', queryMode: false});
 		}
 	};
 
+	/**
+	 * @description Disable the select books mode.
+	 */
 	disableSelectMode = () => {
 		if (this.state.selectMode) {
 			this.setState({selectMode: false, selectedBooks: []});
@@ -63,14 +132,12 @@ class Bookshelf extends Component {
 	};
 
 	/**
-	 * @description Insert informed book into the selectedBooks state array
-	 * @param {object} book
+	 * @description Insert the book into the selectedBooks state array.
+	 * @param {object} book - The Book object.
 	 */
 	selectBook = (book) => {
 		// If books state array is not empty
 		if (this.state.selectMode) {
-			console.log('Select Book');
-
 			this.setState(state => ({
 				selectedBooks: state.selectedBooks.filter(b => b.id !== book.id).concat([book])
 			}));
@@ -78,18 +145,18 @@ class Bookshelf extends Component {
 	};
 
 	/**
-	 * @description copy all books from the shelf to the selectedBooks state array
+	 * @description Copy all books from the shelf to the selectedBooks state array.
 	 */
 	selectAllBooks = () => this.setState({selectedBooks: this.props.books});
 
 	/**
-	 * @description clear selectedBooks state array
+	 * @description Clear selectedBooks state array.
 	 */
 	deselectAllBooks = () => this.setState({selectedBooks: []});
 
 	/**
-	 * @description Remove informed book from the selectedBooks state array
-	 * @param {object} book
+	 * @description Remove book from the selectedBooks state array.
+	 * @param {object} book - The book object.
 	 */
 	deselectBook = (book) => {
 		// If books state array is not empty
@@ -102,7 +169,7 @@ class Bookshelf extends Component {
 
 	/**
 	 * @description Update shelf value of the books from selectedBooks state array to the informed value.
-	 * @param {string} shelf
+	 * @param {string} shelf - The id of the shelf.
 	 */
 	updateBooks = (shelf) => {
 		const onUpdateBook = this.props.onUpdateBook;
@@ -140,17 +207,18 @@ class Bookshelf extends Component {
 		this.setState({selectMode: false, query: '', queryMode: false});
 	};
 
-	// Search
 
+	/**
+	 * @description Update search query input.
+	 * @param {string} query - The search term.
+	 */
 	updateSearchQuery = (query) => {
 		this.setState({ query: query.trim() })
 	};
 
-	clearSearchQuery = () => {
-		this.setState({ query: '' })
-	};
-
-
+	/**
+	 * @description	Toggle the search mode activation.
+	 */
 	handleSearchCheck = () => {
 		this.setState((state) => {
 			return {
@@ -187,55 +255,53 @@ class Bookshelf extends Component {
 			showingBooks = books;
 		}
 
-
-
 		return (
 			<div>
 				{/* Shelf Toolbar */}
 				<Toolbar>
 					<ToolbarGroup>
-						<img className="shelf-bar-icon" src={BookUtils.getBookshelfCategoryIcon(category)} alt="" />
+						<img className="shelf-bar-icon" src={BookUtils.getBookshelfCategoryIcon(category)} alt=""/>
 						<ToolbarTitle text={(title === null) ? BookUtils.getBookshelfCategoryName(category) : title}/>
 					</ToolbarGroup>
 					{/* Only show shelf menu if this props is true */}
 					{withShelfMenu && (books.length > 0) &&
-						<ToolbarGroup>
-							{!selectMode &&
-							<div style={{width: 20}}>
-								<Checkbox
-									checkedIcon={<SearchIcon style={{color: 'blue'}}/>}
-									uncheckedIcon={<SearchIcon/>}
-									checked={this.state.queryMode}
-									onCheck={this.handleSearchCheck}
-								/>
-							</div>
+					<ToolbarGroup>
+						{!selectMode &&
+						<div style={{width: 20}}>
+							<Checkbox
+								checkedIcon={<SearchIcon style={{color: 'blue'}}/>}
+								uncheckedIcon={<SearchIcon/>}
+								checked={this.state.queryMode}
+								onCheck={this.handleSearchCheck}
+							/>
+						</div>
+						}
+						<ToolbarSeparator/>
+						{/* Shelf Menu Options */}
+						{!selectMode &&
+						<IconMenu
+							iconButtonElement={
+								<IconButton touch={true}>
+									<MoreVertIcon/>
+								</IconButton>
 							}
-							<ToolbarSeparator/>
-							{/* Shelf Menu Options */}
-							{!selectMode &&
-							<IconMenu
-								iconButtonElement={
-									<IconButton touch={true}>
-										<MoreVertIcon/>
-									</IconButton>
-								}
-							>
-								<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
-								<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen}/>
-							</IconMenu>
-							}
-							{/* Close Select Mode Button */}
-							{selectMode &&
-							<IconButton touch={true} onClick={this.disableSelectMode}>
-								<NavigationClose/>
-							</IconButton>
-							}
-						</ToolbarGroup>
+						>
+							<MenuItem primaryText="Move Books" onClick={this.enableSelectMode}/>
+							<MenuItem primaryText="Clear Shelf" onClick={this.handleDialogOpen}/>
+						</IconMenu>
+						}
+						{/* Close Select Mode Button */}
+						{selectMode &&
+						<IconButton touch={true} onClick={this.disableSelectMode}>
+							<NavigationClose/>
+						</IconButton>
+						}
+					</ToolbarGroup>
 					}
 				</Toolbar>
 				{/* Clear Books Confirmation Dialog */}
 				<ConfirmDialog
-					title={'Clear Shelf'}
+					title="Clear Shelf"
 					message={'Are you sure you want to remove all books from the "' +
 					BookUtils.getBookshelfCategoryName(category) + '" shelf?'}
 					onCancel={this.handleDialogClose}
@@ -244,7 +310,7 @@ class Bookshelf extends Component {
 				/>
 				{/* Alert Dialog when have problems with book update server response */}
 				<AlertDialog
-					message='Unable to update book data from server (Maybe internet connection or server instability)'
+					message="Unable to update book data from server (Maybe internet connection or server instability)"
 					onClick={onUpdateBookError}
 					open={request === BookUtils.request.BOOK_ERROR}
 				/>
@@ -281,22 +347,26 @@ class Bookshelf extends Component {
 									{(this.state.selectedBooks.length > 0) &&
 									<div>
 										<SelectField
-											floatingLabelText={"Move " + (this.state.selectedBooks.length > 1 ? 'Books' : 'Book') + " to"}
+											floatingLabelText={'Move ' + (this.state.selectedBooks.length > 1 ? 'Books':
+												'Book') + " to"}
 											value={this.state.value}
 											onChange={(event, index, value) => (this.updateBooks(value))}
 										>
 											<Subheader>Move Book to...</Subheader>
-											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== category).map((shelf) => (
-												<MenuItem key={shelf} value={shelf}>
-													<img className="app-book-menu-shelf-icon"
-													src={BookUtils.getBookshelfCategoryIcon(shelf)}
-													alt=""
-													/>
-													<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
-												</MenuItem>
-											))}
+											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== category).map(
+												(shelf) => (
+													<MenuItem key={shelf} value={shelf}>
+														<img className="app-book-menu-shelf-icon"
+															 src={BookUtils.getBookshelfCategoryIcon(shelf)}
+															 alt=""
+														/>
+														<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
+													</MenuItem>
+												)
+											)}
 											<MenuItem key="none" value="none">
-												<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="" width={30} />
+												<img src={RemoveIcon} className="app-book-menu-remove-icon" alt=""
+													 width={30}/>
 												<span>None</span>
 											</MenuItem>
 										</SelectField>
@@ -328,7 +398,9 @@ class Bookshelf extends Component {
 						{(this.state.queryMode) &&
 						<div className="search-shelf">
 							<TextField
-								ref={(input) => { this.searchInput = input; }}
+								ref={(input) => {
+									this.searchInput = input;
+								}}
 								className="search-shelf-input"
 								hintText="Enter the search term"
 								floatingLabelText="Search"
@@ -355,19 +427,18 @@ class Bookshelf extends Component {
 									id={book.id}
 									title={book.title}
 									image={book.imageLinks.thumbnail}
-									shelf={(book.shelf) ? book.shelf: 'none'}
+									shelf={(book.shelf) ? book.shelf : 'none'}
 									authors={('authors' in book) ? book.authors : []}
 									averageRating={(book.averageRating) ? book.averageRating : 0}
 									ratingsCount={(book.ratingsCount) ? book.ratingsCount : 0}
 									updating={('updating' in book) ? book.updating : false}
 									selectMode={this.state.selectMode}
-									selected={(this.state.selectedBooks.filter(b => b.id === book.id).length > 0) ? true : false}
+									selected={(this.state.selectedBooks.filter(b => b.id === book.id).length > 0)}
 									withRibbon={withRibbon}
 									onSelectBook={() => this.selectBook(book)}
 									onDeselectBook={() => this.deselectBook(book)}
-									onUpdate={(shelf) => (onUpdateBook(book,shelf))}
+									onUpdate={(shelf) => (onUpdateBook(book, shelf))}
 								/>
-
 							</li>
 						))}
 					</CSSTransitionGroup>
@@ -377,10 +448,9 @@ class Bookshelf extends Component {
 	}
 }
 
-Bookshelf.defaultProps = {
-	title: null,
-	withRibbon: false,
-	withShelfMenu: true,
-};
+// Type checking the props of the component
+Bookshelf.propTypes = propTypes;
+// Assign default values to the optional props
+Bookshelf.defaultProps = defaultProps;
 
 export default Bookshelf;

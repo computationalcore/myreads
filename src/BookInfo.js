@@ -11,17 +11,35 @@ import Share from './Share';
 
 const rateItURL = 'https://books.google.com.br/books?op=lookup&id=';
 
+/**
+ * This object is used for type checking the props of the component.
+ */
+const propTypes = {
+	id: PropTypes.string.isRequired,
+};
+
+/**
+ * @description	BookInfo page
+ * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
+ * @param {string} props.id - The id of the book.
+ */
 class BookInfo extends Component {
 
-	static propTypes = {
-		// List of books that belongs to the shelf
-		bookId: PropTypes.string.isRequired,
-	};
+	constructor(props){
+		super(props);
+		/**
+		 * @typedef {Object} ComponentState
+		 * @property {Object} book - The book object.
+		 * @property {boolean} loading - Indicates whether the page is updating.
+		 */
 
-	state = {
-		book: {},
-		status: 'loading',
-	};
+		/** @type {ComponentState} */
+		this.state = {
+			book: {},
+			status: 'loading',
+		};
+	}
 
 	/**
 	 * Lifecycle event handler called just after the App loads into the DOM.
@@ -32,7 +50,7 @@ class BookInfo extends Component {
 	}
 
 	/**
-	 * Call the API to get book data and update book state variable when the callback returns.
+	 * @description Call the API to get book data and update book state variable when the callback returns.
 	 */
 	getBookInfo = ()  => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch
@@ -40,13 +58,13 @@ class BookInfo extends Component {
 		const app = this;
 		this.setState({status: 'loading'});
 		// Get the book data using API request
-		BooksAPI.get(this.props.bookId).then((book) => {
+		BooksAPI.get(this.props.id).then((book) => {
 			// No error, book data is available
 			if(!book.errorCode) {
 				app.setState({book: book, status: 'ok'});
 			}
 			// 500 happens when bookID is not found (it can happen for any other server internal error, but since
-			// API response is limited I must assume that the 500 means no book available for the informed bookId
+			// API response is limited I must assume that the 500 means no book available for the informed book ID
 			else {
 				if(book.errorCode === 500){
 					app.setState({status: 'not_found'});
@@ -72,11 +90,11 @@ class BookInfo extends Component {
 				</div>
 				{/* Show when app have problems getting book data from server */}
 				{(this.state.status === 'error') &&
-					<div className="shelf-message-text">
-						<div>Unable to fetch data from server</div>
-						<div>(Maybe internet connection or server instability)</div>
-						<RaisedButton label="Try Again" primary={true} onClick={this.getBookInfo}/>
-					</div>
+				<div className="shelf-message-text">
+					<div>Unable to fetch data from server</div>
+					<div>(Maybe internet connection or server instability)</div>
+					<RaisedButton label="Try Again" primary={true} onClick={this.getBookInfo}/>
+				</div>
 				}
 				{/* Show when book id is not found */}
 				{(this.state.status === 'not_found') &&
@@ -86,93 +104,100 @@ class BookInfo extends Component {
 				}
 				{/* Book */}
 				{(this.state.status === 'ok') &&
-					<Card style={{margin: 20}}>
-						<div>
-							<CardTitle title={book.title} subtitle={('subtitle' in book) ? book.subtitle : ''}/>
-							<div className="info-grid">
-								<div className="info-item">
-									<img src={book.imageLinks.thumbnail} alt="book.title" />
-									<div className="book-rating-container">
-										<BookRating
-											value={(book.averageRating) ? book.averageRating : 0}
-											count={(book.ratingsCount) ? book.ratingsCount : 0}
-										/>
-									</div>
+				<Card style={{margin: 20}}>
+					<div>
+						<CardTitle title={book.title} subtitle={('subtitle' in book) ? book.subtitle : ''}/>
+						<div className="info-grid">
+							<div className="info-item">
+								<img src={book.imageLinks.thumbnail} alt="book.title"/>
+								<div className="book-rating-container">
+									<BookRating
+										value={(book.averageRating) ? book.averageRating : 0}
+										count={(book.ratingsCount) ? book.ratingsCount : 0}
+									/>
 								</div>
-								<div className="info-item">
-									{('authors' in book) &&
-										<div className="info-prop">
-											<span className="info-prop-title">{(book.authors.length > 1) ? 'Authors' : 'Author'}</span>
-											{book.authors.map((author) => (
-												<span key={author} className="info-prop-content">
+							</div>
+							<div className="info-item">
+								{('authors' in book) &&
+								<div className="info-prop">
+									<span
+										className="info-prop-title">{(book.authors.length > 1) ? 'Authors' : 'Author'}
+									</span>
+									{book.authors.map((author) => (
+										<span key={author} className="info-prop-content">
 														{author}
 													</span>
-											))}
-										</div>
-									}
-									{book.publisher &&
-										<div className="info-prop">
-											<span className="info-prop-title">Publisher</span>
-											<span className="info-prop-content">{book.publisher}</span>
-										</div>
-									}
-									{book.publishedDate &&
-										<div className="info-prop">
-											<span className="info-prop-title">Published Date</span>
-											<span className="info-prop-content">{book.publishedDate}</span>
-										</div>
-									}
-									{('pageCount' in book) &&
-										<div className="info-prop">
-											<span className="info-prop-title">Pages</span>
-											<span className="info-prop-content">{book.pageCount}</span>
-										</div>
-									}
-									{book.categories &&
-										<div className="info-prop">
-											<span className="info-prop-title">{(book.categories.length > 1) ? 'Categories' : 'Category'}</span>
-											{book.categories.map((category) => (
-												<span key={category} className="info-prop-content">
+									))}
+								</div>
+								}
+								{book.publisher &&
+								<div className="info-prop">
+									<span className="info-prop-title">Publisher</span>
+									<span className="info-prop-content">{book.publisher}</span>
+								</div>
+								}
+								{book.publishedDate &&
+								<div className="info-prop">
+									<span className="info-prop-title">Published Date</span>
+									<span className="info-prop-content">{book.publishedDate}</span>
+								</div>
+								}
+								{('pageCount' in book) &&
+								<div className="info-prop">
+									<span className="info-prop-title">Pages</span>
+									<span className="info-prop-content">{book.pageCount}</span>
+								</div>
+								}
+								{book.categories &&
+								<div className="info-prop">
+									<span
+										className="info-prop-title">
+										{(book.categories.length > 1) ? 'Categories' : 'Category'}
+									</span>
+									{book.categories.map((category) => (
+										<span key={category} className="info-prop-content">
 													{category}
 												</span>
-											))}
-										</div>
-									}
+									))}
 								</div>
+								}
 							</div>
 						</div>
-						<CardText>
-							{book.description}
-						</CardText>
-						<CardActions>
-							<div>
-								<RaisedButton
-									className="info-action-button"
-									href={rateItURL + book.id}
-									target="_blank"
-									label="Rate It"
-									primary={true}
-									icon={<ActionGrade/>}
-								/>
-								<RaisedButton
-									className="info-action-button"
-									href={book.previewLink}
-									target="_blank"
-									label="Preview"
-									primary={true}
-									icon={<RemoveRedEye />}
-								/>
-							</div>
-							<div className="info-share">
-								<h3>Share</h3>
-								<Share title={'MyReads - Sharing book details: ' + book.title} url={window.location.href} />
-							</div>
-						</CardActions>
-					</Card>
+					</div>
+					<CardText>
+						{book.description}
+					</CardText>
+					<CardActions>
+						<div>
+							<RaisedButton
+								className="info-action-button"
+								href={rateItURL + book.id}
+								target="_blank"
+								label="Rate It"
+								primary={true}
+								icon={<ActionGrade/>}
+							/>
+							<RaisedButton
+								className="info-action-button"
+								href={book.previewLink}
+								target="_blank"
+								label="Preview"
+								primary={true}
+								icon={<RemoveRedEye/>}
+							/>
+						</div>
+						<div className="info-share">
+							<h3>Share</h3>
+							<Share title={'MyReads - Sharing book details: ' + book.title} url={window.location.href}/>
+						</div>
+					</CardActions>
+				</Card>
 				}
 			</div>
 		);
 	}
 }
+// Type checking the props of the component
+BookInfo.propTypes = propTypes;
 
 export default BookInfo;

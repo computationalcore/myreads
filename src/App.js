@@ -17,38 +17,48 @@ import Subheader from 'material-ui/Subheader';
 import SvgIcon from 'material-ui/SvgIcon';
 import * as BooksAPI from './BooksAPI';
 import * as BookUtils from './BookUtils';
-import Bookshelf from './Bookshelf';
 import Authentication from './Authentication';
 import BookInfo from './BookInfo';
+import Bookshelf from './Bookshelf';
 import Login from './Login';
+import PrivateRoute from './PrivateRoute';
 import Register from './Register';
 import Search from './Search';
-import PrivateRoute from './PrivateRoute';
 import UnauthenticatedRoute from './UnauthenticatedRoute';
 import './App.css';
 
 /**
- * Main App component.
+ * @description Main App component.
+ * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
  */
 class BooksApp extends React.Component {
 
-	state = {
-		books: [],
-		request: BookUtils.request.OK, /* Represents the app request state used for API requests */
-		menuOpen: false,
-		// Search related state
-		searchResults: [],
-		query: '',
-	};
+	constructor(props){
+		super(props);
 
-	logout = (history) => {
-		BookUtils.cleanAccountAddress();
-		history.push('/authentication');
-	};
+		/**
+		 * @typedef {Object} ComponentState
+		 * @property {Object[]} books - All books from the logged account.
+		 * @property {number} request - App request state used to represent the API request/response.
+		 * @property {boolean} menuOpen - Main Screen menu state.
+		 * @property {Object[]} searchResults - All books returned from the search.
+		 * @property {string} query - Search term input.
+		 */
+
+		/** @type {ComponentState} */
+		this.state = {
+			books: [],
+			request: BookUtils.request.OK,
+			menuOpen: false,
+			searchResults: [],
+			query: '',
+		};
+	}
 
 	/**
 	 * Lifecycle event handler called just after the App loads into the DOM.
-	 * Call the API to get all books and update books state variable when the callback returns.
+	 * Call the API to get all books if the user is logged.
 	 */
 	componentDidMount() {
 		// Execute get books only if user is logged
@@ -58,21 +68,8 @@ class BooksApp extends React.Component {
 	}
 
 	/**
-	 * Save account address into local storage and proceed to main app page.
+	 * @description: Get all books from the logged user.
 	 */
-	handleLogin = (address,  history) => {
-		// Reset any previous stored state data in memory
-		this.setState({
-			books: [],
-			menuOpen: false,
-			searchResults: [],
-			query: '',
-		});
-		BookUtils.saveAccountAddress(address);
-		history.push('/');
-		this.getAllBooks();
-	};
-
 	getAllBooks = () => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch context
 		const app = this;
@@ -86,9 +83,9 @@ class BooksApp extends React.Component {
 	};
 
 	/**
-	 * @description Change shelf value for a book element from the server data
-	 * @param {object) book
-	 * @param {string} shelf
+	 * @description Change shelf value for a book element from the server data.
+	 * @param {Object) book - The book to be updated.
+	 * @param {string} shelf - The category ID.
 	 */
 	updateBook = (book, shelf) => {
 		// If books state array is not empty
@@ -124,34 +121,15 @@ class BooksApp extends React.Component {
 	};
 
 	/**
-	 * @description Change request state to OK in case of pressing OK at dialog after an individual book update failure
+	 * @description Update the query state and call the search.
+	 * @param {string} query - The search term.
 	 */
-	handleUpdateBookError = () => {
-		this.setState({request: BookUtils.request.OK});
-	};
-
-	handleMenuToggle = () => {
-		this.setState(state => ({
-			menuOpen: !state.menuOpen,
-		}));
-	};
-
-	goToShelf = (shelf) => {
-		this.setState({menuOpen: false}, function stateUpdateComplete() {
-			scrollToComponent(this[shelf], {offset: -90, align: 'top', duration: 500, ease: 'inCirc'});
-		}.bind(this));
-
-
-	};
-
 	updateQuery = (query) => {
-
 		// If query is empty or undefined
 		if (!query) {
 			this.setState({query: '', searchResults: [], request: BookUtils.request.OK});
 			return;
 		}
-
 		query = query.trim();
 		// Update the search field as soon as the character is typed
 		this.setState({
@@ -161,16 +139,10 @@ class BooksApp extends React.Component {
 		}, function stateUpdateComplete() {
 			this.search();
 		}.bind(this));
-
 	};
 
 	/**
-	 * @description Search books for this query.
-	 *    NOTES: The search from BooksAPI is limited to a particular set of search terms.
-	 *    You can find these search terms here:
-	 *    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-	 *    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if you
-	 *    don't find a specific author or title. Every search is limited by search terms.
+	 * @description Search books for the query state.
 	 */
 	search = () => {
 		// Inside catch block the context change so assign like this to reference the app context not the catch
@@ -209,20 +181,74 @@ class BooksApp extends React.Component {
 	};
 
 	/**
-	 *
+	 * @description Save account address into local storage and proceed to main app page.
+	 * @param {string} address - The account address.
+	 * @param {Object} history - The react router history object.
+	 */
+	handleLogin = (address,  history) => {
+		// Reset any previous stored state data in memory
+		this.setState({
+			books: [],
+			menuOpen: false,
+			searchResults: [],
+			query: '',
+		});
+		BookUtils.saveAccountAddress(address);
+		history.push('/');
+		this.getAllBooks();
+	};
+
+	/**
+	 * @description Clean the address from local storage and redirect to authentication page.
+	 * @param {Object} history - The react router history object.
+	 */
+	handleLogout = (history) => {
+		BookUtils.cleanAccountAddress();
+		history.push('/authentication');
+	};
+
+	/**
+	 * @description Back to previous page and clean some previous page state.
+	 * @param {Object} history - The react router history object.
 	 */
 	goToPrevious = (history) => {
-		history.push("/");
+		history.push('/');
 		// Clear previous search if go back to home
 		this.setState({query: '', searchResults: []});
+	};
+
+	/**
+	 * @description Change request state to OK in case of pressing OK at dialog after an individual book update failure.
+	 */
+	handleUpdateBookError = () => {
+		this.setState({request: BookUtils.request.OK});
+	};
+
+	/**
+	 * @description Toggle app menu open/close state.
+	 */
+	handleMenuToggle = () => {
+		this.setState(state => ({
+			menuOpen: !state.menuOpen,
+		}));
+	};
+
+	/**
+	 * @description Animated scroll the main page area top to the informed shelf.
+	 * @param {string} shelf - The id of the category.
+	 */
+	goToShelf = (shelf) => {
+		this.setState({menuOpen: false}, function stateUpdateComplete() {
+			scrollToComponent(this[shelf], {offset: -90, align: 'top', duration: 500, ease: 'inCirc'});
+		}.bind(this));
 	};
 
 	render() {
 		return (
 			<MuiThemeProvider>
 				<div className="app">
-					{/* Main app screen - Logged Route */}
-					<PrivateRoute exact path='/' render={({history}) => (
+					{/* Main app screen (Bookshelf) */}
+					<PrivateRoute exact path="/" render={({history}) => (
 						<div className="list-books">
 							<div className="app-bar">
 								<AppBar
@@ -243,9 +269,9 @@ class BooksApp extends React.Component {
 											<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 										</MenuItem>
 									))}
-									<Divider />
-									<MenuItem onClick={() => (this.logout(history))}>
-										<Logout className="app-menu-shelf-icon" style={{color: 'grey'}} />
+									<Divider/>
+									<MenuItem onClick={() => (this.handleLogout(history))}>
+										<Logout className="app-menu-shelf-icon" style={{color: 'grey'}}/>
 										<span>Logout</span>
 									</MenuItem>
 								</Menu>
@@ -258,7 +284,8 @@ class BooksApp extends React.Component {
 												 this[shelf] = section;
 											 }}>
 											<Bookshelf
-												books={this.state.books.filter((book) => book.shelf === shelf).sort(sortBy('title'))}
+												books={this.state.books.filter((book) => book.shelf === shelf).sort(
+													sortBy('title'))}
 												category={shelf}
 												request={this.state.request}
 												onUpdateBook={this.updateBook}
@@ -271,8 +298,8 @@ class BooksApp extends React.Component {
 							</div>
 							<div className="open-search">
 								<Link
-									to='/search'
-									className='add-books'
+									to="/search"
+									className="add-books"
 								>
 									<FloatingActionButton>
 										<ContentAdd/>
@@ -281,8 +308,8 @@ class BooksApp extends React.Component {
 							</div>
 						</div>
 					)}/>
-					{/* Search - Logged Route */}
-					<PrivateRoute path='/search' render={({history}) => (
+					{/* Search */}
+					<PrivateRoute path="/search" render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -341,12 +368,12 @@ class BooksApp extends React.Component {
 									   />
 								   </div>
 								   <div className="app-content">
-									   <BookInfo bookId={bookId}/>
+									   <BookInfo id={bookId}/>
 								   </div>
 							   </div>
 						   )}/>
 					{/* Authentication Page */}
-					<UnauthenticatedRoute path='/authentication' render={({history}) => (
+					<UnauthenticatedRoute path="/authentication" render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -360,7 +387,7 @@ class BooksApp extends React.Component {
 						</div>
 					)}/>
 					{/* Login page */}
-					<UnauthenticatedRoute path='/login' render={({history}) => (
+					<UnauthenticatedRoute path="/login" render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -370,16 +397,16 @@ class BooksApp extends React.Component {
 											<ArrowBack/>
 										</IconButton>
 									}
-									onLeftIconButtonTouchTap={() => (history.push("/authentication"))}
+									onLeftIconButtonTouchTap={() => (history.push('/authentication'))}
 								/>
 							</div>
 							<div className="app-content">
-								<Login history={history} onComplete={this.handleLogin} />
+								<Login history={history} onComplete={this.handleLogin}/>
 							</div>
 						</div>
 					)}/>
 					{/* Register Page */}
-					<UnauthenticatedRoute path='/register' render={({history}) => (
+					<UnauthenticatedRoute path="/register" render={({history}) => (
 						<div>
 							<div className="app-bar">
 								<AppBar
@@ -389,11 +416,11 @@ class BooksApp extends React.Component {
 											<ArrowBack/>
 										</IconButton>
 									}
-									onLeftIconButtonTouchTap={() => (history.push("/authentication"))}
+									onLeftIconButtonTouchTap={() => (history.push('/authentication'))}
 								/>
 							</div>
 							<div className="app-content">
-								<Register history={history} onComplete={this.handleLogin} />
+								<Register history={history} onComplete={this.handleLogin}/>
 							</div>
 						</div>
 					)}/>

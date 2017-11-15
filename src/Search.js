@@ -3,18 +3,31 @@ import PropTypes from 'prop-types';
 import Bookshelf from './Bookshelf';
 import * as BookUtils from './BookUtils';
 
-class Search extends Component {
-	static propTypes = {
-		// Books from the Shelves
-		books: PropTypes.array.isRequired,
-		query: PropTypes.string.isRequired,
-		request: PropTypes.oneOf(Object.values(BookUtils.request)),
-		onSearch: PropTypes.func.isRequired,
-		onUpdateQuery: PropTypes.func.isRequired,
-		onUpdateBook: PropTypes.func.isRequired,
-		onUpdateBookError: PropTypes.func,
-	};
+/**
+ * This object is used for type checking the props of the component.
+ */
+const propTypes = {
+	// Books from the Shelves
+	books: PropTypes.array.isRequired,
+	query: PropTypes.string.isRequired,
+	request: PropTypes.oneOf(Object.values(BookUtils.request)),
+	onSearch: PropTypes.func.isRequired,
+	onUpdateQuery: PropTypes.func.isRequired,
+	onUpdateBook: PropTypes.func.isRequired,
+	onUpdateBookError: PropTypes.func,
+};
 
+/**
+ * @description	The Search page component.
+ * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
+ */
+class Search extends Component {
+
+	/**
+	 * Lifecycle event handler called just after the App loads into the DOM.
+	 * Focus the search input when component load.
+	 */
 	componentDidMount(){
 		this.searchInput.focus();
 	}
@@ -27,7 +40,9 @@ class Search extends Component {
 				<div className="search-books-bar">
 					<div className="search-books-input-wrapper">
 						<input
-							ref={(input) => { this.searchInput = input; }}
+							ref={(input) => {
+								this.searchInput = input;
+							}}
 							value={query}
 							className='search-books'
 							type='text'
@@ -52,5 +67,8 @@ class Search extends Component {
 		);
 	};
 }
+
+// Type checking the props of the component
+Search.propTypes = propTypes;
 
 export default Search;

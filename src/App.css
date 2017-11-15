@@ -40,6 +40,7 @@ body, .app {
 }
 
 /* Entropy Component */
+
 .entropy-text {
   font-family: 'Dancing Script', Georgia, Times, serif;
   font-size: 50px;
@@ -71,11 +72,16 @@ body, .app {
 }
 
 /* authentication */
+
 .app-authentication {
   text-align: center;
   margin-top: 80px;
 }
 
+.app-authentication-internal {
+  width: 90%;
+  margin: 0 auto;
+}
 .important-note {
   font-size: small;
   font-weight: 600;
@@ -329,8 +335,6 @@ body, .app {
   vertical-align: middle;
 }
 
-
-
 /* book cover */
 
 .book-cover {
@@ -355,6 +359,11 @@ html, body {
 }
 
 /* book corner ribbon */
+
+.book-checkbox {
+  margin-bottom: 16px;
+  background-color: white;
+}
 
 .ribbon {
   width: 130px;
@@ -443,7 +452,6 @@ html, body {
   width: 0px;
   transition: 700ms;
 }
-
 
 /* book select control mode and animations */
 
@@ -607,7 +615,14 @@ html, body {
   margin: 10px;
 }
 
+/* dialog */
+
+.confirm-dialog {
+  margin-right: 12px;
+}
+
 /* share */
+
 .share-network {
   vertical-align: top;
   display: inline-block;

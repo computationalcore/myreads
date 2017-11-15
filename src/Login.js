@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import QrReader from 'react-qr-reader';
+import SwipeableViews from 'react-swipeable-views';
 import Bitcoin from 'bitcoinjs-lib';
 import Checkbox from 'material-ui/Checkbox';
 import MenuItem from 'material-ui/MenuItem';
@@ -10,16 +11,33 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import SwipeableViews from 'react-swipeable-views';
 import AlertDialog from './AlertDialog';
 
+/**
+ * @description	The Login page component.
+ * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
+ */
 class Login extends Component {
 
 	constructor(props){
 		super(props);
+
+		/**
+		 * @typedef {Object} ComponentState
+		 * @property {number} delay - The delay between each scan in milliseconds.
+		 * @property {string} facingMode - If the device have multiple cameras this sets which camera is selected.
+		 * @property {boolean} legacyMode - Enable the scan based on uploaded image only.
+		 * @property {boolean} cameraError - Indicates whether an error camera happened.
+		 * @property {string} dialogMessage - The alert dialog message.
+		 * @property {number} slideIndex - The index of the tab.
+		 * @property {boolean} submitDisabled - Indicates whether submit is disabled.
+		 * @property {boolean} inputVisible - The visibility of the account key input.
+		 */
+
+		/** @type {ComponentState} */
 		this.state = {
 			delay: 300,
-			result: 'No result',
 			facingMode: 'user',
 			legacyMode: false,
 			cameraError: false,
@@ -32,8 +50,8 @@ class Login extends Component {
 	}
 
 	/**
-	 * Handle the scan from the QR code reader
-	 * @param data
+	 * @description Handle the scan from the QR code reader.
+	 * @param {string} data - The data from the QR code reader after a scan.
 	 */
 	handleScan = (data) => {
 		const errorMessage = 'Not found any valid QRCode format for the Access Key. Please try a valid image.';
@@ -46,9 +64,9 @@ class Login extends Component {
 	};
 
 	/**
-	 * If the app couldn't read the camera. Errors cause can vary from user not giving permission to access camera, by
-	 * the absence of camera or WebRTC is not supported by the browser.
-	 * @param err
+	 * @description If the app couldn't read the camera. Errors cause can vary from user not giving permission to access
+	 * camera, by the absence of camera or WebRTC is not supported by the browser.
+	 * @param {Object} err - The QR code reader error object.
 	 */
 	handleError = (err) => {
 		this.setState({
@@ -58,7 +76,7 @@ class Login extends Component {
 	};
 
 	/**
-	 * Enable QrCode code reader legacy mode to be able to upload images and open upload dialog.
+	 * @description Enable QrCode code reader legacy mode to be able to upload images and open upload dialog.
 	 */
 	handleImageLoad = () => {
 		// Set the QrCode reader to legacy mode for the upload to be available
@@ -69,8 +87,8 @@ class Login extends Component {
 	};
 
 	/**
-	 * If the user environment have two cameras (like mobile phones with frontal and rear camera) it allows to switch.
-	 * The user can also disable the camera and it will set the state to legacy mode (upload file mode).
+	 * @description If the user environment have two cameras (like mobile phones with frontal and rear camera) it allows
+	 * to switch. The user can also disable the camera and it will set the state to legacy mode (upload file mode).
 	 * between them.
 	 * @param event
 	 * @param index
@@ -86,9 +104,8 @@ class Login extends Component {
 
 	};
 
-
 	/**
-	 * Hide the alert dialog.
+	 * @description Hide the alert dialog.
 	 */
 	hideDialog = () => {
 		this.setState({
@@ -98,11 +115,11 @@ class Login extends Component {
 
 
 	/**
-	 *  Validate the the WIF, generate the address and proceed to main app screen.
-	 *  If the fails the dialog with the errorMessage will be displayed.
-	 *  Note: https://en.bitcoin.it/wiki/Wallet_import_format
-	 * @param wif
-	 * @param errorMessage
+	 * @description Validate the the WIF, generate the address and proceed to main app screen. If the fails the dialog
+	 * with the errorMessage will be displayed.
+	 * @see {@link https://en.bitcoin.it/wiki/Wallet_import_format}
+	 * @param {string} wif - The key in WIF format.
+	 * @param {string} errorMessage - Error message to be displayed if the WIF key is not correct.
 	 */
 	saveAddress = (wif, errorMessage) => {
 		try {
@@ -120,16 +137,15 @@ class Login extends Component {
 	};
 
 	/**
-	 * Handle account key submit
+	 * @description Handle account key submit button.
 	 */
 	handleKeySubmit = () => {
 		this.saveAddress(this.keyInput.input.value, 'Not a valid access key. Please enter a valid value.');
 	};
 
 	/**
-	 * Handle the Account Key TextField input change. It enable the submit button if field is not empty or
-	 * disable it otherwise.
-	 * @param value
+	 * @description Handle tab switch.
+	 * @param {number} value - The index of the tab slide.
 	 */
 	handleChange = (value) => {
 		this.setState({
@@ -138,7 +154,7 @@ class Login extends Component {
 	};
 
 	/**
-	 * Handle the Account Key TextField input change. It enable the submit button if field is not empty or
+	 * @description Handle the Account Key TextField input change. It enable the submit button if field is not empty or
 	 * disable it otherwise.
 	 * @param event
 	 * @param value
@@ -153,7 +169,7 @@ class Login extends Component {
 	};
 
 	/**
-	 * Change the visibility of the access key text input.
+	 * @description Change the visibility of the access key text input.
 	 */
 	handleVisibilityCheck = () => {
 		this.setState((state) => {
@@ -163,15 +179,16 @@ class Login extends Component {
 		});
 	};
 
-	render(){
-		return(
+	render() {
+		return (
 			<div style={{textAlign: 'center'}}>
 				<AlertDialog
 					open={(this.state.dialogMessage.length > 0)}
 					message={this.state.dialogMessage}
 					onClick={this.hideDialog}
 				/>
-				<p className="login-header">Use the QrCode backup OR the Access Key. If you don't have an account <Link to="/register">Register Here</Link>.</p>
+				<p className="login-header">Use the QrCode backup OR the Access Key. If you don't have an account <Link
+					to="/register">Register Here</Link>.</p>
 				<Tabs
 					onChange={this.handleChange}
 					value={this.state.slideIndex}
@@ -250,6 +267,5 @@ class Login extends Component {
 		)
 	}
 }
-
 
 export default Login;

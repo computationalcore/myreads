@@ -48,13 +48,21 @@ const TumblrIcon = generateShareIcon('tumblr');
 const EmailIcon = generateShareIcon('email');
 
 /**
- *
- * @param props
- * @returns {XML}
+ * This object is used for type checking the props of the component.
+ */
+const propTypes = {
+	title: PropTypes.string.isRequired,
+	url: PropTypes.string.isRequired,
+};
+
+/**
+ * @description Represents the share are with several buttons and share counts.
  * @constructor
+ * @param {Object} props - The props that were defined by the caller of this component.
+ * @param {string} props.value The share string to be show with the url.
+ * @param {string} props.url The url of the page which should be shared.
  */
 function Share(props) {
-
 	return (
 		<div>
 			<div className="share-network">
@@ -64,7 +72,7 @@ function Share(props) {
 					className="share-network-share-button">
 					<FacebookIcon
 						size={32}
-						round />
+						round/>
 				</FacebookShareButton>
 
 				<FacebookShareCount
@@ -81,7 +89,7 @@ function Share(props) {
 					className="share-network-share-button">
 					<TwitterIcon
 						size={32}
-						round />
+						round/>
 				</TwitterShareButton>
 
 				<div className="share-network-share-count">
@@ -94,7 +102,7 @@ function Share(props) {
 					url={props.url}
 					title={props.title}
 					className="share-network-share-button">
-					<TelegramIcon size={32} round />
+					<TelegramIcon size={32} round/>
 				</TelegramShareButton>
 
 				<div className="share-network-share-count">
@@ -108,7 +116,7 @@ function Share(props) {
 					title={props.title}
 					separator=":: "
 					className="share-network-share-button">
-					<WhatsappIcon size={32} round />
+					<WhatsappIcon size={32} round/>
 				</WhatsappShareButton>
 
 				<div className="share-network-share-count">
@@ -122,7 +130,7 @@ function Share(props) {
 					className="share-network-share-button">
 					<GooglePlusIcon
 						size={32}
-						round />
+						round/>
 				</GooglePlusShareButton>
 
 				<GooglePlusShareCount
@@ -141,7 +149,7 @@ function Share(props) {
 					className="share-network-share-button">
 					<LinkedinIcon
 						size={32}
-						round />
+						round/>
 				</LinkedinShareButton>
 
 				<LinkedinShareCount
@@ -158,11 +166,11 @@ function Share(props) {
 					windowWidth={1000}
 					windowHeight={730}
 					className="share-network-share-button">
-					<PinterestIcon size={32} round />
+					<PinterestIcon size={32} round/>
 				</PinterestShareButton>
 
 				<PinterestShareCount url={props.url}
-									 className="share-network-share-count" />
+									 className="share-network-share-count"/>
 			</div>
 
 			<div className="share-network">
@@ -174,11 +182,11 @@ function Share(props) {
 					className="share-network-share-button">
 					<VKIcon
 						size={32}
-						round />
+						round/>
 				</VKShareButton>
 
 				<VKShareCount url={props.url}
-							  className="share-network-share-count" />
+							  className="share-network-share-count"/>
 			</div>
 
 			<div className="share-network">
@@ -190,11 +198,11 @@ function Share(props) {
 					className="share-network-share-button">
 					<OKIcon
 						size={32}
-						round />
+						round/>
 				</OKShareButton>
 
 				<OKShareCount url={props.url}
-							  className="share-network-share-count" />
+							  className="share-network-share-count"/>
 			</div>
 
 			<div className="share-network">
@@ -206,11 +214,11 @@ function Share(props) {
 					className="share-network-share-button">
 					<RedditIcon
 						size={32}
-						round />
+						round/>
 				</RedditShareButton>
 
 				<RedditShareCount url={props.url}
-								  className="share-network-share-count" />
+								  className="share-network-share-count"/>
 			</div>
 
 			<div className="share-network">
@@ -222,11 +230,11 @@ function Share(props) {
 					className="share-network-share-button">
 					<TumblrIcon
 						size={32}
-						round />
+						round/>
 				</TumblrShareButton>
 
 				<TumblrShareCount url={props.url}
-								  className="share-network-share-count" />
+								  className="share-network-share-count"/>
 			</div>
 
 			<div className="share-network">
@@ -237,18 +245,14 @@ function Share(props) {
 					className="share-network-share-button">
 					<EmailIcon
 						size={32}
-						round />
+						round/>
 				</EmailShareButton>
 			</div>
 		</div>
 	);
 }
 
-Share.propTypes = {
-	// Title of the book
-	title: PropTypes.string.isRequired,
-	// Book Cover Image
-	url: PropTypes.string.isRequired,
-};
+// Type checking the props of the component
+Share.propTypes = propTypes;
 
 export default Share;

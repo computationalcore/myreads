@@ -2,11 +2,9 @@ import CurrentlyReading from './icons/shelves/currently-reading.svg';
 import WantToRead from './icons/shelves/want-to-read.svg';
 import Read from './icons/shelves/read.svg';
 
-// Generate a unique token for storing your bookshelf data on the backend server.
-
 /**
- * Return true if user is logged
- * @returns {boolean}
+ * @description Return true if user is logged.
+ * @returns {boolean} Indicates whether client is logged.
  */
 export const isLogged = () => {
 	const address = localStorage.account_address;
@@ -14,23 +12,23 @@ export const isLogged = () => {
 };
 
 /**
- * Save the address to local storage. This account address is used as a unique token for storing the user bookshelf
- * data on the backend server.
- * @param accountAddress
+ * @description Save the address to local storage. This account address is used as a unique token for storing the user
+ * bookshelf data on the backend server.
+ * @param {string} accountAddress - The account address.
  */
 export const saveAccountAddress = (accountAddress) => {
 	localStorage.account_address = accountAddress;
 };
 
 /**
- * Remove account address from the local storage.
+ * @description Remove account address from the local storage.
  */
 export const cleanAccountAddress = () => {
 	localStorage.removeItem('account_address');
 };
 
 /**
- * Get the request headers with the account address inside
+ * @description Get the request headers with the account address inside.
  */
 export const getAccountHeaders = () => (
 	{
@@ -65,7 +63,7 @@ const BOOKSHELF_CATEGORY_IDS = [
 
 /**
  *  Array of the available bookshelf categories names.
- *  The index matches the BOOKSHELF_CATEGORY_IDS
+ *  The index matches the BOOKSHELF_CATEGORY_IDS.
  * @type {[string,string,string]}
  */
 const BOOKSHELF_CATEGORY_NAMES = [
@@ -86,14 +84,14 @@ const BOOKSHELF_CATEGORY_ICONS = [
 
 
 /**
- * Get the array of all available bookshelf categories IDs
+ * @description Get the array of all available bookshelf categories IDs.
  */
 export const getBookshelfCategories = () => BOOKSHELF_CATEGORY_IDS;
 
 /**
- * Return the bookshelf category name of the informed id or '' if the id doesn't belong to any category.
- * @param categoryId
- * @returns string
+ * @description Return the bookshelf category name of the informed id or '' if the id doesn't belong to any category.
+ * @param {string} categoryId - The id of the category.
+ * @returns {string} The category name.
  */
 export const getBookshelfCategoryName = (categoryId) => {
 	const categoryInternalIndex = BOOKSHELF_CATEGORY_IDS.indexOf(categoryId);
@@ -107,9 +105,10 @@ export const getBookshelfCategoryName = (categoryId) => {
 };
 
 /**
- * Return the bookshelf category svg icon reference of the informed id or '' if the id doesn't belong to any category.
- * @param categoryId
- * @returns object
+ * @description Return the bookshelf category svg icon reference of the informed id or '' if the id doesn't belong to
+ * any category.
+ * @param {string} categoryId - The id of the category.
+ * @returns {string} The path to the svg image
  */
 export const getBookshelfCategoryIcon = (categoryId) => {
 	const categoryInternalIndex = BOOKSHELF_CATEGORY_IDS.indexOf(categoryId);
