@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {CSSTransitionGroup} from 'react-transition-group';
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by';
 import Checkbox from 'material-ui/Checkbox';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
@@ -14,39 +16,12 @@ import TextField from 'material-ui/TextField';
 import RemoveIcon from './icons/shelves/none.svg';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import './App.css';
 import ConfirmDialog from './ConfirmDialog';
 import AlertDialog from './AlertDialog';
 import LoaderBox from './Loader';
 import Book from './Book';
 import * as BookUtils from './BookUtils';
-
-
-import escapeRegExp from 'escape-string-regexp';
-import sortBy from 'sort-by';
-
-const styles = {
-	block: {
-		maxWidth: 250,
-	},
-	checkbox: {
-		marginBottom: 16,
-		backgroundColor: 'white'
-	},
-	button: {
-		marginRight: 12,
-	},
-	iconButton: {
-		width: 20,
-		height: 20,
-	},
-	medium: {
-		width: 24,
-		height: 24,
-		padding: 2,
-		backgroundColor: 'white'
-	}
-};
+import './App.css';
 
 class Bookshelf extends Component {
 
@@ -287,12 +262,12 @@ class Bookshelf extends Component {
 						{selectMode &&
 						<div>
 							<div className="select-mode-controls">
-								<RaisedButton label="Select All" primary={true} style={styles.button}
+								<RaisedButton className="select-mode-button" label="Select All" primary={true}
 											  disabled={
 												  (this.state.selectedBooks.length === books.length) ? true : false
 											  }
 											  onClick={this.selectAllBooks}/>
-								<RaisedButton label="Clear All" secondary={true} style={styles.button}
+								<RaisedButton className="select-mode-button" label="Clear All" secondary={true}
 											  disabled={
 												  (this.state.selectedBooks.length === 0) ? true : false
 											  }

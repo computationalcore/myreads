@@ -447,6 +447,10 @@ html, body {
 
 /* book select control mode and animations */
 
+.select-mode-button {
+  margin-right: 12px;
+}
+
 .select-mode-controls {
   list-style-type: none;
   padding: 0;
