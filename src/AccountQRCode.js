@@ -16,10 +16,8 @@ class AccountQRCode extends Component {
 		const link = this.downloadButton;
 		//link.textContent = 'download image';
 
-		link.addEventListener('click', function(ev) {
-			console.log(app.qrCanvas);
+		link.addEventListener('click', function(e) {
 			link.href = app.qrCanvas.refs.canvas.toDataURL();
-			link.download = "myreads_account_backup.png";
 		}, false);
 	}
 
@@ -36,7 +34,10 @@ class AccountQRCode extends Component {
 					logo={MyReadsImage}
 				/>
 				<div>
-					<a ref={(download) => { this.downloadButton = download; }}>
+					<a ref={(download) => { this.downloadButton = download; }}
+					   download="myreads_account_backup.png"
+					   target="_blank"
+					>
 					<RaisedButton
 						label="Download QR Code"
 						icon={<FileFileDownload />}

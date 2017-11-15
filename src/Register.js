@@ -94,7 +94,7 @@ class Register extends React.Component {
 			case 0:
 				return (
 					<div>
-						<p>To create your account move the cursor randomly inside box bellow for a while, until
+						<p className="app-register-text">To create your account move the cursor randomly inside box bellow for a while, until
 							it is completely green</p>
 						<div>
 							<EntropyInput onComplete={this.handleEntropyComplete} />
@@ -104,13 +104,13 @@ class Register extends React.Component {
 			case 1:
 				return (
 					<div style={{textAlign: 'center'}}>
-						<p>Please Download and Save this QR code that contains the access key or copy the key from the box
+						<p className="app-register-text">Please Download and Save this QR code that contains the access key or copy the key from the box
 							it before proceed.</p>
-						<p>This Access Key is the only login credential you need.</p>
+						<p className="app-register-text">This Access Key is the only login credential you need.</p>
 						<div>
 							<AccountQRCode value={this.state.accountKey} />
 						</div>
-						<p>You can also Copy/Paste the key somewhere or send it to your email</p>
+						<p className="app-register-text">You can also Copy/Paste the key somewhere or send it to your email</p>
 							<div className="account-backup">
 							<div className="account-address">{this.state.accountKey}</div>
 							<CopyToClipboard text={this.state.accountKey}>
@@ -128,9 +128,9 @@ class Register extends React.Component {
 				return (
 					<div style={{textAlign: 'center'}}>
 						<p className="account-congratulations">Congratulations!</p>
-						<p>
+						<p className="app-register-text">
 							If you already saved your access key feel free to continue.</p>
-						<p>I hope you enjoy the app!</p>
+						<p className="app-register-text">I hope you enjoy the app!</p>
 					</div>
 				);
 			default:

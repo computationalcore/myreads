@@ -98,6 +98,10 @@ body, .app {
   font-size: calc(0.8vmax + 1vmin);
 }
 
+.app-register-text {
+  font-size: small;
+  text-align: center;
+}
 .account-note {
   font-weight: 600;
   color: red;

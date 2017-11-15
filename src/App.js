@@ -365,7 +365,12 @@ class BooksApp extends React.Component {
 							<div className="app-bar">
 								<AppBar
 									title={<div className="app-bar-title">Login</div>}
-									showMenuIconButton={false}
+									iconElementLeft={
+										<IconButton>
+											<ArrowBack/>
+										</IconButton>
+									}
+									onLeftIconButtonTouchTap={() => (history.push("/authentication"))}
 								/>
 							</div>
 							<div className="app-content">
@@ -379,7 +384,12 @@ class BooksApp extends React.Component {
 							<div className="app-bar">
 								<AppBar
 									title={<div className="app-bar-title">Register</div>}
-									showMenuIconButton={false}
+									iconElementLeft={
+										<IconButton>
+											<ArrowBack/>
+										</IconButton>
+									}
+									onLeftIconButtonTouchTap={() => (history.push("/authentication"))}
 								/>
 							</div>
 							<div className="app-content">
