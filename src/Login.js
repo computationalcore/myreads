@@ -36,8 +36,12 @@ class Login extends Component {
 	 * @param data
 	 */
 	handleScan = (data) => {
+		const errorMessage = 'Not found any valid QRCode format for the Access Key. Please try a valid image.';
 		if(data){
-			this.saveAddress(data, 'Not found any valid QRCode format for the Access Key. Please try a valid image.');
+			this.saveAddress(data, errorMessage);
+		}
+		else if (this.state.legacyMode) {
+			this.saveAddress('', errorMessage);
 		}
 	};
 
@@ -101,7 +105,6 @@ class Login extends Component {
 	 * @param errorMessage
 	 */
 	saveAddress = (wif, errorMessage) => {
-		console.log(wif)
 		try {
 			// It will work if the WIF is correct
 			const keyPair = Bitcoin.ECPair.fromWIF(wif);
