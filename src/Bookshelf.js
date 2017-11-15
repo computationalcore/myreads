@@ -121,8 +121,9 @@ class Bookshelf extends Component {
 	 * @param {string} shelf
 	 */
 	updateBooks = (shelf) => {
-		let onUpdateBook = this.props.onUpdateBook;
-		let selectedBooks = this.state.selectedBooks;
+		console.log(shelf);
+		const onUpdateBook = this.props.onUpdateBook;
+		const selectedBooks = this.state.selectedBooks;
 		this.setState({selectMode: false, selectedBooks: []});
 		selectedBooks.forEach(function (book) {
 			onUpdateBook(book, shelf);
@@ -254,11 +255,11 @@ class Bookshelf extends Component {
 										<SelectField
 											floatingLabelText={"Move " + (this.state.selectedBooks.length > 1 ? 'Books' : 'Book') + " to"}
 											value={this.state.value}
-											onChange={(event, index, value) => (this.updateBooks(value)) }
+											onChange={(event, index, value) => (this.updateBooks(value))}
 										>
 											<Subheader>Move Book to...</Subheader>
 											{BookUtils.getBookshelfCategories().filter(shelf => shelf !== category).map((shelf) => (
-												<MenuItem key={shelf}>
+												<MenuItem key={shelf} value={shelf}>
 													<img className="app-book-menu-shelf-icon"
 													src={BookUtils.getBookshelfCategoryIcon(shelf)}
 													alt=""
@@ -266,7 +267,7 @@ class Bookshelf extends Component {
 													<span>{BookUtils.getBookshelfCategoryName(shelf)}</span>
 												</MenuItem>
 											))}
-											<MenuItem key="none">
+											<MenuItem key="none" value="none">
 												<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="" width={30} />
 												<span>None</span>
 											</MenuItem>
