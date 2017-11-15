@@ -310,7 +310,7 @@ class BooksApp extends React.Component {
 					)}/>
 					{/* BookInfo page */}
 					<Route exact path="/info/:bookId"
-						   component={({history, match: {params: {bookId}}, location: {state}}) => (
+						   render={({history, match: {params: {bookId}}, location: {state}}) => (
 							   <div>
 								   <div className="app-bar">
 									   <AppBar
