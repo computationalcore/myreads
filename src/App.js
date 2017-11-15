@@ -364,7 +364,7 @@ class BooksApp extends React.Component {
 						<div>
 							<div className="app-bar">
 								<AppBar
-									title={<div className="app-bar-title">Login</div>}
+									title={<div className="app-bar-title app-bar-icon">Login</div>}
 									iconElementLeft={
 										<IconButton>
 											<ArrowBack/>
@@ -383,7 +383,7 @@ class BooksApp extends React.Component {
 						<div>
 							<div className="app-bar">
 								<AppBar
-									title={<div className="app-bar-title">Register</div>}
+									title={<div className="app-bar-title app-bar-icon">Register</div>}
 									iconElementLeft={
 										<IconButton>
 											<ArrowBack/>
