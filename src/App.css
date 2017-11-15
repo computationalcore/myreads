@@ -563,9 +563,31 @@ html, body {
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, auto);
-  grid-gap: 10px;
+  grid-gap: 20px;
   justify-content: center;
   align-content: center;
+}
+
+.info-share {
+  margin: 10px;
+}
+
+/* share */
+.share-network {
+  vertical-align: top;
+  display: inline-block;
+  margin-right: 30px;
+  text-align: center;
+}
+.share-network-share-count {
+  margin-top: 3px;
+  font-size: 12px;
+}
+.share-network-share-button {
+  cursor: pointer;
+}
+.share-network-share-button:hover:not(:active) {
+  opacity: 0.75;
 }
 
 .grid2 .info-item{

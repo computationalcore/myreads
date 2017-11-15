@@ -1,54 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
-import IconButton from 'material-ui/IconButton';
-import {red500} from 'material-ui/styles/colors';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import LoaderBox from './Loader';
 import * as BooksAPI from './BooksAPI';
-import BookRating from "./BookRating";
-
-const styles = {
-	chip: {
-		margin: 4,
-		fontSize: 12,
-		lineHeight: 22,
-	},
-	media: {
-		height: 194,
-	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
-	avatar: {
-		backgroundColor: red500,
-	},
-	flexGrow: {
-		flex: '1 1 auto',
-	},
-	bigAvatar: {
-		width: 180,
-		height: 180,
-	},
-	wrapper: {
-		display: 'flex',
-		flexWrap: 'wrap',
-	},
-	more: {
-		textAlign: 'center',
-		margin: '0 auto',
-	},
-	bookInfo: {
-		margin: 20,
-	},
-	close: {
-		backgroundColor: red500,
-	}
-};
-
+import BookRating from './BookRating';
+import Share from './Share';
 
 const rateItURL = 'https://books.google.com.br/books?op=lookup&id=';
 
@@ -69,7 +28,6 @@ class BookInfo extends Component {
 	 * Call the API to get all books and update books state variable when the callback returns.
 	 */
 	componentDidMount() {
-
 		this.getBookInfo();
 	}
 
@@ -128,7 +86,7 @@ class BookInfo extends Component {
 				}
 				{/* Book */}
 				{(this.state.status === 'ok') &&
-					<Card style={styles.bookInfo}>
+					<Card style={{margin: 20}}>
 						<div>
 							<CardTitle title={book.title} subtitle={('subtitle' in book) ? book.subtitle : ''}/>
 							<div className="info-grid">
@@ -205,8 +163,10 @@ class BookInfo extends Component {
 									icon={<RemoveRedEye />}
 								/>
 							</div>
-							<IconButton aria-label="Share">
-							</IconButton>
+							<div className="info-share">
+								<h3>Share</h3>
+								<Share title={'MyReads - Sharing book details: ' + book.title} url={window.location.href} />
+							</div>
 						</CardActions>
 					</Card>
 				}
