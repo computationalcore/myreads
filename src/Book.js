@@ -91,7 +91,10 @@ function Book(props) {
 					<div className="book-cover" style={{
 						width: 128,
 						height: 193,
-						backgroundImage: `url(${props.image})`
+						backgroundImage: `url(${props.image})`,
+						backgroundRepeat: 'no-repeat',
+						backgroundColor: '#29bcd3',
+						backgroundPosition: 'center',
 					}}>
 						{props.withRibbon && (props.shelf !== 'none') &&
 						<div className="ribbon">
