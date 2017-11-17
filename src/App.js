@@ -94,7 +94,7 @@ class BooksApp extends React.Component {
 			// Update book state to include updating variable used at book updating animation
 			book.updating = true;
 			this.setState(state => ({
-				books: state.books.filter(b => b.id !== book.id).concat([book])
+				books: state.books.filter(b => b.id !== book.id).concat([book]).sort(sortBy('title'))
 			}));
 
 			// Inside catch block the context change so assign like this to reference the app context not the catch
@@ -107,13 +107,13 @@ class BooksApp extends React.Component {
 				// This will update all Bookshelf components since it will force call render and the book will move
 				// to the correct shelf.
 				this.setState(state => ({
-					books: state.books.filter(b => b.id !== book.id).concat([book])
+					books: state.books.filter(b => b.id !== book.id).concat([book]).sort(sortBy('title'))
 				}));
 			}).catch(function () {
 				// If will remove load animations in case of failure also
 				book.updating = false;
 				app.setState(state => ({
-					books: state.books.filter(b => b.id !== book.id).concat([book]),
+					books: state.books.filter(b => b.id !== book.id).concat([book]).sort(sortBy('title')),
 					request: BookUtils.request.BOOK_ERROR,
 				}));
 			});

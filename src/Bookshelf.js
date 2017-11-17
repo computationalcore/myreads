@@ -244,13 +244,13 @@ class Bookshelf extends Component {
 		} = this.props;
 
 		const selectMode = this.state.selectMode && (request === BookUtils.request.OK);
-		const { query } = this.state;
+		const { query, queryMode } = this.state;
 		let showingBooks;
-		if (query) {
+		if (query && queryMode) {
 			// Escape regex elements converting to literal strings, and 'í' to ignore case
 			const match = new RegExp(escapeRegExp(query), 'i');
 			showingBooks = books.filter((book) => match.test(book.title));
-			showingBooks.sort(sortBy('name'));
+			showingBooks.sort(sortBy('title'));
 		} else {
 			showingBooks = books;
 		}
