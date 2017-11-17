@@ -221,8 +221,8 @@ body, .app {
   list-style-type: decimal;
   -webkit-margin-before: 1em;
   -webkit-margin-after: 1em;
-  -webkit-margin-start: 0px;
-  -webkit-margin-end: 0px;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
   -webkit-padding-start: 0;
 }
 
@@ -433,7 +433,7 @@ html, body {
 
 .move-book-animation-enter {
   opacity: 0.01;
-  width: 0px;
+  width: 0;
 }
 
 .move-book-animation-enter.move-book-animation-enter-active {
@@ -449,7 +449,7 @@ html, body {
 
 .move-book-animation-leave.move-book-animation-leave-active {
   opacity: 0.01;
-  width: 0px;
+  width: 0;
   transition: 700ms;
 }
 
@@ -471,7 +471,7 @@ html, body {
 
 .book-select-mode-enter {
   opacity: 0.01;
-  height: 0px;
+  height: 0;
 }
 
 .book-select-mode-enter.book-select-mode-enter-active {
@@ -559,7 +559,6 @@ html, body {
 .loader-box-svg{
   color: #2980b9;
   width: 100px;
-  height: 100px;
   height: 100px;
   display:inline-block;
 }
