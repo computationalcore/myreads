@@ -261,7 +261,9 @@ class Bookshelf extends Component {
 				<Toolbar>
 					<ToolbarGroup>
 						<img className="shelf-bar-icon" src={BookUtils.getBookshelfCategoryIcon(category)} alt=""/>
-						<ToolbarTitle text={(title === null) ? BookUtils.getBookshelfCategoryName(category) : title}/>
+						<ToolbarTitle
+							text={((title === null) ? BookUtils.getBookshelfCategoryName(category) : title) + ' (' +
+							books.length +')'}/>
 					</ToolbarGroup>
 					{/* Only show shelf menu if this props is true */}
 					{withShelfMenu && (books.length > 0) &&
