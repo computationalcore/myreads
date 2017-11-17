@@ -44,24 +44,26 @@ class Search extends Component {
 								this.searchInput = input;
 							}}
 							value={query}
-							className='search-books'
-							type='text'
+							className="search-books"
+							type="text"
 							placeholder="Search by title or author"
 							onChange={(event) => onUpdateQuery(event.target.value)}
 						/>
 					</div>
 				</div>
 				<div className="search-books-results">
-					<Bookshelf
-						title='Search Results'
-						books={books}
-						onUpdateBook={onUpdateBook}
-						withRibbon={true}
-						withShelfMenu={false}
-						request={request}
-						onUpdateBookError={onUpdateBookError}
-						onConnectionError={onSearch}
-					/>
+					<div className="search-books-results-internal">
+						<Bookshelf
+							title="Search Results"
+							books={books}
+							onUpdateBook={onUpdateBook}
+							withRibbon={true}
+							withShelfMenu={false}
+							request={request}
+							onUpdateBookError={onUpdateBookError}
+							onConnectionError={onSearch}
+						/>
+					</div>
 				</div>
 			</div>
 		);

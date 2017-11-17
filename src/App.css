@@ -190,7 +190,7 @@ body, .app {
 /* search page */
 
 .search-books-bar {
-  position: sticky;
+  position: fixed;
   width: 100%;
   left: 0;
   z-index: 5;
@@ -212,6 +212,10 @@ body, .app {
 
 .search-books-results {
   padding: 20px 10px 20px;
+}
+
+.search-books-results-internal {
+  margin-top: 60px;
 }
 
 /* books grid */
