@@ -53,6 +53,15 @@ class Search extends Component {
 				</div>
 				<div className="search-books-results">
 					<div className="search-books-results-internal">
+						<p className="important-note search-note">
+							Important: The backend API uses a fixed set of cached search results and is limited to a
+							particular set of search terms, which can be found in&nbsp;
+							<a target="_blank"
+							   href="https://github.com/computationalcore/myreads/blob/master/SEARCH_TERMS.md"
+							>
+								SEARCH_TERMS.md
+							</a>.
+						</p>
 						<Bookshelf
 							title="Search Results"
 							books={books}

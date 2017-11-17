@@ -218,6 +218,10 @@ body, .app {
   margin-top: 60px;
 }
 
+.search-note {
+  text-align: center;
+}
+
 /* books grid */
 
 .shelf-book-list{
