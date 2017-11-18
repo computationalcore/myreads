@@ -30,7 +30,7 @@ class QRCodeBox extends React.Component {
 
 		link.addEventListener('click', function (e) {
 			// Convert the svg canvas to image data
-			link.href = app.qrCanvas.refs.canvas.toDataURL();
+			link.href = app.qrCanvas._canvas.toDataURL();
 		}, false);
 	}
 
