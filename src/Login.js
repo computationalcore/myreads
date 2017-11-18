@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import QrReader from 'react-qr-reader';
 import SwipeableViews from 'react-swipeable-views';
-import Bitcoin from 'bitcoinjs-lib';
 import Checkbox from 'material-ui/Checkbox';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,6 +10,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import * as BookUtils from './BookUtils';
 import AlertDialog from './AlertDialog';
 
 /**
@@ -124,8 +124,7 @@ class Login extends Component {
 	saveAddress = (wif, errorMessage) => {
 		try {
 			// It will work if the WIF is correct
-			const keyPair = Bitcoin.ECPair.fromWIF(wif);
-			const address =  keyPair.getAddress();
+			const address =  BookUtils.getAddress(wif);
 			this.props.onComplete(address, this.props.history);
 		}
 		catch (e) {

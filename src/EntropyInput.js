@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Bigi from 'bigi';
-import Bitcoin from 'bitcoinjs-lib';
 import Paper from 'material-ui/Paper';
 import ReactCursorPosition from 'react-cursor-position';
+import * as BookUtils from './BookUtils';
 
 /**
  * This object is used for type checking the props of the component.
@@ -69,9 +68,9 @@ class EntropyInput extends Component {
 			}
 		},function stateUpdateComplete() {
 			if(this.state.progress === 100) {
-				const hash = Bitcoin.crypto.sha256(this.props.value+this.state.entropy);
-				const keyPair = new Bitcoin.ECPair(Bigi.fromBuffer(hash));
-				this.props.onComplete({wif: keyPair.toWIF(),address: keyPair.getAddress()});
+				const wif = BookUtils.getWif(this.props.value+this.state.entropy);
+				const address = BookUtils.getAddress(wif);
+				this.props.onComplete({wif: wif,address: address});
 			}
 		}.bind(this));
 	};

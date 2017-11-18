@@ -1,47 +1,6 @@
 import CurrentlyReading from './icons/shelves/currently-reading.svg';
 import WantToRead from './icons/shelves/want-to-read.svg';
 import Read from './icons/shelves/read.svg';
-import Bigi from 'bigi';
-import Wif from 'wif';
-import Buffer from 'safe-buffer';
-import Hash from 'create-hash';
-import Ecurve from 'ecurve';
-import Bs58check from 'bs58check';
-
-const secp256k1 = Ecurve.getCurveByName('secp256k1');
-
-/**
- * @description Encode hash in base58 format.
- * @param {string} hash - The hash to be converted to base58.
- * @returns {string} Base58 encoded hash.
- */
-const toBase58Check = (hash) => {
-	const payload = Buffer.Buffer.allocUnsafe(21);
-	payload.writeUInt8(0x00, 0);
-	hash.copy(payload, 1);
-	return Bs58check.encode(payload);
-};
-
-/**
- * @description Get the address account. This address use same bitcoin.
- * @param {string} wif - Private key in WIF format
- * @returns {string} Returns the address.
- */
-export const getAddress = (wif) => {
-	const key = secp256k1.G.multiply(Bigi.fromBuffer(Wif.decode(wif).privateKey)).getEncoded(true);
-	return toBase58Check(Hash('rmd160').update(Hash('sha256').update(key).digest()).digest());
-};
-
-/**
- * @description Get a private key in WIF format.
- * @param {string} value - The value to be used into the hash that generate the key.
- * @returns {string} The key in WIF format.
- */
-export const getWif = (value) => {
-	const hash = Hash('sha256').update(value).digest();
-	return Wif.encode(128, hash, true);
-};
-
 
 /**
  * @description Return true if user is logged.
