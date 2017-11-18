@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import QRCode from 'qrcode-react';
+import QRCode from 'qrcode.react';
 import RaisedButton from 'material-ui/RaisedButton';
-import MyReadsImage from './icons/myreads.jpg';
 import FileFileDownload from 'material-ui/svg-icons/file/file-download';
 
 /**
@@ -47,7 +46,6 @@ class QRCodeBox extends React.Component {
 					fgColor="#323266" size={240}
 					value={value}
 					logoWidth={48}
-					logo={MyReadsImage}
 				/>
 				<div>
 					<a ref={(download) => {

@@ -26,7 +26,7 @@
     "ecurve": "^1.0.5",
     "material-ui": "^0.19.4",
     "prop-types": "^15.5.8",
-    "qrcode-react": "^0.1.15",
+    "qrcode.react": "^0.7.2",
     "react": "^15.5.4",
     "react-copy-to-clipboard": "^5.0.1",
     "react-cursor-position": "^2.2.2",
