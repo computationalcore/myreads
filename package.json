@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/computationalcore/myreads"
   },
-  "homepage": "https://github.com/computationalcore/myreads#readme",
+  "homepage": "https://computationalcore.github.io/myreads",
   "dependencies": {
     "bigi": "^1.4.2",
     "bs58check": "^2.1.0",
@@ -26,6 +26,7 @@
     "ecurve": "^1.0.5",
     "material-ui": "^0.19.4",
     "prop-types": "^15.5.8",
+    "react-interactive": "^0.8.1",
     "qrcode.react": "^0.7.2",
     "react": "^15.5.4",
     "react-copy-to-clipboard": "^5.0.1",
