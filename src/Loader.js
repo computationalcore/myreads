@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CircleLoader from './icons/loaders/circle.svg';
-import ClockLoader from './icons/loaders/clock.svg';
-import DotsLoader from './icons/loaders/dots.svg';
 
 const type = ['clock','dots','circle'];
-const loaders = [ClockLoader, DotsLoader, CircleLoader];
+const loaders = ['/myreads/icons/loaders/clock.svg', '/myreads/icons/loaders/dots.svg', '/myreads/icons/loaders/circle.svg'];
 
 /**
  * This object is used for type checking the props of the component.

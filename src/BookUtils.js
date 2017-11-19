@@ -1,6 +1,3 @@
-import CurrentlyReading from './icons/shelves/currently-reading.svg';
-import WantToRead from './icons/shelves/want-to-read.svg';
-import Read from './icons/shelves/read.svg';
 import Bigi from 'bigi';
 import Wif from 'wif';
 import Buffer from 'safe-buffer';
@@ -118,9 +115,9 @@ const BOOKSHELF_CATEGORY_NAMES = [
  * @type {[object,object,object]}
  */
 const BOOKSHELF_CATEGORY_ICONS = [
-	CurrentlyReading,
-	WantToRead,
-	Read,
+	'/myreads/icons/shelves/currently-reading.svg',
+	'/myreads/icons/shelves/want-to-read.svg',
+	'/myreads/icons/shelves/read.svg',
 ];
 
 

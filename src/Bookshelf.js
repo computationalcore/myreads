@@ -13,7 +13,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
-import RemoveIcon from './icons/shelves/none.svg';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import ConfirmDialog from './ConfirmDialog';
@@ -366,7 +365,7 @@ class Bookshelf extends Component {
 												)
 											)}
 											<MenuItem key="none" value="none">
-												<img src={RemoveIcon} className="app-book-menu-remove-icon" alt=""
+												<img src="/myreads/icons/shelves/none.svg" className="app-book-menu-remove-icon" alt=""
 													 width={30}/>
 												<span>None</span>
 											</MenuItem>

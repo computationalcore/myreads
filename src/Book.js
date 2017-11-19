@@ -11,8 +11,6 @@ import Info from 'material-ui/svg-icons/action/info';
 import MenuItem from 'material-ui/MenuItem';
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import Subheader from 'material-ui/Subheader';
-import DotLoader from './icons/loaders/dots.svg';
-import RemoveIcon from './icons/shelves/none.svg';
 import * as BookUtils from './BookUtils';
 import BookRating from './BookRating';
 
@@ -86,7 +84,7 @@ function Book(props) {
 			<div className="book-top">
 				{/* Show Loader if book is updating */}
 				<Loader show={props.updating}
-						message={<span><img src={DotLoader} width="50" alt=""/><div>Updating</div></span>}>
+						message={<span><img src="/myreads/icons/loaders/dots.svg" width="50" alt=""/><div>Updating</div></span>}>
 					<div className="book-cover" style={{
 						width: 128,
 						height: 193,
@@ -169,7 +167,7 @@ function Book(props) {
 											  // Call informed function with the shelf value to be updated
 											  props.onUpdate('none');
 										  }}>
-									<img src={RemoveIcon} className="app-book-menu-remove-icon" alt="" width={30}/>
+									<img src="/myreads/icons/shelves/none.svg" className="app-book-menu-remove-icon" alt="" width={30}/>
 									<span>None</span>
 								</MenuItem>
 								}

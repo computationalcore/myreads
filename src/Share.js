@@ -5,7 +5,6 @@ import {
 	ShareCounts,
 	generateShareIcon
 } from 'react-share';
-import MyReadsImage from './icons/myreads.jpg';
 
 const {
 	FacebookShareButton,
@@ -161,7 +160,7 @@ function Share(props) {
 			<div className="share-network">
 				<PinterestShareButton
 					url={String(window.location)}
-					media={`${String(window.location)}/${MyReadsImage}`}
+					media={`${String(window.location)}/myreads/icons/myreads.jpg`}
 					windowWidth={1000}
 					windowHeight={730}
 					className="share-network-share-button">
@@ -175,7 +174,7 @@ function Share(props) {
 			<div className="share-network">
 				<VKShareButton
 					url={props.url}
-					image={`${String(window.location)}/${MyReadsImage}`}
+					image={`${String(window.location)}/myreads/icons/myreads.jpg`}
 					windowWidth={660}
 					windowHeight={460}
 					className="share-network-share-button">
@@ -191,7 +190,7 @@ function Share(props) {
 			<div className="share-network">
 				<OKShareButton
 					url={props.url}
-					image={`${String(window.location)}/${MyReadsImage}`}
+					image={`${String(window.location)}/myreads/icons/myreads.jpg`}
 					windowWidth={660}
 					windowHeight={460}
 					className="share-network-share-button">
