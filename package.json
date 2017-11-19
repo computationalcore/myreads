@@ -1,0 +1,66 @@
+{
+  "name": "MyReads",
+  "version": "1.0.0",
+  "description": "A bookshelf app that allows the user to select and categorize books they have read, are currently reading, or want to read",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/computationalcore/myreads"
+  },
+  "keywords": [
+    "myreads",
+    "bookshelf",
+    "books",
+    "udacity",
+    "google books"
+  ],
+  "author": "Vin Busquet",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/computationalcore/myreads"
+  },
+  "homepage": "https://github.com/computationalcore/myreads#readme",
+  "dependencies": {
+    "bigi": "^1.4.2",
+    "bs58check": "^2.1.0",
+    "create-hash": "^1.1.3",
+    "ecurve": "^1.0.5",
+    "material-ui": "^0.19.4",
+    "prop-types": "^15.5.8",
+    "qrcode.react": "^0.7.2",
+    "react": "^15.5.4",
+    "react-copy-to-clipboard": "^5.0.1",
+    "react-cursor-position": "^2.2.2",
+    "react-dom": "^15.5.4",
+    "react-loader-advanced": "^1.7.1",
+    "react-qr-reader": "^2.0.0",
+    "react-router-dom": "^4.2.2",
+    "react-scroll-to-component": "^1.0.1",
+    "react-share": "^1.17.0",
+    "react-star-rating-component": "^1.3.0",
+    "react-swipeable-views": "^0.12.10",
+    "react-transition-group": "^1.2.1",
+    "safe-buffer": "^5.1.1",
+    "sort-by": "^1.2.0",
+    "wif": "^2.0.6",
+    "window-resize-listener-react": "^1.0.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --devtool eval-source-map --history-api-fallback --open",
+    "build": "webpack -p"
+  }
+}
