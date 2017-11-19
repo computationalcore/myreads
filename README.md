@@ -6,6 +6,12 @@ Udacity's React Fundamentals course (part of the React Nanodegree Program).
 MyReads is a bookshelf app that allows the user to select and categorize books they have read, are currently reading, or
 want to read.
 
+![](https://raw.githubusercontent.com/computationalcore/myreads/gh-pages/myreads.gif)
+
+## Demo
+
+[computationalcore.github.io/myreads](https://computationalcore.github.io/myreads)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing 
@@ -98,6 +104,40 @@ The backend API uses a fixed set of cached search results and is limited to a pa
 be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend,
 so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
 
+## To the Infinity and beyond
+
+All the features added beyond the basic project specs were developed with the intention to extract as much as I 
+could from the lectures so far and as much as I could from the API data, without the need to extend any other server-side 
+functionality. For example, bookmark books functionality would require to implement a backend API call to save this data
+for the account/token, so I considered it out of the scope, focusing only on react related features and its interactions
+with the provided API. Also note that the authentication architecture is based on similar concepts used in
+bitcoin paper wallets, using a bitcoin address as the token the server side expect on the requests, and the private key
+that generates this address as the only credential needed to login into the system. 
+
+![](https://raw.githubusercontent.com/computationalcore/myreads/gh-pages/myreads_authentication.gif)
+
+## Versions
+
+v1.0 
+* Default project implementation 
+ 
+v1.1 
+* Change to material UI based interface
+* Book transitions animations
+* Shelf category ribbon on each book at search page
+* Bulk move books
+* Clear shelf capabilities
+
+v1.2
+* Connection error handlers
+* Star ratings on each book
+* Individual book info page 
+
+v1.3
+* Authenticated account support
+* Book sharing functionality 
+* Book search functionality for each bookshelf
+
 ## Authors
 Vin Busquet
 * [https://github.com/computationalcore](https://github.com/computationalcore)
@@ -112,3 +152,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Tyler McGinnis](https://twitter.com/tylermcginnis33)
 * [Ryan Florence](https://twitter.com/ryanflorence)
 * [Michael Jackson](https://twitter.com/mjackson)
+* [Alfredo Hernandez](https://alfredocreates.com)
