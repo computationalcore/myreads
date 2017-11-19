@@ -109,7 +109,7 @@ class BookInfo extends Component {
 						<CardTitle title={book.title} subtitle={('subtitle' in book) ? book.subtitle : ''}/>
 						<div className="info-grid">
 							<div className="info-item">
-								<img src={book.imageLinks.thumbnail} alt="book.title"/>
+								<img src={book.imageLinks.thumbnail.replace("http://", "https://")} alt="book.title"/>
 								<div className="book-rating-container">
 									<BookRating
 										value={(book.averageRating) ? book.averageRating : 0}

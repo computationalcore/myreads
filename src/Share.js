@@ -18,7 +18,6 @@ const {
 	WhatsappShareButton,
 	RedditShareButton,
 	EmailShareButton,
-	TumblrShareButton,
 } = ShareButtons;
 
 const {
@@ -29,7 +28,6 @@ const {
 	VKShareCount,
 	OKShareCount,
 	RedditShareCount,
-	TumblrShareCount,
 } = ShareCounts;
 
 const FacebookIcon = generateShareIcon('facebook');
@@ -42,7 +40,6 @@ const OKIcon = generateShareIcon('ok');
 const TelegramIcon = generateShareIcon('telegram');
 const WhatsappIcon = generateShareIcon('whatsapp');
 const RedditIcon = generateShareIcon('reddit');
-const TumblrIcon = generateShareIcon('tumblr');
 const EmailIcon = generateShareIcon('email');
 
 /**
@@ -216,22 +213,6 @@ function Share(props) {
 				</RedditShareButton>
 
 				<RedditShareCount url={props.url}
-								  className="share-network-share-count"/>
-			</div>
-
-			<div className="share-network">
-				<TumblrShareButton
-					url={props.url}
-					title={props.title}
-					windowWidth={660}
-					windowHeight={460}
-					className="share-network-share-button">
-					<TumblrIcon
-						size={32}
-						round/>
-				</TumblrShareButton>
-
-				<TumblrShareCount url={props.url}
 								  className="share-network-share-count"/>
 			</div>
 
