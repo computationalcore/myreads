@@ -376,7 +376,7 @@ class BooksApp extends React.Component {
 						<div>
 							<div className="app-bar">
 								<AppBar
-									title={<div className="app-bar-title">Authentication</div>}
+									title={<div className="app-bar-title">MyReads</div>}
 									showMenuIconButton={false}
 								/>
 							</div>
