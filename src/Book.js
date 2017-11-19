@@ -15,7 +15,6 @@ import DotLoader from './icons/loaders/dots.svg';
 import RemoveIcon from './icons/shelves/none.svg';
 import * as BookUtils from './BookUtils';
 import BookRating from './BookRating';
-import './App.css';
 
 /**
  * This object is used for type checking the props of the component.

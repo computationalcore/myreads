@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import CircleLoader from './icons/loaders/circle.svg';
 import ClockLoader from './icons/loaders/clock.svg';
 import DotsLoader from './icons/loaders/dots.svg';
-import './App.css';
 
 const type = ['clock','dots','circle'];
 const loaders = [ClockLoader, DotsLoader, CircleLoader];

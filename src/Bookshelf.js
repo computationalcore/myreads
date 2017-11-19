@@ -21,7 +21,6 @@ import AlertDialog from './AlertDialog';
 import LoaderBox from './Loader';
 import Book from './Book';
 import * as BookUtils from './BookUtils';
-import './App.css';
 
 /**
  * This object is used for type checking the props of the component.

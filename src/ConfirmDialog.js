@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import './App.css';
 
 /**
  * This object is used for type checking the props of the component.

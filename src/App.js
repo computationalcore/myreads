@@ -25,7 +25,6 @@ import PrivateRoute from './PrivateRoute';
 import Register from './Register';
 import Search from './Search';
 import UnauthenticatedRoute from './UnauthenticatedRoute';
-import './App.css';
 
 /**
  * @description Main App component.

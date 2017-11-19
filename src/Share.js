@@ -6,7 +6,6 @@ import {
 	generateShareIcon
 } from 'react-share';
 import MyReadsImage from './icons/myreads.jpg';
-import './App.css';
 
 const {
 	FacebookShareButton,
