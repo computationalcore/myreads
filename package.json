@@ -41,6 +41,7 @@
     "react-transition-group": "^1.2.1",
     "safe-buffer": "^5.1.1",
     "sort-by": "^1.2.0",
+    "throttle-debounce": "^1.0.1",
     "wif": "^2.0.6",
     "window-resize-listener-react": "^1.0.3"
   },
