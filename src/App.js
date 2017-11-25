@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
+import debounce from 'throttle-debounce/debounce';
 import sortBy from 'sort-by';
 import scrollToComponent from 'react-scroll-to-component';
 import AppBar from 'material-ui/AppBar';
@@ -35,7 +36,8 @@ class BooksApp extends React.Component {
 
 	constructor(props){
 		super(props);
-
+		// Add debounce to the search requests
+		this.search = debounce(400, this.search);
 		/**
 		 * @typedef {Object} ComponentState
 		 * @property {Object[]} books - All books from the logged account.
@@ -129,7 +131,6 @@ class BooksApp extends React.Component {
 			this.setState({query: '', searchResults: [], request: BookUtils.request.OK});
 			return;
 		}
-		query = query.trim();
 		// Update the search field as soon as the character is typed
 		this.setState({
 			query: query,
@@ -148,7 +149,10 @@ class BooksApp extends React.Component {
 		// context
 		const app = this;
 		const query = this.state.query;
-
+		if (query.trim() === '') {
+			this.setState({query: '', searchResults: [], request: BookUtils.request.OK});
+			return;
+		}
 		BooksAPI.search(query).then((books) => {
 
 			// If the query state (the search input) changed while the request was in process not show the books
